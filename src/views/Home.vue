@@ -27,7 +27,7 @@ const changeTab = (tab: number) => {
 .y-data-container {
   position: absolute;
   inset: 0;
-  background: #222;
+  background: #101014;
   header {
     width: 100%;
     height: 40px;
