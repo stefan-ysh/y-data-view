@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-
+import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
@@ -9,6 +9,12 @@ export default defineConfig({
       scss: {
         additionalData: '@import "./src/assets/scss/var.scss";',
       },
+    },
+  },
+  resolve: {
+    // 使用别名
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
     },
   },
 });

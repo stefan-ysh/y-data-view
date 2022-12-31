@@ -5,6 +5,19 @@
       ><span class="nav-link" @click="_toggle(i)">{{ tab.label }} </span></span
     >
     <div class="user-info-wrap">
+      <n-button @click="setting.changeTheme">
+        <Icon v-if="setting.theme === 'dark'" size="20">
+          <SunnyIcon />
+        </Icon>
+        <Icon v-else size="20">
+          <MoonIcon />
+        </Icon>
+      </n-button>
+      <n-button @click="setting.changeLanguage">
+        <Icon size="20">
+          <LanguageIcon />
+        </Icon>
+      </n-button>
       <n-avatar
         :style="{
           color: '#000',
@@ -19,6 +32,11 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from "vue";
+import { useSettingStore } from "@/stores/setting";
+import { icon } from "@/icon";
+import { Icon } from "@vicons/utils";
+const { SunnyIcon, MoonIcon, LanguageIcon } = icon.ionicons5;
+const setting = useSettingStore();
 const tabs = Object.freeze([
   {
     label: "大屏管理",
@@ -317,5 +335,7 @@ onUnmounted(() => {
   position: absolute;
   right: 0;
   color: #fff;
+  display: flex;
+  align-items: center;
 }
 </style>
