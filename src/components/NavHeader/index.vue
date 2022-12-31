@@ -334,7 +334,7 @@ onUnmounted(() => {
 .user-info-wrap {
   position: absolute;
   right: 0;
-  color: #fff;
+  // color: #fff;
   display: flex;
   align-items: center;
 }

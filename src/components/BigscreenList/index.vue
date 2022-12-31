@@ -33,7 +33,7 @@
           <n-pagination
             v-model:page="page"
             v-model:page-size="pageSize"
-            :page-count="100"
+            :page-count="DataList.length"
             show-size-picker
             :page-sizes="[10, 20, 30, 40]"
           />

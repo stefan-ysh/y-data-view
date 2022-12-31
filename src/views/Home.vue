@@ -1,12 +1,12 @@
 <template>
-  <div class="y-data-container">
+  <n-layout class="y-data-container">
     <header>
       <NavHeader @change-tab="changeTab" />
     </header>
     <div class="container-wrap">
       <component :is="curCpt" />
     </div>
-  </div>
+  </n-layout>
 </template>
 
 <script lang="ts" setup>
@@ -32,7 +32,6 @@ const bgcolor = computed(()=>{
 .y-data-container {
   position: absolute;
   inset: 0;
-  background: v-bind("setting.theme === 'light' ? '#fff' : '#101014'");
   header {
     width: 100%;
     height: 40px;

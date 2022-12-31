@@ -20,7 +20,7 @@ const props = defineProps({
     height: 100px;
     border: 1px solid red;
     border-radius: 5px;
-    background: #222;
+    // background: #222;
     flex-shrink: 1;
     margin: 5px;
 }
