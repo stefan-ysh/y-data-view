@@ -300,7 +300,7 @@ onUnmounted(() => {
 .nav-main .nav-span .nav-link {
   text-decoration: none !important;
   display: block;
-  color: #fff;
+  color: v-bind("setting.theme === 'light' ? '#000' : '#fff'");
   width: auto;
   min-width: 140px;
   line-height: 40px;

@@ -10,24 +10,29 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, markRaw } from "vue";
+import { ref, markRaw, computed } from "vue";
 import NavHeader from "../components/NavHeader/index.vue";
 import BigscreenList from "../components/BigscreenList/index.vue";
 import TemplateCenter from "../components/TemplateCenter/index.vue";
 import GroupManager from "../components/GroupManager/index.vue";
+import { useSettingStore } from "@/stores/setting";
+const setting = useSettingStore();
 const arr = [BigscreenList, TemplateCenter, GroupManager];
 const curCpt = ref(markRaw(BigscreenList));
 
 const changeTab = (tab: number) => {
   curCpt.value = markRaw(arr[tab]);
 };
+const bgcolor = computed(()=>{
+  return 'red'
+})
 </script>
 
 <style lang="less">
 .y-data-container {
   position: absolute;
   inset: 0;
-  background: #101014;
+  background: v-bind("setting.theme === 'light' ? '#fff' : '#101014'");
   header {
     width: 100%;
     height: 40px;
