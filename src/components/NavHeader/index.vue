@@ -13,7 +13,11 @@
           <MoonIcon />
         </Icon>
       </n-button>
-       <n-select v-model:value="lang" @change="setting.changeLanguage" :options="[{label: '中文',value: 'zh'},{label: '英文',value: 'en'},]" />
+      <n-select
+        v-model:value="lang"
+        @update:value="setting.changeLanguage"
+        :options="languageList"
+      />
       <n-avatar
         :style="{
           color: '#000',
@@ -31,6 +35,10 @@ import { onMounted, onUnmounted, ref } from "vue";
 import { useSettingStore } from "@/stores/setting";
 import { icon } from "@/icon";
 import { Icon } from "@vicons/utils";
+const languageList = Object.freeze([
+  { label: "中文", value: "zh" },
+  { label: "英文", value: "en" },
+]);
 const { SunnyIcon, MoonIcon } = icon.ionicons5;
 const setting = useSettingStore();
 const lang = ref(setting.lang)
