@@ -12,6 +12,7 @@ const global = {
   contact: 'About Software',
   logout: 'Logout',
   // system setting
+  user_info: 'UserInfo',
   sys_set: 'System Setting',
   lang_set: 'Language Setting',
   // right key

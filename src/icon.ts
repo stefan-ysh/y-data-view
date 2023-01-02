@@ -65,6 +65,9 @@ import {
   EyeOutline as EyeOutlineIcon,
   EyeOffOutline as EyeOffOutlineIcon,
   Albums as AlbumsIcon,
+  PersonCircleOutline as UserIcon,
+  Pencil as EditIcon,
+  LogOutOutline as LogoutIcon
 } from "@vicons/ionicons5";
 
 import {
@@ -101,6 +104,9 @@ import {
 } from "@vicons/carbon";
 
 const ionicons5 = {
+  UserIcon,
+  EditIcon,
+  LogoutIcon,
   // 帮助（问号）
   HelpOutlineIcon,
   // 添加

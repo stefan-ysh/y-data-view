@@ -12,6 +12,7 @@ const global = {
   contact: '关于软件',
   logout: '退出登录',
   // 系统设置
+  user_info: '用户信息',
   sys_set: '系统设置',
   lang_set: '语言设置',
   // 功能键

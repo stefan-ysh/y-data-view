@@ -28,26 +28,24 @@
         </Icon>
       </n-dropdown>
       <!-- user info -->
-      <n-avatar
-        :style="{
-          color: '#000',
-          backgroundColor: 'lightblue',
-        }"
-      >
-        User
-      </n-avatar>
+      <n-dropdown :options="userinfoOptions">
+        <n-avatar class="avatar" round src="src/assets/images/einstein.jpg" />
+      </n-dropdown>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { h as hRender, computed, onMounted, onUnmounted, ref } from "vue";
+import type { Component } from "vue";
 import { useSettingStore } from "@/stores/setting";
 import { icon } from "@/icon";
 import { Icon } from "@vicons/utils";
 import { languageList } from "@/lang/index";
 import { useI18n } from "vue-i18n";
-const { SunnyIcon, MoonIcon, LanguageIcon } = icon.ionicons5;
+import { NIcon } from "naive-ui";
+const { SunnyIcon, MoonIcon, LanguageIcon, UserIcon, EditIcon, LogoutIcon, SettingsSharpIcon } =
+  icon.ionicons5;
 const setting = useSettingStore();
 const { locale } = useI18n();
 const lang = ref(setting.lang);
@@ -56,6 +54,35 @@ const changeLang = (key: "zh" | "en") => {
   locale.value = key;
   setting.changeLanguage(key);
 };
+
+// todo 渲染图标函数，后续考虑做成utils
+ const renderIcon = (icon: any, set = {}) => {
+  return () => hRender(NIcon, set, { default: () => hRender(icon) })
+}
+
+// 用户信息下拉框
+const userinfoOptions = computed(() => [
+  {
+    label: $t("global.user_info"),
+    key: "userInfo",
+    icon: renderIcon(UserIcon),
+  },
+    {
+    type: 'divider',
+    key: 'd1'
+  },
+  {
+    label: $t("global.sys_set"),
+    key: "sysSet",
+    icon: renderIcon(SettingsSharpIcon),
+  },
+  {
+    label: $t("global.logout"),
+    key: "logout",
+    icon: renderIcon(LogoutIcon),
+  },
+]);
+
 const tabs = computed(() => [
   {
     label: $t("project.bigscreen_manager"),
@@ -359,6 +386,9 @@ onUnmounted(() => {
   .system-setting-btn {
     cursor: pointer;
     margin: 0 10px;
+  }
+  .avatar {
+    cursor: pointer;
   }
 }
 </style>
