@@ -20,8 +20,8 @@ export const useSettingStore = defineStore("setting", {
       this.theme = this.theme === 'dark' ? 'light' : 'dark';
       this.cacheLayout();
     },
-    changeLanguage() {
-      this.lang = this.lang === 'zh' ? 'en' : 'zh';
+    changeLanguage(key: "zh" | "en") {
+      this.lang = key;
       this.cacheLayout();
     },
     cacheLayout() {

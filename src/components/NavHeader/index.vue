@@ -5,19 +5,29 @@
       ><span class="nav-link" @click="_toggle(i)">{{ tab.label }} </span></span
     >
     <div class="user-info-wrap">
-      <n-button @click="setting.changeTheme">
-        <Icon v-if="setting.theme === 'dark'" size="20">
-          <SunnyIcon />
+      <!-- switch theme mode light/dark -->
+      <Icon
+        class="system-setting-btn"
+        v-if="setting.theme === 'light'"
+        @click="setting.changeTheme"
+        size="20"
+      >
+        <SunnyIcon />
+      </Icon>
+      <Icon
+        class="system-setting-btn"
+        v-else
+        @click="setting.changeTheme"
+        size="20"
+      >
+        <MoonIcon />
+      </Icon>
+      <n-dropdown trigger="hover" :options="languageList" @select="changeLang">
+        <Icon size="20" class="system-setting-btn">
+          <LanguageIcon />
         </Icon>
-        <Icon v-else size="20">
-          <MoonIcon />
-        </Icon>
-      </n-button>
-      <n-select
-        v-model:value="lang"
-        @update:value="setting.changeLanguage"
-        :options="languageList"
-      />
+      </n-dropdown>
+      <!-- user info -->
       <n-avatar
         :style="{
           color: '#000',
@@ -31,28 +41,32 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useSettingStore } from "@/stores/setting";
 import { icon } from "@/icon";
 import { Icon } from "@vicons/utils";
-const languageList = Object.freeze([
-  { label: "中文", value: "zh" },
-  { label: "英文", value: "en" },
-]);
-const { SunnyIcon, MoonIcon } = icon.ionicons5;
+import { languageList } from "@/lang/index";
+import { useI18n } from "vue-i18n";
+const { SunnyIcon, MoonIcon, LanguageIcon } = icon.ionicons5;
 const setting = useSettingStore();
-const lang = ref(setting.lang)
-const tabs = Object.freeze([
+const { locale } = useI18n();
+const lang = ref(setting.lang);
+// change the language of platform
+const changeLang = (key: "zh" | "en") => {
+  locale.value = key;
+  setting.changeLanguage(key);
+};
+const tabs = computed(() => [
   {
-    label: "大屏管理",
+    label: $t("project.bigscreen_manager"),
     value: "bigscreen-list",
   },
   {
-    label: "模板中心",
+    label: $t("project.template_center"),
     value: "template-center",
   },
   {
-    label: "分组管理",
+    label: $t("project.group_manager"),
     value: "group-manager",
   },
 ]);
@@ -339,8 +353,12 @@ onUnmounted(() => {
 .user-info-wrap {
   position: absolute;
   right: 0;
-  // color: #fff;
   display: flex;
   align-items: center;
+  padding-right: 10px;
+  .system-setting-btn {
+    cursor: pointer;
+    margin: 0 10px;
+  }
 }
 </style>
