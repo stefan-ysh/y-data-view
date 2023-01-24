@@ -72,8 +72,10 @@ const handleSelect = (key: string | number) => {
   margin: 30px;
   cursor: pointer;
   overflow: hidden;
+  transition: all .3s;
   &:hover {
-    border-color: #fff;
+    box-shadow: 5px 5px 10px  rgba(147, 124, 124, 0.5);
+
   }
 }
 </style>
