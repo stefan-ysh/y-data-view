@@ -10,6 +10,7 @@ const messages = {
 const language = (navigator.language || "en").toLocaleLowerCase();
 const i18n = createI18n({
   locale:
+  localStorage.getItem("layout") &&
     JSON.parse(localStorage.getItem("layout")).lang ||
     language.split("-")[0] ||
     "en",
