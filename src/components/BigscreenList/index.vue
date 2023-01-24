@@ -140,6 +140,7 @@ const dataList = ref([
       height: calc(100% - 40px);
       overflow: scroll;
       display: flex;
+      align-items: flex-start;
     }
     .pagination-wrap {
       border-top: 1px solid rgb(159, 117, 117);
