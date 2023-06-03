@@ -48,13 +48,11 @@
               {{ formType === "login" ? "登录" : "注册" }}
             </n-button>
           </n-form-item>
-          <n-form-item>
-            <n-button @click="switchFormType">{{
-              formType === "login" ? "还没帐号？去注册" : "已有帐号，现在登录"
-            }}</n-button>
-          </n-form-item>
         </n-form>
       </n-spin>
+      <span class="switch-form" @click="switchFormType">{{
+        formType === "login" ? "还没帐号？去注册" : "已有帐号，现在登录"
+      }}</span>
     </div>
   </div>
 </template>
@@ -138,10 +136,26 @@ const handleLogin = () => {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin: -150px 0 0 -150px;
-  transform: translateY(-50%);
-  width: 300px;
-  height: 300px;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  max-width: 400px;
+  padding: 10px 50px 50px 50px;
+  transition: all 0.5s;
+  border-radius: 20px;
+  animation: shake 10s linear infinite alternate;
+  position: relative;
+}
+.switch-form {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  color: pink;
+  cursor: pointer;
+  opacity: 0.3;
+  transition: all 0.5s;
+  &:hover {
+    opacity: 1;
+  }
 }
 #login-form h1 {
   color: #fff;
@@ -152,5 +166,22 @@ const handleLogin = () => {
 h1 {
   font-size: 2em;
   margin: 0.67em 0;
+}
+@keyframes shake {
+  0% {
+    box-shadow: 5px 0 0 0 #504152;
+  }
+  25% {
+    box-shadow: 0 5px 0 0 #504152;
+  }
+  50% {
+    box-shadow: 0 0 5px 0 #504152;
+  }
+  75% {
+    box-shadow: 0 0 0 5px #504152;
+  }
+  100% {
+    box-shadow: 5px 0 0 0 #504152;
+  }
 }
 </style>
