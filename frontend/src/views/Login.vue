@@ -3,7 +3,13 @@
     <div id="login-form">
       <h1>{{ formType === "login" ? "Login" : "Register" }}</h1>
       <n-spin :show="show" description="登录中...">
-        <n-form ref="formRef" :model="model" :rules="rules">
+        <n-form
+          label-placement="left"
+          label-width="auto"
+          ref="formRef"
+          :model="model"
+          :rules="rules"
+        >
           <n-form-item path="userName" label="用户名">
             <n-input
               v-model:value="model.userName"
