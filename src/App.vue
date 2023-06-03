@@ -15,6 +15,7 @@ const { theme } = useTheme();
 <template>
   <n-config-provider :theme="theme" :locale="locale" :date-locale="dateLocale">
     <I18n></I18n>
-    <Home />
+    <!-- <Home /> -->
+    <router-view></router-view>
   </n-config-provider>
 </template>

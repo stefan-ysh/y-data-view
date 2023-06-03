@@ -11,9 +11,9 @@
         margin-bottom: 5px;
       "
     >
-      <span>测试大屏</span>
+      <span>{{ item.label }}</span>
       <Icon> <SunnyIcon /> </Icon>
-      <Icon> <EditIcon /> </Icon>
+      <Icon @click="handleEdit(item)"> <EditIcon /> </Icon>
       <n-dropdown trigger="hover" :options="options" @select="handleSelect">
         <Icon> <EllipsisHorizontalCircleSharpIcon /> </Icon>
       </n-dropdown>
@@ -25,6 +25,8 @@
 import { ref, computed } from "vue";
 import { icon } from "@/icon";
 import { Icon } from "@vicons/utils";
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const { SunnyIcon, EditIcon, LogoutIcon, EllipsisHorizontalCircleSharpIcon } =
   icon.ionicons5;
@@ -58,6 +60,16 @@ const options = computed(() => [
 const handleSelect = (key: string | number) => {
   console.log(key);
 };
+
+// go to design page with id of the item
+const handleEdit = (item: any) => {
+  router.push({
+    name: "Design",
+    query: {
+      id: item.id,
+    },
+  });
+}
 </script>
 
 <style lang="less" scoped>
