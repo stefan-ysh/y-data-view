@@ -1,14 +1,14 @@
 class ResponseBeautifier {
     response: {
-      code: string;
+      code: number|string;
       data: any;
       msg: string;
     };
-    StatusCode: Map<string, string>;
+    StatusCode: Map<number|string, string>;
   
     constructor() {
       this.response = {
-        code: "",
+        code: 0,
         data: {},
         msg: "",
       };
@@ -21,14 +21,14 @@ class ResponseBeautifier {
       this.StatusCode.set(code, description);
     }
   
-    registeStatusCodes(arr: [string, string][]): void {
+    registeStatusCodes(arr: [number, string][]): void {
       for (let [code, description] of arr) {
         this.StatusCode.set(code, description);
       }
     }
   
     set(data: any, code: string | number = "0", msg?: string): any {
-      code = code.toString();
+      // code = code.toString();
       if (this.StatusCode.has(code)) {
         return {
           code,
@@ -69,9 +69,9 @@ class ResponseBeautifier {
   //registe Status Code
   
   responseBeautifier.registeStatusCodes([
-    ["404", "NtFound"],
-    ["200", "success"],
-    ["1", "等待中"],
+    [404, "NtFound"],
+    [200, "success"],
+    [1, "等待中"],
   ]);
   
   export default responseBeautifier;
