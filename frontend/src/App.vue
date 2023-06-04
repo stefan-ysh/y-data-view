@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Home from "./views/Home.vue";
 import { useLang, useTheme } from "@/hooks";
 import { NConfigProvider, GlobalThemeOverrides } from "naive-ui";
 import { useSettingStore } from "@/stores/setting";
@@ -26,3 +25,8 @@ const { theme } = useTheme();
     </n-message-provider>
   </n-config-provider>
 </template>
+<style>
+body {
+  margin: 0;
+}
+</style>
