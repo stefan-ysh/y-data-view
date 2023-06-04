@@ -2,7 +2,7 @@
   <n-layout class="designer-wrap">
     <header>
       <div>
-        <n-button @click="router.back">Back</n-button>
+        <n-button @click="router.push('/')">Back</n-button>
         <span>ID：{{ router.currentRoute.value.query.id }}</span>
       </div>
       <div></div>
