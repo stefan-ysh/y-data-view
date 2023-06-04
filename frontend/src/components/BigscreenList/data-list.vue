@@ -11,7 +11,7 @@
         margin-bottom: 5px;
       "
     >
-      <span>{{ item.label }}</span>
+      <span>{{ item.title }}</span>
       <Icon> <SunnyIcon /> </Icon>
       <Icon @click="handleEdit(item)"> <EditIcon /> </Icon>
       <n-dropdown trigger="hover" :options="options" @select="handleSelect">

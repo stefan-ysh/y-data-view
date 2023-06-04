@@ -45,10 +45,11 @@
 
 <script lang="ts" setup>
 import DataList from "./data-list.vue";
-import { h, ref, defineComponent } from "vue";
+import { h, ref, defineComponent, onMounted } from "vue";
 import { NIcon } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import { BookmarkOutline, CaretDownOutline } from "@vicons/ionicons5";
+import { getBigscreenList } from "@/api/bigscreen";
 const renderMenuLabel = (option: MenuOption) => {
   if ("href" in option) {
     return h(
@@ -117,10 +118,17 @@ const collapsed = ref(false);
 const page = ref(2);
 const pageSize = ref(20);
 const dataList = ref([
-  { label: "警务系统", id: "1" },
-  { label: "物料系统", id: "2" },
-  { label: "仓库管理", id: "3" },
+  // { label: "警务系统", id: "1" },
+  // { label: "物料系统", id: "2" },
+  // { label: "仓库管理", id: "3" },
 ]);
+onMounted(async () => {
+  const res = await getBigscreenList()
+  if(res.code === 200){
+    dataList.value = res.data
+  } else {
+  }
+})
 </script>
 <style lang="less" scoped>
 .y-data-bigscreen-list-wrap {
@@ -141,6 +149,9 @@ const dataList = ref([
       overflow: scroll;
       display: flex;
       align-items: flex-start;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-content: flex-start;
     }
     .pagination-wrap {
       border-top: 1px solid rgb(159, 117, 117);
