@@ -101,22 +101,25 @@ const handleLogin = () => {
         const res = await register(model.value);
         if (res.code === 200) {
           show.value = false;
-          // alert("注册成功");
+          window.$message.success("注册成功");
           formType.value = "login";
         } else {
           show.value = false;
-          alert("注册失败，请重试");
+          window.$message.error("注册失败，请重试");
         }
       } else {
         const res: any = await login(model.value);
         if (res.code === 200) {
-          show.value = false;
-          localStorage.setItem("token", res.token);
-          // alert("登录成功");
-          router.push("/");
+          setTimeout(() => {
+            localStorage.setItem("token", res.token);
+            // alert("登录成功");
+            window.$message.success("登录成功！");
+            show.value = false;
+            router.push("/");
+          }, 1500);
         } else {
           show.value = false;
-          alert("登录失败，请重试");
+          window.$message.error("登录失败，请重试");
         }
       }
     } else {
