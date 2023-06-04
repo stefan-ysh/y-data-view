@@ -7,6 +7,7 @@ const publicRouter = new Router();
 
 publicRouter.prefix("/api");
 publicRouter.get("/", controllers.user.userList);
+publicRouter.get("/bigscreen", controllers.bigscreen.bigscreenList);
 publicRouter.post("/register", controllers.user.register);
 publicRouter.post("/login", controllers.user.login);
 
