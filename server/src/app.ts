@@ -2,6 +2,7 @@
 import Koa from "koa";
 import jwt from "koa-jwt";
 const { publicRouter, privateRouter } = require("./routers/index");
+const cors = require('koa2-cors')
 // import publicRouter from "./routers/index";
 // import privateRouter from "./routers/index";
 import bodyParser from "koa-bodyparser";
@@ -15,13 +16,17 @@ const app = new Koa();
 app.use(bodyParser());
 
 // 解决跨域问题
-app.use(async (ctx, next) => {
-    ctx.set("Access-Control-Allow-Origin", "*");
-    ctx.set("Access-Control-Allow-Headers", "*");
-    // ctx.set("Access-Control-Allow-Methods", "*");
-    // ctx.set("Access-Control-Allow-Credentials", "true"); // 允许带上 cookie
-    await next();
-})
+app.use(cors({
+  //设置允许来自指定域名请求
+  origin: (ctx:any) => {
+    return '*'  // 允许来自所有域名请求
+  },
+  maxAge: 5, //指定本次预检请求的有效期，单位为秒。
+  credentials: true, //是否允许发送Cookie
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], //设置所允许的HTTP请求方法
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'], //设置服务器支持的所有头信息字段
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'] //设置获取其他自定义字段
+}))
 
 // 公共路由
 app.use(publicRouter.routes()).use(publicRouter.allowedMethods());
