@@ -60,22 +60,26 @@ const changeLang = (key: "zh" | "en") => {
  const renderIcon = (icon: any, set = {}) => {
   return () => hRender(NIcon, set, { default: () => hRender(icon) })
 }
+
+// click right dropdown menu
 const handleSelect = (key: string) => {
-  window.$dialog.warning({
-    title: '退出提示',
-    content: '确定要退出吗?',
-    positiveText: '取消',
-    negativeText: '退出',
-    onPositiveClick: () => {
-      window.$message.success('取消退出')
-    },
-    onNegativeClick: () => {
-      if(key === "logout"){
-        localStorage.removeItem("token");
-        router.push("/login");
+  if(key === "logout"){
+    window.$dialog.warning({
+      title: '退出提示',
+      content: '确定要退出吗?',
+      positiveText: '取消',
+      negativeText: '退出',
+      onPositiveClick: () => {
+        window.$message.success('取消退出')
+      },
+      onNegativeClick: () => {
+        if(key === "logout"){
+          localStorage.removeItem("token");
+          router.push("/login");
+        }
       }
-    }
-  })
+    })
+  }
 }
 // 用户信息下拉框
 const userinfoOptions = computed(() => [
