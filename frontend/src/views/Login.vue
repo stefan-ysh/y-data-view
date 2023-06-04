@@ -108,9 +108,10 @@ const handleLogin = () => {
           alert("注册失败，请重试");
         }
       } else {
-        const res = await login(model.value);
+        const res: any = await login(model.value);
         if (res.code === 200) {
           show.value = false;
+          localStorage.setItem("token", res.token);
           // alert("登录成功");
           router.push("/");
         } else {

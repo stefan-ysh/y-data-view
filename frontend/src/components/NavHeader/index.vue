@@ -28,7 +28,7 @@
         </Icon>
       </n-dropdown>
       <!-- user info -->
-      <n-dropdown :options="userinfoOptions">
+      <n-dropdown :options="userinfoOptions" @select="handleSelect">
         <n-avatar class="avatar" round src="src/assets/images/einstein.jpg" />
       </n-dropdown>
     </div>
@@ -44,6 +44,7 @@ import { Icon } from "@vicons/utils";
 import { languageList } from "@/lang/index";
 import { useI18n } from "vue-i18n";
 import { NIcon } from "naive-ui";
+import router from "@/router";
 const { SunnyIcon, MoonIcon, LanguageIcon, UserIcon, EditIcon, LogoutIcon, SettingsSharpIcon } =
   icon.ionicons5;
 const setting = useSettingStore();
@@ -59,7 +60,12 @@ const changeLang = (key: "zh" | "en") => {
  const renderIcon = (icon: any, set = {}) => {
   return () => hRender(NIcon, set, { default: () => hRender(icon) })
 }
-
+const handleSelect = (key: string) => {
+  if(key === "logout"){
+    localStorage.removeItem("token");
+    router.push("/login");
+  }
+}
 // 用户信息下拉框
 const userinfoOptions = computed(() => [
   {
