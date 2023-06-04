@@ -403,6 +403,14 @@ agentkeepalive@^3.4.1:
   dependencies:
     humanize-ms "^1.2.1"
 
+aggregate-error@^3.0.0:
+  version "3.1.0"
+  resolved "https://registry.npmmirror.com/aggregate-error/-/aggregate-error-3.1.0.tgz#92670ff50f5359bdb7a3e0d40d0ec30c5737687a"
+  integrity sha512-4I7Td01quW/RpocfNayFdFVk1qSuoh0E7JrbRJ16nH01HhKFQ88INq9Sd+nd72zqRySlr9BmDA8xlEJ6vJMrYA==
+  dependencies:
+    clean-stack "^2.0.0"
+    indent-string "^4.0.0"
+
 ali-oss@^6.17.1:
   version "6.17.1"
   resolved "https://registry.npmmirror.com/ali-oss/-/ali-oss-6.17.1.tgz#3e88738ec01111a26a2b967cf857d97050886156"
@@ -624,6 +632,11 @@ chokidar@^3.5.1, chokidar@^3.5.3:
     readdirp "~3.6.0"
   optionalDependencies:
     fsevents "~2.3.2"
+
+clean-stack@^2.0.0:
+  version "2.2.0"
+  resolved "https://registry.npmmirror.com/clean-stack/-/clean-stack-2.2.0.tgz#ee8472dbb129e727b31e8a10a427dee9dfe4008b"
+  integrity sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==
 
 cli-tableau@^2.0.0:
   version "2.0.1"
@@ -1188,6 +1201,11 @@ iconv-lite@^0.6.3:
   dependencies:
     safer-buffer ">= 2.1.2 < 3.0.0"
 
+indent-string@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmmirror.com/indent-string/-/indent-string-4.0.0.tgz#624f8f4497d619b2d9768531d58f4122854d7251"
+  integrity sha512-EdDDZu4A2OyIK7Lr/2zG+w5jmbuk1DVBnEwREQvBzspBJkCEbRa8GxU1lghYcaGJCnRWibjDXlq779X1/y5xwg==
+
 inflation@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmmirror.com/inflation/-/inflation-2.0.0.tgz#8b417e47c28f925a45133d914ca1fd389107f30f"
@@ -1417,6 +1435,15 @@ koa-convert@^2.0.0:
     co "^4.6.0"
     koa-compose "^4.1.0"
 
+koa-jwt@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.npmmirror.com/koa-jwt/-/koa-jwt-4.0.4.tgz#1bb5ca337fe9b05e51b85530a0681db12aee64c2"
+  integrity sha512-Tid9BQfpVtUG/8YZV38a+hDKll0pfVhfl7A/2cNaYThS1cxMFXylZzfARqHQqvNhHy9qM+qkxd4/z6EaIV4SAQ==
+  dependencies:
+    jsonwebtoken "^9.0.0"
+    koa-unless "^1.0.7"
+    p-any "^2.1.0"
+
 koa-router@^12.0.0:
   version "12.0.0"
   resolved "https://registry.npmmirror.com/koa-router/-/koa-router-12.0.0.tgz#94276df8c7aef424b86728b0ff4a69de50050dbc"
@@ -1426,6 +1453,11 @@ koa-router@^12.0.0:
     koa-compose "^4.1.0"
     methods "^1.1.2"
     path-to-regexp "^6.2.1"
+
+koa-unless@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.npmmirror.com/koa-unless/-/koa-unless-1.0.7.tgz#b9df375e2b4da3043918d48622520c2c0b79f032"
+  integrity sha512-NKiz+nk4KxSJFskiJMuJvxeA41Lcnx3d8Zy+8QETgifm4ab4aOeGD3RgR6bIz0FGNWwo3Fz0DtnK77mEIqHWxA==
 
 koa@^2.14.1:
   version "2.14.1"
@@ -1748,6 +1780,28 @@ osx-release@^1.0.0:
   integrity sha512-ixCMMwnVxyHFQLQnINhmIpWqXIfS2YOXchwQrk+OFzmo6nDjQ0E4KXAyyUh0T0MZgV4bUhkRrAbVqlE4yLVq4A==
   dependencies:
     minimist "^1.1.0"
+
+p-any@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npmmirror.com/p-any/-/p-any-2.1.0.tgz#719489408e14f5f941a748f1e817f5c71cab35cb"
+  integrity sha512-JAERcaMBLYKMq+voYw36+x5Dgh47+/o7yuv2oQYuSSUml4YeqJEFznBrY2UeEkoSHqBua6hz518n/PsowTYLLg==
+  dependencies:
+    p-cancelable "^2.0.0"
+    p-some "^4.0.0"
+    type-fest "^0.3.0"
+
+p-cancelable@^2.0.0:
+  version "2.1.1"
+  resolved "https://registry.npmmirror.com/p-cancelable/-/p-cancelable-2.1.1.tgz#aab7fbd416582fa32a3db49859c122487c5ed2cf"
+  integrity sha512-BZOr3nRQHOntUjTrH8+Lh54smKHoHyur8We1V8DSMVrl5A2malOOwuJRnKRDjSnkoeBh4at6BwEnb5I7Jl31wg==
+
+p-some@^4.0.0:
+  version "4.1.0"
+  resolved "https://registry.npmmirror.com/p-some/-/p-some-4.1.0.tgz#28e73bc1e0d62db54c2ed513acd03acba30d5c04"
+  integrity sha512-MF/HIbq6GeBqTrTIl5OJubzkGU+qfFhAFi0gnTAK6rgEIJIknEiABHOTtQu4e6JiXjIwuMPMUFQzyHh5QjCl1g==
+  dependencies:
+    aggregate-error "^3.0.0"
+    p-cancelable "^2.0.0"
 
 pac-proxy-agent@^5.0.0:
   version "5.0.0"
@@ -2408,6 +2462,11 @@ type-check@~0.3.2:
   integrity sha512-ZCmOJdvOWDBYJlzAoFkC+Q0+bUyEOS1ltgp1MGU03fqHG+dbi9tBFU2Rd9QKiDZFAYrhPh2JUf7rZRIuHRKtOg==
   dependencies:
     prelude-ls "~1.1.2"
+
+type-fest@^0.3.0:
+  version "0.3.1"
+  resolved "https://registry.npmmirror.com/type-fest/-/type-fest-0.3.1.tgz#63d00d204e059474fe5e1b7c011112bbd1dc29e1"
+  integrity sha512-cUGJnCdr4STbePCgqNFbpVNCepa+kAVohJs1sLhxzdH+gnEoOd8VhbYa7pD3zZYGiURWM2xzEII3fQcRizDkYQ==
 
 type-is@^1.6.16:
   version "1.6.18"

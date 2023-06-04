@@ -1,14 +1,7 @@
-/*
- * @Author: yuanshuai
- * @Date: 2023-02-06 16:48:24
- * @LastEditTime: 2023-02-07 16:14:43
- * @LastEditors: yuanshuai
- * @Description:
- * @FilePath: /serve/src/services/user.ts
- */
 import User from "../models/User";
 import { GetUserList, User as RegisterUser } from "../types/user";
-
+import { sign } from'jsonwebtoken';
+import { JWT_CONFIG } from '../config/jwt.config';
 // 查询所有用户
 export const getUserList = async (params: GetUserList) => {
   const { offset = 0, limit = 10 } = params;
@@ -23,7 +16,7 @@ export const getUserList = async (params: GetUserList) => {
   return await User.findAndCountAll({
     limit,
     offset,
-    order: [["id", "desc"]],
+    // order: [["id", "desc"]],
     // where: findParams,
   });
 };
@@ -74,9 +67,12 @@ export const loginUser = async (loginInfo: RegisterUser) => {
       msg: "用户名或密码错误",
     };
   }
+  // 生成token
+  const { secret, expiresIn } = JWT_CONFIG;
+  const token = sign({ userName, password }, secret, { expiresIn });
   return {
     code: 200,
     msg: "登录成功",
-    data: user,
+    token
   };
 };

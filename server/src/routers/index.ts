@@ -1,11 +1,3 @@
-/*
- * @Author: yuanshuai
- * @Date: 2023-02-06 14:56:36
- * @LastEditTime: 2023-02-06 15:12:19
- * @LastEditors: yuanshuai
- * @Description:
- * @FilePath: /serve/src/routers/index.ts
- */
 "use strict";
 import Router from "koa-router";
 import controllers from "../controllers";
