@@ -73,6 +73,7 @@ export const loginUser = async (loginInfo: RegisterUser) => {
   return {
     code: 200,
     msg: "登录成功",
+    data:user,
     token
   };
 };
