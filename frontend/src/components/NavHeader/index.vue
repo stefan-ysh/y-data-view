@@ -84,7 +84,7 @@ const handleSelect = (key: string) => {
 // 用户信息下拉框
 const userinfoOptions = computed(() => [
   {
-    label: $t("global.user_info"),
+    label: localStorage.getItem("userName"),
     key: "userInfo",
     icon: renderIcon(UserIcon),
   },

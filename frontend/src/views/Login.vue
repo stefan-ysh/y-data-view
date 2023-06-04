@@ -112,6 +112,7 @@ const handleLogin = () => {
         if (res.code === 200) {
           setTimeout(() => {
             localStorage.setItem("token", res.token);
+            localStorage.setItem("userName", res.data.user_name);
             // alert("登录成功");
             window.$message.success("登录成功！");
             show.value = false;
