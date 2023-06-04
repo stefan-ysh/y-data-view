@@ -1,7 +1,10 @@
 <template>
   <n-layout class="designer-wrap">
     <header>
-      <div>ID：{{ router.currentRoute.value.query.id }}</div>
+      <div>
+        <n-button @click="router.back">Back</n-button>
+        <span>ID：{{ router.currentRoute.value.query.id }}</span>
+      </div>
       <div></div>
       <div>
         <n-button>导入</n-button>
