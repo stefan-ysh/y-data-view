@@ -50,6 +50,7 @@ import { NIcon } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import { BookmarkOutline, CaretDownOutline } from "@vicons/ionicons5";
 import { getBigscreenList } from "@/api/bigscreen";
+import { BigscreenItem } from "@/types/bigscreen";
 const renderMenuLabel = (option: MenuOption) => {
   if ("href" in option) {
     return h(
@@ -117,11 +118,8 @@ const menuOptions: MenuOption[] = [
 const collapsed = ref(false);
 const page = ref(2);
 const pageSize = ref(20);
-const dataList = ref([
-  // { label: "警务系统", id: "1" },
-  // { label: "物料系统", id: "2" },
-  // { label: "仓库管理", id: "3" },
-]);
+// ! todo axios 接口待完善
+const dataList = ref<BigscreenItem[]| any>([]);
 onMounted(async () => {
   const res = await getBigscreenList()
   if(res.code === 200){
