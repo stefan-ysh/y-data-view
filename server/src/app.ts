@@ -11,7 +11,7 @@ import { JWT_CONFIG } from "./config/jwt.config";
 import { getIpAddress } from "./utils/util";
 // 创建koa实例
 const app = new Koa();
-
+import errorHandler from "./middlewares/errorHandler";
 // 引入和使用 koa-bodyparser 中间件
 app.use(bodyParser());
 
@@ -32,6 +32,9 @@ app.use(cors({
 app.use(publicRouter.routes()).use(publicRouter.allowedMethods());
 // 私有路由
 app.use(privateRouter.routes()).use(privateRouter.allowedMethods());
+
+// 错误处理中间件
+errorHandler(app);
 
 // 利用 jwt 中间件来验证 token
 app.use(
