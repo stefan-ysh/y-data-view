@@ -6,6 +6,10 @@ const axiosInstance: AxiosInstance = axios.create({
 // 添加请求拦截器
 axiosInstance.interceptors.request.use(
   (config: AxiosRequestConfig) => {
+    // 增加 token 请求头内容
+    if(localStorage.getItem("token")){
+      config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+    }
     // 在发送请求之前做些什么
     return config;
   },
