@@ -8,15 +8,13 @@
  */
 
 import { getUserList, registerUser, loginUser } from "../services/user";
-
+import R from '../middlewares/responseHandler'
 export const userList = async (ctx: any, next: any) => {
     // ctx.body = process.env.NODE_ENV;
     // let list = await getUserList({ project: "app" });
     let list = await getUserList({});
-    ctx.body = {
-        count: list.count,
-        list: list.rows || []
-    };
+    const b = R.set(list.rows, 200)
+    ctx.body = b
     return next();
 };
 
