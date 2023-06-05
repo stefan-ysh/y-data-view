@@ -25,8 +25,15 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error: any) => {
+    // 对响应数据做点什么
+    // 401 就跳转到登录页面
+    if (error.response.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    } else {
+      return Promise.reject(error);
+    }
     // 处理响应错误
-    return Promise.reject(error);
   }
 );
 export default axiosInstance;

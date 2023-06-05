@@ -17,10 +17,12 @@
             :collapsed-width="60"
             :collapsed-icon-size="22"
             :options="menuOptions"
+            key-field="id"
             :render-label="renderMenuLabel"
             :render-icon="renderMenuIcon"
             :expand-icon="expandIcon"
           />
+          <div>+</div>
         </n-layout-sider>
       </n-layout>
     </div>
@@ -49,7 +51,7 @@ import { h, ref, defineComponent, onMounted } from "vue";
 import { NIcon } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import { BookmarkOutline, CaretDownOutline } from "@vicons/ionicons5";
-import { getBigscreenList } from "@/api/bigscreen";
+import BigscreenApi from "@/api/bigscreen";
 import { BigscreenItem } from "@/types/bigscreen";
 const renderMenuLabel = (option: MenuOption) => {
   if ("href" in option) {
@@ -71,62 +73,32 @@ const renderMenuIcon = (option: MenuOption) => {
 const expandIcon = () => {
   return h(NIcon, null, { default: () => h(CaretDownOutline) });
 };
-const menuOptions: MenuOption[] = [
-  {
-    label: "默认分组",
-    key: "hear-the-wind-sing",
-    href: "https://baike.baidu.com/item/%E4%B8%94%E5%90%AC%E9%A3%8E%E5%90%9F/3199",
-  },
-  {
-    label: "大数据",
-    key: "pinball-1973",
-    disabled: false,
-    children: [
-      {
-        label: "双十一天猫营业额",
-        key: "rat",
-      },
-    ],
-  },
-  {
-    label: "仓储",
-    key: "a-wild-sheep-chase",
-    disabled: false,
-  },
-  {
-    label: "运营数据监控",
-    key: "dance-dance-dance",
-    children: [
-      {
-        type: "group",
-        label: "销售",
-        key: "people",
-        children: [
-          {
-            label: "食品类",
-            key: "narrator",
-          },
-          {
-            label: "日常用品类",
-            key: "sheep-man",
-          },
-        ],
-      },
-    ],
-  },
-];
+const menuOptions = ref<any>([]);
 const collapsed = ref(false);
 const page = ref(2);
 const pageSize = ref(20);
 // ! todo axios 接口待完善
 const dataList = ref<BigscreenItem[]| any>([]);
 onMounted(async () => {
-  const res = await getBigscreenList()
-  if(res.code === 200){
-    dataList.value = res.data
-  } else {
-  }
+  getGroupList()
+  getBigscreenList()
 })
+
+// get all bigscreen list
+const getBigscreenList = async () => {
+  const res = await BigscreenApi.getBigscreenList()
+  if (res.code === 200) {
+      dataList.value = res.data
+    }
+}
+
+// get all group list
+const getGroupList = async () => {
+  const res = await BigscreenApi.getGroupList()
+  if (res.code === 200) {
+      menuOptions.value = res.data
+    }
+}
 </script>
 <style lang="less" scoped>
 .y-data-bigscreen-list-wrap {
