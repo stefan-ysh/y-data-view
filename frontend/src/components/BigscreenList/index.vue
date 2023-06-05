@@ -52,7 +52,7 @@ import { NIcon } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import { BookmarkOutline, CaretDownOutline } from "@vicons/ionicons5";
 import BigscreenApi from "@/api/bigscreen";
-import { BigscreenItem } from "@/types/bigscreen";
+import { Bigscreen, Group } from "@/types/bigscreen";
 const renderMenuLabel = (option: MenuOption) => {
   if ("href" in option) {
     return h(
@@ -73,12 +73,12 @@ const renderMenuIcon = (option: MenuOption) => {
 const expandIcon = () => {
   return h(NIcon, null, { default: () => h(CaretDownOutline) });
 };
-const menuOptions = ref<any>([]);
+const menuOptions = ref<Group[]| any>([]);
 const collapsed = ref(false);
 const page = ref(2);
 const pageSize = ref(20);
 // ! todo axios 接口待完善
-const dataList = ref<BigscreenItem[]| any>([]);
+const dataList = ref<Bigscreen[]| any>([]);
 onMounted(async () => {
   getGroupList()
   getBigscreenList()

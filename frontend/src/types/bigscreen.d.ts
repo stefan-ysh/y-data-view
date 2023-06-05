@@ -12,5 +12,10 @@ interface BigScreen {
     password?: string;
   }
   
+    interface Group {
+      id: number | string;
+      label: string;
+      children?: Group[];
+    }
 
-export { BigscreenItem };
+export { Bigscreen, Group };

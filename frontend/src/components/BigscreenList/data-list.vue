@@ -26,14 +26,14 @@ import { ref, computed } from "vue";
 import { icon } from "@/icon";
 import { Icon } from "@vicons/utils";
 import { useRouter } from 'vue-router'
-import { BigscreenItem } from '@/types/bigscreen'
+import { Bigscreen } from '@/types/bigscreen'
 const router = useRouter()
 
 const { SunnyIcon, EditIcon, LogoutIcon, EllipsisHorizontalCircleSharpIcon } =
   icon.ionicons5;
 const props = defineProps({
   dataList: {
-    type: Array<BigscreenItem>,
+    type: Array<Bigscreen>,
     default: [],
   },
 });
