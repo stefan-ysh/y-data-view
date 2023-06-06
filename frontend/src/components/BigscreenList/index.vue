@@ -64,8 +64,11 @@
             label-width="auto"
             require-mark-placement="right-hanging"
           >
+          <n-form-item label="Root Directory" path="isRoot">
+            <n-switch v-model:value="groupForm.isRoot" />
+          </n-form-item>
             <!-- 所属分组 -->
-            <n-form-item label="Parent Group" path="parentGroup">
+            <n-form-item label="Parent Group" path="parentGroup" v-if="!groupForm.isRoot">
               <n-cascader
                 v-model:value="groupForm.parentGroup"
                 placeholder=""
@@ -159,6 +162,7 @@ const getGroupList = async () => {
 };
 const formRef = ref<FormInst | null>(null)
 const groupForm = ref({
+  isRoot: false,
   groupName: '',
   description: '',
   parentGroup: null,
@@ -170,7 +174,9 @@ const groupFormRules = {
     message: "Group name is required!",
   },
   parentGroup: {
-    required: true,
+    required: groupForm.value.isRoot ? false : true,
+    trigger: ["blur", "input"],
+    message: "Parent group is required!",
   },
 };
 
