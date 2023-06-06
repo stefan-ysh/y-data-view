@@ -22,7 +22,11 @@
             :render-icon="renderMenuIcon"
             :expand-icon="expandIcon"
           />
-          <div>+</div>
+          <n-button
+            style="width: 100%; position: absolute; bottom: 0"
+            @click="showAddGroupDialog"
+            >+</n-button
+          >
         </n-layout-sider>
       </n-layout>
     </div>
@@ -42,13 +46,67 @@
         </div>
       </n-layout>
     </div>
+    <n-modal v-model:show="isShowAddGroupDialog">
+      <n-card
+        style="width: 600px"
+        title="Create Group"
+        :bordered="false"
+        size="huge"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div>
+          <n-form
+            ref="formRef"
+            :model="groupForm"
+            :rules="groupFormRules"
+            label-placement="left"
+            label-width="auto"
+            require-mark-placement="right-hanging"
+          >
+            <!-- 所属分组 -->
+            <n-form-item label="Parent Group" path="parentGroup">
+              <n-cascader
+                v-model:value="groupForm.parentGroup"
+                placeholder=""
+                expand-trigger="hover"
+                :options="menuOptions"
+                label-field="label"
+                value-field="id"
+                children-field="children"
+                check-strategy="all"
+                @update:value="handleSelectChangeParentGroup"
+              />
+            </n-form-item>
+            <n-form-item label="Group Name" path="groupName">
+              <n-input v-model:value="groupForm.groupName" placeholder="" />
+            </n-form-item>
+            <n-form-item label="Description" path="description">
+              <n-input
+                placeholder=""
+                v-model:value="groupForm.description"
+                type="textarea"
+                :autosize="{
+                  minRows: 3,
+                  maxRows: 5,
+                }"
+              />
+            </n-form-item>
+          </n-form>
+        </div>
+        <template #footer>
+          <!-- <n-button>取消</n-button> -->
+          <n-button style="width: 100%" type="primary" @click="addGroup">确定</n-button>
+        </template>
+      </n-card>
+    </n-modal>
   </div>
 </template>
 
 <script lang="ts" setup>
 import DataList from "./data-list.vue";
 import { h, ref, defineComponent, onMounted } from "vue";
-import { NIcon } from "naive-ui";
+import { FormInst, NIcon } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import { BookmarkOutline, CaretDownOutline } from "@vicons/ionicons5";
 import BigscreenApi from "@/api/bigscreen";
@@ -73,32 +131,74 @@ const renderMenuIcon = (option: MenuOption) => {
 const expandIcon = () => {
   return h(NIcon, null, { default: () => h(CaretDownOutline) });
 };
-const menuOptions = ref<Group[]| any>([]);
+const menuOptions = ref<Group[] | any>([]);
 const collapsed = ref(false);
 const page = ref(2);
 const pageSize = ref(20);
 // ! todo axios 接口待完善
-const dataList = ref<Bigscreen[]| any>([]);
+const dataList = ref<Bigscreen[] | any>([]);
 onMounted(async () => {
-  getGroupList()
-  getBigscreenList()
-})
+  getGroupList();
+  getBigscreenList();
+});
 
 // get all bigscreen list
 const getBigscreenList = async () => {
-  const res = await BigscreenApi.getBigscreenList()
+  const res = await BigscreenApi.getBigscreenList();
   if (res.code === 200) {
-      dataList.value = res.data
-    }
-}
+    dataList.value = res.data;
+  }
+};
 
 // get all group list
 const getGroupList = async () => {
-  const res = await BigscreenApi.getGroupList()
+  const res = await BigscreenApi.getGroupList();
   if (res.code === 200) {
-      menuOptions.value = res.data
+    menuOptions.value = res.data;
+  }
+};
+const formRef = ref<FormInst | null>(null)
+const groupForm = ref({
+  groupName: '',
+  description: '',
+  parentGroup: null,
+});
+const groupFormRules = {
+  groupName: {
+    required: true,
+    trigger: ["blur", "input"],
+    message: "Group name is required!",
+  },
+  parentGroup: {
+    required: true,
+  },
+};
+
+// show add group dialog
+const isShowAddGroupDialog = ref(false);
+
+// handle select change
+const handleSelectChangeParentGroup = (value: any) => {
+  console.log(value);
+};
+
+// show add group dialog
+const showAddGroupDialog = () => {
+  isShowAddGroupDialog.value = true;
+};
+
+// handle add group
+const addGroup = (e: MouseEvent) => {
+  e.preventDefault()
+  formRef.value?.validate((error: any) => {
+    if (!error) {
+      console.log('submit', groupForm.value)
+    } else {
+      console.log("error submit!!");
+      return false;
     }
-}
+  });
+};
 </script>
 <style lang="less" scoped>
 .y-data-bigscreen-list-wrap {
