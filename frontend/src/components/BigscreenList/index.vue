@@ -175,8 +175,8 @@ const groupFormRules = {
   },
   parentGroup: {
     required: groupForm.value.isRoot ? false : true,
-    trigger: ["blur", "input"],
-    message: "Parent group is required!",
+    // trigger: ["blur", "input"],
+    // message: "Parent group is required!",
   },
 };
 
