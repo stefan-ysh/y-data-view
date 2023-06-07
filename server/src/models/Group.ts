@@ -18,8 +18,8 @@ Group.init(
       type: DataTypes.STRING,
       comment: "分组名称",
     },
-    children: {
-      type: DataTypes.JSON,
+    parentId: {
+      type: DataTypes.STRING || DataTypes.INTEGER,
       comment: "子分组数据",
     },
   },
@@ -29,5 +29,8 @@ Group.init(
     freezeTableName: true,
   }
 );
+// 定义 Group 模型间的关系
+Group.hasMany(Group, { as: 'children', foreignKey: 'parentId' });
+Group.belongsTo(Group, { as: 'parent', foreignKey: 'parentId' });
 
 export default Group;
