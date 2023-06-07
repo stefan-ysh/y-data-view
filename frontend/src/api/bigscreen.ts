@@ -7,4 +7,7 @@ export default {
   getGroupList: () => {
     return Method.get("api/group");
   },
+  createGroup : (data: any) => {
+    return Method.post("api/group/create", data);
+  }
 };

@@ -47,6 +47,7 @@
       </n-layout>
     </div>
     <n-modal v-model:show="isShowAddGroupDialog">
+      <n-spin :show="isLoading" description="处理中，请稍候...">
       <n-card
         style="width: 600px"
         title="Create Group"
@@ -102,6 +103,7 @@
           <n-button style="width: 100%" type="primary" @click="addGroup">确定</n-button>
         </template>
       </n-card>
+    </n-spin>
     </n-modal>
   </div>
 </template>
@@ -193,12 +195,31 @@ const showAddGroupDialog = () => {
   isShowAddGroupDialog.value = true;
 };
 
+const isLoading = ref(false);
+
 // handle add group
 const addGroup = (e: MouseEvent) => {
   e.preventDefault()
   formRef.value?.validate((error: any) => {
     if (!error) {
-      console.log('submit', groupForm.value)
+      isLoading.value = true
+      BigscreenApi.createGroup({
+        label: groupForm.value.groupName,
+        description: groupForm.value.description,
+        parentId: groupForm.value.parentGroup
+      }).then(res=>{
+        if(res.code === 200){
+          isShowAddGroupDialog.value = false
+          getGroupList()
+          window.$message.success(res.msg)
+        } else {
+          window.$message.error(res.msg)
+        }
+        isLoading.value = false
+      }).catch(err=>{
+        isLoading.value = false
+        console.log('[ err ] >', err)
+      })
     } else {
       console.log("error submit!!");
       return false;
