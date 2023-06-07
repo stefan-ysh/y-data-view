@@ -1,8 +1,8 @@
 import Group from "../models/Group";
-// import { GetUserList, User as RegisterUser } from "../types/user";
-// // 查询所有用户
+import { GroupItem } from "../types";
+// 查询所有分组
 export const getGroupList = async (params: any) => {
-  const { offset = 0, limit = 10 } = params;
+  // const { offset = 0, limit = 10 } = params;
   //   const findParams = {
   //     project,
   //   } as {
@@ -11,67 +11,38 @@ export const getGroupList = async (params: any) => {
 
   //   if (!findParams.project) delete findParams["project"];
 
-  return await Group.findAndCountAll({
-    limit,
-    offset,
-    // order: [["id", "desc"]],
-    // where: findParams,
+  // return await Group.findAndCountAll({
+  //   limit,
+  //   offset,
+  //   // order: [["id", "desc"]],
+  //   // where: findParams,
+  // });
+  // 查询分组树形结构
+  const groups = await Group.findAll({
+    include: [{ model: Group, as: "children"}],
   });
+
+  const tree = groups.filter((g: any) => g.parentId === null);
+  
+  return tree.map((t) => t.toJSON())
 };
 
-// // 注册用户
-// export const registerUser = async (registerInfo: RegisterUser) => {
-//   // 进行校验注册信息
-//   const { userName, password } = registerInfo;
-//   if (!userName || !password) {
-//     return {
-//       code: 400,
-//       msg: "用户名或密码不能为空",
-//     };
-//   }
-//   // 校验用户名是否已存在
-//   const user = await User.findOne({
-//     where: { user_name: userName },
-//   });
-//   if (user) {
-//     return {
-//       code: 400,
-//       msg: "该用户名已存在",
-//     };
-//   }
-//   return {
-//     code: 200,
-//     msg: "注册成功",
-//     data: await User.create({ user_name: userName, ...registerInfo }),
-//   };
-// };
+// 新增分组
+export const createGroup = async (groupInfo: GroupItem) => {
+  const { label, parentId } = groupInfo;
+  if (!label) {
+    return {
+      code: 400,
+      msg: "分组名称不能为空",
+    };
+  }
 
-// // 登录
-// export const loginUser = async (loginInfo: RegisterUser) => {
-//   // 查询当前传输过来的用户密码和数据库中存储的是否一致
-//   const { userName, password } = loginInfo;
-//   if (!userName || !password) {
-//     return {
-//       code: 400,
-//       msg: "用户名或密码不能为空",
-//     };
-//   }
-//   const user = await User.findOne({
-//     where: { user_name: userName, password },
-//   });
-//   if (!user) {
-//     return {
-//       code: 400,
-//       msg: "用户名或密码错误",
-//     };
-//   }
-//   // 生成token
-//   const { secret, expiresIn } = JWT_CONFIG;
-//   const token = sign({ userName, password }, secret, { expiresIn });
-//   return {
-//     code: 200,
-//     msg: "登录成功",
-//     data:user,
-//     token
-//   };
-// };
+  return {
+    code: 200,
+    msg: "新增分组成功",
+    data: await Group.create({
+      label,
+      parentId,
+    }),
+  };
+};
