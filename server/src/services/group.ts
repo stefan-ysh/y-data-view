@@ -1,30 +1,29 @@
 import Group from "../models/Group";
 import { GroupItem } from "../types";
+
+// 递归所有数据找到 children
+const buildGroupTree = (
+  groups: any[],
+  parentId: number | null
+): GroupItem[] | null => {
+  const children = groups.filter((g) => g.parentId === parentId);
+  if (children.length === 0) {
+    return null;
+  }
+  return children.map((c) => ({
+    id: c.id,
+    label: c.label,
+    children: buildGroupTree(groups, c.id),
+  }));
+};
+
 // 查询所有分组
-export const getGroupList = async (params: any) => {
-  // const { offset = 0, limit = 10 } = params;
-  //   const findParams = {
-  //     project,
-  //   } as {
-  //     project?: string;
-  //   };
-
-  //   if (!findParams.project) delete findParams["project"];
-
-  // return await Group.findAndCountAll({
-  //   limit,
-  //   offset,
-  //   // order: [["id", "desc"]],
-  //   // where: findParams,
-  // });
-  // 查询分组树形结构
+export const getGroupList = async (): Promise<GroupItem[] | null> => {
   const groups = await Group.findAll({
-    include: [{ model: Group, as: "children"}],
+    include: [{ model: Group, as: "children" }],
   });
 
-  const tree = groups.filter((g: any) => g.parentId === null);
-  
-  return tree.map((t) => t.toJSON())
+  return buildGroupTree(groups, null);
 };
 
 // 新增分组
