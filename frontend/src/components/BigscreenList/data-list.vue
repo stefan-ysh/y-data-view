@@ -1,6 +1,6 @@
 <template>
   <div class="bigscreen-item" v-for="(item, index) in dataList" :key="index">
-    <n-image width="200" src="src/assets/images/demo.jpg" />
+    <Image width="200" src="src/assets/images/demo.jpg" preview/>
     <div
       style="
         display: flex;
@@ -12,8 +12,9 @@
       "
     >
       <span>{{ item.title }}</span>
-      <Icon> <SunnyIcon /> </Icon>
-      <Icon @click="handleEdit(item)"> <EditIcon /> </Icon>
+      <!-- <Icon> <SunnyIcon /> </Icon> -->
+<i class="pi pi-pencil" @click="handleEdit(item)"></i>
+      <!-- <Icon @click="handleEdit(item)"> <EditIcon /> </Icon> -->
       <n-dropdown trigger="hover" :options="options" @select="handleSelect">
         <Icon> <EllipsisHorizontalCircleSharpIcon /> </Icon>
       </n-dropdown>
@@ -28,6 +29,7 @@ import { Icon } from "@vicons/utils";
 import { useRouter } from 'vue-router'
 import { Bigscreen } from '@/types/bigscreen'
 const router = useRouter()
+import Image from "primevue/image";
 
 const { SunnyIcon, EditIcon, LogoutIcon, EllipsisHorizontalCircleSharpIcon } =
   icon.ionicons5;

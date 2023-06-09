@@ -111,8 +111,8 @@
 <script lang="ts" setup>
 import DataList from "./data-list.vue";
 import { h, ref, defineComponent, onMounted } from "vue";
-import { FormInst, NIcon } from "naive-ui";
-import type { MenuOption } from "naive-ui";
+// import { FormInst, NIcon } from "naive-ui";
+// import type { MenuOption } from "naive-ui";
 import { BookmarkOutline, CaretDownOutline } from "@vicons/ionicons5";
 import BigscreenApi from "@/api/bigscreen";
 import { Bigscreen, Group } from "@/types/bigscreen";

@@ -1,12 +1,10 @@
 <template>
-  <n-layout class="y-data-container">
-    <header>
-      <NavHeader @change-tab="changeTab" />
-    </header>
-    <div class="container-wrap">
-      <component :is="curCpt" />
-    </div>
-  </n-layout>
+  <header>
+    <NavHeader @change-tab="changeTab" />
+  </header>
+  <div class="container-wrap">
+    <component :is="curCpt" />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -26,13 +24,13 @@ onMounted(() => {
   if (!localStorage.getItem("token")) {
     router.push("/login");
   }
-})
+});
 const changeTab = (tab: number) => {
   curCpt.value = markRaw(arr[tab]);
 };
-const bgcolor = computed(()=>{
-  return 'red'
-})
+const bgcolor = computed(() => {
+  return "red";
+});
 </script>
 
 <style lang="less">

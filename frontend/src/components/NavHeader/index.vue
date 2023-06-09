@@ -6,22 +6,20 @@
     >
     <div class="user-info-wrap">
       <!-- switch theme mode light/dark -->
-      <Icon
-        class="system-setting-btn"
+      <i
+        class="system-setting-btn pi pi-sun"
         v-if="setting.theme === 'light'"
-        @click="setting.changeTheme"
+        @click="test"
         size="20"
       >
-        <SunnyIcon />
-      </Icon>
-      <Icon
-        class="system-setting-btn"
+      </i>
+      <i
+        class="system-setting-btn pi pi-moon"
         v-else
-        @click="setting.changeTheme"
+        @click="test"
         size="20"
       >
-        <MoonIcon />
-      </Icon>
+    </i>
       <n-dropdown trigger="hover" :options="languageList" @select="changeLang">
         <Icon size="20" class="system-setting-btn">
           <LanguageIcon />
@@ -43,8 +41,11 @@ import { icon } from "@/icon";
 import { Icon } from "@vicons/utils";
 import { languageList } from "@/lang/index";
 import { useI18n } from "vue-i18n";
-import { NIcon } from "naive-ui";
+// import { NIcon } from "naive-ui";
 import router from "@/router";
+import { usePrimeVue } from 'primevue/config';
+
+const PrimeVue = usePrimeVue();
 const { SunnyIcon, MoonIcon, LanguageIcon, UserIcon, EditIcon, LogoutIcon, SettingsSharpIcon } =
   icon.ionicons5;
 const setting = useSettingStore();
@@ -55,7 +56,13 @@ const changeLang = (key: "zh" | "en") => {
   locale.value = key;
   setting.changeLanguage(key);
 };
-
+const test = () => {
+const t = localStorage.getItem("ntheme")
+const oldt = t
+const newt = oldt === "md-light-indigo" ? "md-dark-indigo" : "md-light-indigo"
+  PrimeVue.changeTheme(oldt, newt, 'theme-link', () => {  });
+  localStorage.setItem("ntheme", newt)
+}
 // todo 渲染图标函数，后续考虑做成utils
  const renderIcon = (icon: any, set = {}) => {
   return () => hRender(NIcon, set, { default: () => hRender(icon) })
