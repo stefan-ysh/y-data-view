@@ -1,6 +1,6 @@
 <template>
   <div class="bigscreen-item" v-for="(item, index) in b.bigscreenList" :key="index">
-    <n-image class="bc-img" :img-props="{ style: { width: '100%' } }" src="src/assets/images/demo.jpg" />
+    <n-image class="bc-img" :img-props="{ style: { width: '100%' } }" :src="item.thumb" />
     <div class="item-operate-wrap">
       <span class="item-title">{{ item.title }}</span>
       <div class="item-operate">
