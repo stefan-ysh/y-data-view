@@ -1,6 +1,6 @@
 <template>
   <div class="y-data-bigscreen-list-wrap">
-    <div class="left-menu">
+    <!-- <div class="left-menu">
       <n-layout has-sider style="height: 100%">
         <n-layout-sider
           bordered
@@ -29,7 +29,7 @@
           >
         </n-layout-sider>
       </n-layout>
-    </div>
+    </div> -->
     <div class="right-bigscreen-list">
       <n-layout class="right-bigscreen-list">
         <div class="content-wrap">
@@ -245,10 +245,12 @@ const addGroup = (e: MouseEvent) => {
       height: calc(100% - 40px);
       overflow: scroll;
       display: flex;
-      align-items: flex-start;
+      // align-items: flex-start;
       flex-wrap: wrap;
-      justify-content: flex-start;
+      // justify-content: space-between;
       align-content: flex-start;
+      padding: 10px;
+      box-sizing: border-box;
     }
     .pagination-wrap {
       border-top: 1px solid rgb(159, 117, 117);

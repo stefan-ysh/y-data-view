@@ -1,13 +1,19 @@
 <template>
   <div class="bigscreen-item" v-for="(item, index) in dataList" :key="index">
-    <n-image class="bc-img" width="200" src="src/assets/images/demo.jpg" />
+    <n-image class="bc-img" :img-props="{ style: { width: '100%' } }" src="src/assets/images/demo.jpg" />
     <div class="item-operate-wrap">
       <span class="item-title">{{ item.title }}</span>
       <div class="item-operate">
-        <Icon class="op-icon"> <EyeOutlineIcon /> </Icon>
-        <Icon class="op-icon" @click="handleEdit(item)"> <EditIcon /> </Icon>
+        <Icon class="op-icon">
+          <EyeOutlineIcon />
+        </Icon>
+        <Icon class="op-icon" @click="handleEdit(item)">
+          <EditIcon />
+        </Icon>
         <n-dropdown trigger="hover" :options="options" @select="handleSelect">
-          <Icon class="op-icon"> <EllipsisHorizontalCircleSharpIcon /> </Icon>
+          <Icon class="op-icon">
+            <EllipsisHorizontalCircleSharpIcon />
+          </Icon>
         </n-dropdown>
       </div>
     </div>
@@ -68,22 +74,59 @@ const handleEdit = (item: any) => {
 
 <style lang="less" scoped>
 .bigscreen-item {
-  width: 200px;
+  // width: 200px;
   // height: 200px;
   // padding: 5px;
   border: 1px solid rgb(155, 112, 112);
   border-radius: 5px;
   // background: #222;
-  flex-shrink: 1;
-  margin: 30px;
+  // flex-shrink: 1;
+  aspect-ratio: 16/13;
+  flex: 1;
+  // margin: 30px auto;
   cursor: pointer;
   overflow: hidden;
   transition: all .3s;
+  margin: 0 10px 10px 0; // 间隙为5px
+  // background-color: #999;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  // 小屏幕只显示一行两个
+  @media screen and (min-width: 769px) {
+    width: calc((100% - 50px) / 5); // 这里的10px = (分布个数3-1)*间隙5px, 可以根据实际的分布个数和间隙区调整
+    min-width: calc((100% - 50px) / 5); // 加入这两个后每个item的宽度就生效了
+    max-width: calc((100% - 50px) / 5); // 加入这两个后每个item的宽度就生效了
+
+    &:nth-child(5n) {
+      // 去除第5n个的margin-right
+      margin-right: 0;
+    }
+  }
+
+  // 小屏幕只显示一行两个
+  @media screen and (max-width: 768px) {
+    width: calc((100% - 20px) / 2);
+    min-width: calc((100% - 20px) / 2);
+    max-width: calc((100% - 20px) / 2);
+
+    &:nth-child(2n) {
+      // 去除第2n个的margin-right
+      margin-right: 0;
+    }
+  }
+
   &:hover {
-    box-shadow: 5px 5px 10px  rgba(127, 152, 205, 0.2);
+    box-shadow: 5px 5px 10px rgba(127, 152, 205, 0.2);
   }
+
   .bc-img {
+    /deep/img {
+      // width: 100%;
+    }
   }
+
   .item-operate-wrap {
     height: 20px;
     display: flex;
@@ -91,9 +134,9 @@ const handleEdit = (item: any) => {
     align-items: center;
     padding: 0 10px;
     margin-bottom: 5px;
-    .item-title {
-      
-    }
+
+    .item-title {}
+
     .item-operate {
       .op-icon {
         cursor: pointer;
