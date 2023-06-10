@@ -41,26 +41,13 @@
       </n-dropdown>
     </div>
   </div>
- <n-modal v-model:show="addBigscreenModal">
-      <n-spin :show="isLoading" description="处理中，请稍候...">
-      <n-card
-        style="width: 600px"
-        title="Create Group"
-        :bordered="false"
-        size="huge"
-        role="dialog"
-        aria-modal="true"
-      >
+  <n-modal v-model:show="addBigscreenModal">
+    <n-spin :show="isLoading" description="处理中，请稍候...">
+      <n-card style="width: 600px" title="新建大屏" :bordered="false" size="huge" role="dialog" aria-modal="true">
         <div>
-          <n-form
-            ref="formRef"
-            :model="bigscreenForm"
-            :rules="bigscreenFormRules"
-            label-placement="left"
-            label-width="auto"
-            require-mark-placement="right-hanging"
-          >
-          <!-- <n-form-item label="Root Directory" path="isPublic">
+          <n-form ref="formRef" :model="bigscreenForm" :rules="bigscreenFormRules" label-placement="left"
+            label-width="auto" require-mark-placement="right-hanging">
+            <!-- <n-form-item label="Root Directory" path="isPublic">
             <n-switch v-model:value="bigscreenForm.isPublic" />
           </n-form-item> -->
             <!-- <n-form-item label="Parent Group" path="parentGroup" v-if="!bigscreenForm.isPublic">
@@ -80,15 +67,10 @@
               <n-input v-model:value="bigscreenForm.title" placeholder="" />
             </n-form-item>
             <n-form-item label="大屏简介" path="description">
-              <n-input
-                placeholder=""
-                v-model:value="bigscreenForm.description"
-                type="textarea"
-                :autosize="{
-                  minRows: 3,
-                  maxRows: 5,
-                }"
-              />
+              <n-input placeholder="" v-model:value="bigscreenForm.description" type="textarea" :autosize="{
+                minRows: 3,
+                maxRows: 5,
+              }" />
             </n-form-item>
           </n-form>
         </div>
@@ -97,7 +79,7 @@
         </template>
       </n-card>
     </n-spin>
-    </n-modal>
+  </n-modal>
 </template>
 
 <script lang="ts" setup>
