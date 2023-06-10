@@ -63,7 +63,7 @@ export const delBigscreen = async (id: number) => {
 // 创建大屏
 export const createBigscreen = async (bigscreenInfo: {
   title: string;
-  description: "";
+  description?: string;
 }) => {
   // 查询当前传输过来的用户密码和数据库中存储的是否一致
   const { title, description } = bigscreenInfo;
