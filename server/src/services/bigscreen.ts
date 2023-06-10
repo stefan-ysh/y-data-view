@@ -60,32 +60,33 @@ export const delBigscreen = async (id: number) => {
   };
 };
 
-// // 登录
-// export const loginUser = async (loginInfo: RegisterUser) => {
-//   // 查询当前传输过来的用户密码和数据库中存储的是否一致
-//   const { userName, password } = loginInfo;
-//   if (!userName || !password) {
-//     return {
-//       code: 400,
-//       msg: "用户名或密码不能为空",
-//     };
-//   }
-//   const user = await User.findOne({
-//     where: { user_name: userName, password },
-//   });
-//   if (!user) {
-//     return {
-//       code: 400,
-//       msg: "用户名或密码错误",
-//     };
-//   }
-//   // 生成token
-//   const { secret, expiresIn } = JWT_CONFIG;
-//   const token = sign({ userName, password }, secret, { expiresIn });
-//   return {
-//     code: 200,
-//     msg: "登录成功",
-//     data:user,
-//     token
-//   };
-// };
+// 创建大屏
+export const createBigscreen = async (bigscreenInfo: {
+  title: string;
+  description: "";
+}) => {
+  // 查询当前传输过来的用户密码和数据库中存储的是否一致
+  const { title, description } = bigscreenInfo;
+  if (!title) {
+    return {
+      code: 400,
+      msg: "标题不能为空",
+    };
+  }
+  // 插入数据
+  const res = await Bigscreen.create({
+    title,
+    description,
+  });
+  if (res) {
+    return {
+      code: 200,
+      msg: "创建成功",
+    };
+  } else {
+    return {
+      code: 400,
+      msg: "创建失败，请稍后重试",
+    };
+  }
+};
