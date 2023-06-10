@@ -74,30 +74,24 @@ const handleEdit = (item: any) => {
 
 <style lang="less" scoped>
 .bigscreen-item {
-  // width: 200px;
-  // height: 200px;
-  // padding: 5px;
-  border: 1px solid rgb(155, 112, 112);
+  border: 1px solid #313138;
   border-radius: 5px;
-  // background: #222;
-  // flex-shrink: 1;
   aspect-ratio: 16/13;
-  flex: 1;
-  // margin: 30px auto;
+  // flex: 1;
   cursor: pointer;
   overflow: hidden;
-  transition: all .3s;
-  margin: 0 10px 10px 0; // 间隙为5px
-  // background-color: #999;
-
+  transition: all .6s;
+  margin: 0 30px 30px 0; // 间隙为5px
+  padding: 10px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   // 小屏幕只显示一行两个
   @media screen and (min-width: 769px) {
-    width: calc((100% - 50px) / 5); // 这里的10px = (分布个数3-1)*间隙5px, 可以根据实际的分布个数和间隙区调整
-    min-width: calc((100% - 50px) / 5); // 加入这两个后每个item的宽度就生效了
-    max-width: calc((100% - 50px) / 5); // 加入这两个后每个item的宽度就生效了
+    width: calc((100% - 150px) / 5); // 这里的10px = (分布个数3-1)*间隙5px, 可以根据实际的分布个数和间隙区调整
+    min-width: calc((100% - 150px) / 5); // 加入这两个后每个item的宽度就生效了
+    max-width: calc((100% - 150px) / 5); // 加入这两个后每个item的宽度就生效了
 
     &:nth-child(5n) {
       // 去除第5n个的margin-right
@@ -107,18 +101,19 @@ const handleEdit = (item: any) => {
 
   // 小屏幕只显示一行两个
   @media screen and (max-width: 768px) {
-    width: calc((100% - 20px) / 2);
-    min-width: calc((100% - 20px) / 2);
-    max-width: calc((100% - 20px) / 2);
+    width: calc((100% - 60px) / 2);
+    min-width: calc((100% - 60px) / 2);
+    max-width: calc((100% - 60px) / 2);
 
     &:nth-child(2n) {
       // 去除第2n个的margin-right
       margin-right: 0;
     }
   }
-
+  opacity: .8;
   &:hover {
-    box-shadow: 5px 5px 10px rgba(127, 152, 205, 0.2);
+    border: 10px solid rgba(81, 76, 175, 0.498);
+    opacity: 1;
   }
 
   .bc-img {
