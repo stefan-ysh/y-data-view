@@ -31,7 +31,7 @@ export const updateBigscreen = async (ctx: Context, next: Next) => {
 }
 
 export const del = async (ctx: Context, next: Next) => {
-    const { id } = ctx.request.body
+    const { id } = ctx.request.body as { id: number }
     const res = await delBigscreen(id)
     ctx.body = res
     return next();
