@@ -1,4 +1,4 @@
-import { getBigscreenList, delBigscreen, createBigscreen } from "../services/bigscreen";
+import { getBigscreenList, delBigscreen, createBigscreen, queryBcDetail } from "../services/bigscreen";
 import R from '../middlewares/responseHandler'
 import {Context, Next} from 'koa'
 import { Bigscreen } from "../types/bigscreen";
@@ -33,6 +33,12 @@ export const updateBigscreen = async (ctx: Context, next: Next) => {
 export const del = async (ctx: Context, next: Next) => {
     const { id } = ctx.request.body as { id: number }
     const res = await delBigscreen(id)
+    ctx.body = res
+    return next();
+}
+export const detail = async (ctx: Context, next: Next) => {
+    const { id } = ctx.query  as unknown as { id: number };
+    const res = await queryBcDetail(id)
     ctx.body = res
     return next();
 }

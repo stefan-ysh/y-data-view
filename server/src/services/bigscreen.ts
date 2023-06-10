@@ -96,3 +96,9 @@ export const createBigscreen = async (bigscreenInfo: {
     };
   }
 };
+
+export const queryBcDetail = async (id: number) => {
+  return await Bigscreen.findOne({
+    where: { id },
+  });
+}
