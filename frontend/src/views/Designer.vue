@@ -5,7 +5,7 @@
         <n-button @click="router.push('/')">Back</n-button>
         <span>ID：{{ router.currentRoute.value.query.id }}</span>
       </div>
-      <div></div>
+      <div>{{ title }}</div>
       <div>
         <n-button>导入</n-button>
         <n-button>导出</n-button>
@@ -26,8 +26,20 @@ import { useRouter } from 'vue-router'
 import Left from '@/components/Design/Left/index.vue'
 import Right from '@/components/Design/Right/index.vue'
 import Designer from '@/components/Design/Designer/index.vue'
+import BigscreebApi from '@/api/bigscreen'
+import { onMounted, ref } from 'vue'
 const router = useRouter()
-
+const title = ref('')
+onMounted(async () => {
+  const id = router.currentRoute.value.query.id as string | number
+  const res = await BigscreebApi.getBcDetail(id)
+  if(res.code === 200) {
+    console.log(res)
+    title.value = res.data.title
+  } else {
+    console.log(res)
+  }
+})
 </script>
 <style scoped lang="less">
 .designer-wrap {

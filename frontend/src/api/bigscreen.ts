@@ -15,5 +15,8 @@ export default {
   },
   delBigscreen: (id: number) => {
     return Method.post("api/bigscreen/del", { id });
+  },
+  getBcDetail: (id: number | string) => {
+    return Method.get("api/bigscreen/detail", { id });
   }
 };

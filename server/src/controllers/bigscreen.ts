@@ -39,6 +39,7 @@ export const del = async (ctx: Context, next: Next) => {
 export const detail = async (ctx: Context, next: Next) => {
     const { id } = ctx.query  as unknown as { id: number };
     const res = await queryBcDetail(id)
-    ctx.body = res
+    const b = R.set(res, 200)
+    ctx.body = b
     return next();
 }
