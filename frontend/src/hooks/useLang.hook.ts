@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import { useSettingStore } from "@/stores/setting";
+import { useSettingStore } from "@/stores";
 import { zhCN, enUS, dateEnUS, dateZhCN } from "naive-ui";
 
 export const useLang = () => {

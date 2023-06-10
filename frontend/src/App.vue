@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useLang, useTheme } from "@/hooks";
 import { NConfigProvider, GlobalThemeOverrides } from "naive-ui";
-import { useSettingStore } from "@/stores/setting";
+import { useSettingStore } from "@/stores";
 import { I18n } from '@/components/I18n'
 import { NMessageProvider, NDialogProvider } from "naive-ui";
 // 引入上面你所定义的全局挂载组件

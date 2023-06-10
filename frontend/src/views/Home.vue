@@ -15,7 +15,7 @@ import NavHeader from "../components/NavHeader/index.vue";
 import BigscreenList from "../components/BigscreenList/index.vue";
 import TemplateCenter from "../components/TemplateCenter/index.vue";
 import GroupManager from "../components/GroupManager/index.vue";
-import { useSettingStore } from "@/stores/setting";
+import { useSettingStore } from "@/stores";
 import router from "@/router";
 const setting = useSettingStore();
 const arr = [BigscreenList, TemplateCenter, GroupManager];
