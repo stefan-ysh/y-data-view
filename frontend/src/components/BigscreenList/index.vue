@@ -169,8 +169,10 @@ const getBigscreenList = async () => {
     page: page.value,
     pageSize: pageSize.value
   }
+  window.$message.loading("加载中...");
   const res = await BigscreenApi.getBigscreenList(params);
   if (res.code === 200) {
+    window.$message.destroyAll();
     total.value = res.data.total
     dataList.value = res.data.list;
   }
