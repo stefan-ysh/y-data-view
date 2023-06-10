@@ -28,7 +28,9 @@ export const getBigscreenList = async (params: any) => {
     limit,
     offset,
     // order: [["id", "desc"]],
-    where: findParams
+    where: findParams,
+    // 只查询id、title、thumb字段
+    attributes: ["id", "title", "thumb"],
   });
 };
 
