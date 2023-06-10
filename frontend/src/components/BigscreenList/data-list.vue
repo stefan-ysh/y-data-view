@@ -1,22 +1,13 @@
 <template>
   <div class="bigscreen-item" v-for="(item, index) in dataList" :key="index">
-    <n-image width="200" src="src/assets/images/demo.jpg" />
-    <div
-      style="
-        display: flex;
-        height: 20px;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 10px;
-        margin-bottom: 5px;
-      "
-    >
-      <span>{{ item.title }}</span>
-      <div>
-        <Icon style="margin-left: 10px;"> <EyeOutlineIcon /> </Icon>
-        <Icon style="margin-left: 10px;" @click="handleEdit(item)"> <EditIcon /> </Icon>
+    <n-image class="bc-img" width="200" src="src/assets/images/demo.jpg" />
+    <div class="item-operate-wrap">
+      <span class="item-title">{{ item.title }}</span>
+      <div class="item-operate">
+        <Icon class="op-icon"> <EyeOutlineIcon /> </Icon>
+        <Icon class="op-icon" @click="handleEdit(item)"> <EditIcon /> </Icon>
         <n-dropdown trigger="hover" :options="options" @select="handleSelect">
-          <Icon style="margin-left: 10px;"> <EllipsisHorizontalCircleSharpIcon /> </Icon>
+          <Icon class="op-icon"> <EllipsisHorizontalCircleSharpIcon /> </Icon>
         </n-dropdown>
       </div>
     </div>
@@ -80,7 +71,7 @@ const handleEdit = (item: any) => {
   width: 200px;
   // height: 200px;
   // padding: 5px;
-  border: 1px solid red;
+  border: 1px solid rgb(155, 112, 112);
   border-radius: 5px;
   // background: #222;
   flex-shrink: 1;
@@ -89,8 +80,26 @@ const handleEdit = (item: any) => {
   overflow: hidden;
   transition: all .3s;
   &:hover {
-    box-shadow: 5px 5px 10px  rgba(147, 124, 124, 0.5);
-
+    box-shadow: 5px 5px 10px  rgba(127, 152, 205, 0.2);
+  }
+  .bc-img {
+  }
+  .item-operate-wrap {
+    height: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    margin-bottom: 5px;
+    .item-title {
+      
+    }
+    .item-operate {
+      .op-icon {
+        cursor: pointer;
+        margin-right: 5px;
+      }
+    }
   }
 }
 </style>
