@@ -10,7 +10,10 @@ export default {
   createGroup : (data: any) => {
     return Method.post("api/group/create", data);
   },
+  createBigscreen : (data: any) => {
+    return Method.post("api/bigscreen/create", data);
+  },
   delBigscreen: (id: number) => {
-    return Method.post("api/del/bigscreen", { id });
+    return Method.post("api/bigscreen/del", { id });
   }
 };
