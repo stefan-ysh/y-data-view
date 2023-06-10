@@ -98,7 +98,14 @@ export const createBigscreen = async (bigscreenInfo: {
 };
 
 export const queryBcDetail = async (id: number) => {
-  return await Bigscreen.findOne({
+  const bigscreen = await Bigscreen.findOne({
     where: { id },
-  });
+  })
+  if(!bigscreen) {
+    return {
+      code: 400,
+      msg: "此数据不存在",
+    }
+  }
+  return bigscreen
 }
