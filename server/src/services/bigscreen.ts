@@ -1,21 +1,34 @@
 import Bigscreen from "../models/Bigscreen";
+// const { Op } = require("sequelize");
 // import { GetUserList, User as RegisterUser } from "../types/user";
 // // 查询所有用户
 export const getBigscreenList = async (params: any) => {
-  const { offset = 0, limit = 10 } = params;
-  //   const findParams = {
-  //     project,
-  //   } as {
-  //     project?: string;
-  //   };
+  let { page, pageSize: limit, title } = params;
 
-  //   if (!findParams.project) delete findParams["project"];
+  limit *= 1;
+  // 分页
+  const offset = (page - 1) * limit;
+  // 查询
+  // const where: any = {}
+  // if (title) {
+  //   where["title"] = {
+  //     [Op.like]: `%${title}%`,
+  //   };
+  // }
+
+  const findParams = {
+    title
+  } as {
+      title?: string;
+  };
+
+  if (!findParams.title) delete findParams["title"];
 
   return await Bigscreen.findAndCountAll({
     limit,
     offset,
     // order: [["id", "desc"]],
-    // where: findParams,
+    where: findParams
   });
 };
 

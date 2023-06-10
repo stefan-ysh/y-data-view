@@ -39,9 +39,11 @@
           <n-pagination
             v-model:page="page"
             v-model:page-size="pageSize"
-            :page-count="DataList.length"
+            :page-count="Math.ceil(total/pageSize)"
             show-size-picker
             :page-sizes="[10, 20, 30, 40]"
+            :on-update:page="handlePageChange"
+            :on-update:page-size="handlePageSizeChange"
           />
         </div>
       </n-layout>
@@ -136,10 +138,19 @@ const renderMenuIcon = (option: MenuOption) => {
 const expandIcon = () => {
   return h(NIcon, null, { default: () => h(CaretDownOutline) });
 };
+const total = ref(0);
+const page = ref(1);
+const pageSize = ref(10);
+const handlePageChange = (p: number) => {
+  page.value = p;
+  getBigscreenList();
+}
+const handlePageSizeChange = (size: number) => {
+  pageSize.value = size;
+  getBigscreenList();
+}
 const menuOptions = ref<Group[] | any>([]);
-const collapsed = ref(false);
-const page = ref(2);
-const pageSize = ref(20);
+// const collapsed = ref(false);
 // ! todo axios 接口待完善
 const dataList = ref<Bigscreen[] | any>([]);
 onMounted(async () => {
@@ -149,9 +160,15 @@ onMounted(async () => {
 
 // get all bigscreen list
 const getBigscreenList = async () => {
-  const res = await BigscreenApi.getBigscreenList();
+  const params = {
+    title: '',
+    page: page.value,
+    pageSize: pageSize.value
+  }
+  const res = await BigscreenApi.getBigscreenList(params);
   if (res.code === 200) {
-    dataList.value = res.data;
+    total.value = res.data.total
+    dataList.value = res.data.list;
   }
 };
 

@@ -1,8 +1,8 @@
 import * as Method from "@/utils/request/method";
 // import { LoginForm, RegisterForm } from "@/types";
 export default {
-  getBigscreenList: () => {
-    return Method.get("api/bigscreen");
+  getBigscreenList: (params: { page: number; pageSize: number, title: string }) => {
+    return Method.get("api/bigscreen", params);
   },
   getGroupList: () => {
     return Method.get("api/group");
