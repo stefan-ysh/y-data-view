@@ -4,7 +4,9 @@
       <NavHeader @change-tab="changeTab" />
     </header>
     <div class="container-wrap">
+     <keep-alive>
       <component :is="curCpt" />
+     </keep-alive>
     </div>
   </n-layout>
 </template>
