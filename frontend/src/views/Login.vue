@@ -4,6 +4,7 @@
       <h1>{{ formType === "login" ? "Login" : "Register" }}</h1>
       <n-spin :show="show" description="登录中...">
         <n-form
+          @submit.prevent="handleLogin"
           label-placement="left"
           label-width="auto"
           ref="formRef"

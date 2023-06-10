@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import { defineAsyncComponent } from "vue";
 interface RouteName {
   Index: "Index";
   Login: "Login";
@@ -23,17 +22,17 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/login",
     name: RouteNames.Login,
-    component: defineAsyncComponent(() => import("@/views/Login.vue")),
+    component: () => import("@/views/Login.vue"),
   },
   {
     path: "/home",
     name: RouteNames.Home,
-    component: defineAsyncComponent(() => import("@/views/Home.vue")),
+    component: () => import("@/views/Home.vue"),
   },
   {
     path: "/design",
     name: RouteNames.Design,
-    component: defineAsyncComponent(() => import("@/views/Designer.vue")),
+    component: () => import("@/views/Designer.vue"),
   },
 ];
 
