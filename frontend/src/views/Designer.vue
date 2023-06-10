@@ -15,14 +15,17 @@
       </div>
     </header>
     <div class="designer-container">
-      <div class="left">组件列表面板区</div>
-      <div class="center">中间大屏绘制区域</div>
-      <div class="right">属性配置区域</div>
+      <Left class="left"/>
+      <Designer class="center" />
+      <Right class="right"/>
     </div>
   </n-layout>
 </template>
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
+import Left from '@/components/Design/Left/index.vue'
+import Right from '@/components/Design/Right/index.vue'
+import Designer from '@/components/Design/Designer/index.vue'
 const router = useRouter()
 
 </script>
@@ -48,7 +51,7 @@ const router = useRouter()
     .left {
       width: 200px;
       height: 100%;
-      background-color: rgb(220, 185, 185);
+      // background-color: rgb(220, 185, 185);
     }
     .center {
       width: 100%;
@@ -58,7 +61,7 @@ const router = useRouter()
     .right {
       width: 200px;
       height: 100%;
-      background-color: rgb(91, 147, 91);
+      // background-color: rgb(91, 147, 91);
     }
   }
 }
