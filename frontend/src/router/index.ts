@@ -1,24 +1,39 @@
-import { createRouter, createWebHistory } from "vue-router";
-const routes: any = [
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { defineAsyncComponent } from "vue";
+interface RouteName {
+  Index: "Index";
+  Login: "Login";
+  Home: "Home";
+  Design: "Design";
+}
+
+const RouteNames: RouteName = {
+  Index: "Index",
+  Login: "Login",
+  Home: "Home",
+  Design: "Design",
+};
+
+const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    name: "Index",
+    name: RouteNames.Index,
     redirect: '/home',
   },
   {
     path: "/login",
-    name: "Login",
-    component: () => import("@/views/Login.vue"),
+    name: RouteNames.Login,
+    component: defineAsyncComponent(() => import("@/views/Login.vue")),
   },
   {
     path: "/home",
-    name: "Home",
-    component: () => import("@/views/Home.vue"),
+    name: RouteNames.Home,
+    component: defineAsyncComponent(() => import("@/views/Home.vue")),
   },
   {
     path: "/design",
-    name: "Design",
-    component: () => import("@/views/Designer.vue"),
+    name: RouteNames.Design,
+    component: defineAsyncComponent(() => import("@/views/Designer.vue")),
   },
 ];
 

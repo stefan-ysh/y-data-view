@@ -92,7 +92,7 @@ const handleSelect = (key: string | number, item: Bigscreen) => {
 };
 
 // go to design page with id of the item
-const handleEdit = (item: any) => {
+const handleEdit = (item: Bigscreen) => {
   router.push({
     name: "Design",
     query: {
