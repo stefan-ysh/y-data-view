@@ -1,9 +1,17 @@
 <template>
   <div class="nav-main">
     <canvas id="canvas-2761"></canvas>
-    <span v-for="(tab, i) in tabs" :key="tab.value" class="nav-span"
-      ><span class="nav-link" @click="_toggle(i)">{{ tab.label }} </span></span
-    >
+    <span v-for="(tab, i) in tabs" :key="tab.value" class="nav-span">
+      <span class="nav-link" @click="_toggle(i)">
+        <span class="tab-label">{{ tab.label }}</span>
+        <n-button size="small" text v-if="tab.value === 'bigscreen-list' && opt.currentIndex === i"
+          @click="showAddBigscreenDialog">
+          <n-icon>
+            <cash-icon />
+          </n-icon>
+        </n-button>
+      </span>
+    </span>
     <div class="user-info-wrap">
       <!-- switch theme mode light/dark -->
       <Icon
@@ -33,23 +41,83 @@
       </n-dropdown>
     </div>
   </div>
+ <n-modal v-model:show="addBigscreenModal">
+      <n-spin :show="isLoading" description="处理中，请稍候...">
+      <n-card
+        style="width: 600px"
+        title="Create Group"
+        :bordered="false"
+        size="huge"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div>
+          <n-form
+            ref="formRef"
+            :model="bigscreenForm"
+            :rules="bigscreenFormRules"
+            label-placement="left"
+            label-width="auto"
+            require-mark-placement="right-hanging"
+          >
+          <!-- <n-form-item label="Root Directory" path="isPublic">
+            <n-switch v-model:value="bigscreenForm.isPublic" />
+          </n-form-item> -->
+            <!-- <n-form-item label="Parent Group" path="parentGroup" v-if="!bigscreenForm.isPublic">
+              <n-cascader
+                v-model:value="bigscreenForm.parentGroup"
+                placeholder=""
+                expand-trigger="hover"
+                :options="menuOptions"
+                label-field="label"
+                value-field="id"
+                children-field="children"
+                check-strategy="all"
+                @update:value="handleSelectChangeParentGroup"
+              />
+            </n-form-item> -->
+            <n-form-item label="大屏名称" path="title">
+              <n-input v-model:value="bigscreenForm.title" placeholder="" />
+            </n-form-item>
+            <n-form-item label="大屏简介" path="description">
+              <n-input
+                placeholder=""
+                v-model:value="bigscreenForm.description"
+                type="textarea"
+                :autosize="{
+                  minRows: 3,
+                  maxRows: 5,
+                }"
+              />
+            </n-form-item>
+          </n-form>
+        </div>
+        <template #footer>
+          <n-button style="width: 100%" type="primary" @click="handleAdd">确定</n-button>
+        </template>
+      </n-card>
+    </n-spin>
+    </n-modal>
 </template>
 
 <script lang="ts" setup>
 import { h as hRender, computed, onMounted, onUnmounted, ref } from "vue";
-import type { Component } from "vue";
-import { useSettingStore } from "@/stores/setting";
+// import type { Component } from "vue";
+import { useSettingStore } from "@/stores";
 import { icon } from "@/icon";
 import { Icon } from "@vicons/utils";
 import { languageList } from "@/lang/index";
 import { useI18n } from "vue-i18n";
-import { NIcon } from "naive-ui";
+import { NIcon, NButton, NModal, FormInst, NSpin } from "naive-ui";
 import router from "@/router";
 const { SunnyIcon, MoonIcon, LanguageIcon, UserIcon, EditIcon, LogoutIcon, SettingsSharpIcon } =
   icon.ionicons5;
+import { AddCircleOutline as CashIcon } from '@vicons/ionicons5'
+import {useBigscreen} from "@/hooks";
+const { getBigscreenList, createBigscreen } = useBigscreen();
 const setting = useSettingStore();
 const { locale } = useI18n();
-const lang = ref(setting.lang);
+// const lang = ref(setting.lang);
 // change the language of platform
 const changeLang = (key: "zh" | "en") => {
   locale.value = key;
@@ -103,7 +171,39 @@ const userinfoOptions = computed(() => [
     icon: renderIcon(LogoutIcon),
   },
 ]);
+const formRef = ref<FormInst | null>(null)
+const bigscreenForm = ref({
+  title: '',
+  description: '',
+});
+const bigscreenFormRules = {
+  title: {
+    required: true,
+    trigger: ["blur", "input"],
+    message: "bigscreen name is required!",
+  },
+};
 
+const addBigscreenModal = ref(false);
+const isLoading = ref(false);
+// show the add bigscreen dialog
+const showAddBigscreenDialog = () => {
+  addBigscreenModal.value = true;
+}
+
+const handleAdd = async () => {
+  isLoading.value = true;
+  const res = await createBigscreen(bigscreenForm.value)
+  if(res.code === 200){
+    window.$message.success('创建成功')
+    addBigscreenModal.value = false;
+    isLoading.value = false
+    getBigscreenList()
+  } else {
+    isLoading.value = false
+    window.$message.error('创建失败，请稍后重试')
+  }
+}
 const tabs = computed(() => [
   {
     label: $t("project.bigscreen_manager"),
@@ -376,6 +476,12 @@ onUnmounted(() => {
   cursor: pointer;
   padding: 0 40px;
   user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .tab-label {
+    margin-right: 5px;
+  }
 }
 .datav-icon {
   display: inline-block;

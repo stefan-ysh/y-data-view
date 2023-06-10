@@ -1,5 +1,5 @@
 <template>
-  <div class="bigscreen-item" v-for="(item, index) in dataList" :key="index">
+  <div class="bigscreen-item" v-for="(item, index) in b.bigscreenList" :key="index">
     <n-image class="bc-img" :img-props="{ style: { width: '100%' } }" src="src/assets/images/demo.jpg" />
     <div class="item-operate-wrap">
       <span class="item-title">{{ item.title }}</span>
@@ -26,17 +26,16 @@ import { icon } from "@/icon";
 import { Icon } from "@vicons/utils";
 import { useRouter } from 'vue-router'
 import { Bigscreen } from '@/types/bigscreen'
-import bigscreen from "@/api/bigscreen";
+// import bigscreen from "@/api/bigscreen";
+import { useBigscreenStore } from '@/stores'
+import { useBigscreen } from '@/hooks'
+const bigscreen = useBigscreen()
+const b = useBigscreenStore()
 const router = useRouter()
 
 const { EyeOutlineIcon, EditIcon, LogoutIcon, EllipsisHorizontalCircleSharpIcon } =
   icon.ionicons5;
-const props = defineProps({
-  dataList: {
-    type: Array<Bigscreen>,
-    default: [],
-  },
-});
+
 const options = computed(() => [
   {
     label: $t("global.r_copy"),
@@ -58,7 +57,6 @@ const options = computed(() => [
     key: "delete"
   },
 ]);
-const emit = defineEmits(["getList"]);
 
 // confirm when click the delete button
 const handleDel = async (item: Bigscreen) => {
@@ -72,7 +70,7 @@ const handleDel = async (item: Bigscreen) => {
       const res = await bigscreen.delBigscreen(id)
       if (res.code === 200) {
         window.$message.success("删除成功")
-        emit('getList')
+        bigscreen.getBigscreenList()
       }
     }
   })
@@ -112,7 +110,7 @@ const handleEdit = (item: any) => {
   // flex: 1;
   cursor: pointer;
   overflow: hidden;
-  transition: all .6s;
+  transition: all .8s;
   margin: 0 30px 30px 0; // 间隙为5px
   padding: 10px;
   box-sizing: border-box;
@@ -144,10 +142,11 @@ const handleEdit = (item: any) => {
     }
   }
 
-  opacity: .8;
+  // opacity: .8;
 
   &:hover {
-    border: 10px solid rgba(81, 76, 175, 0.498);
+    // border: 10px solid rgba(81, 76, 175, 0.498);
+    border-width: 3px;
     opacity: 1;
   }
 
