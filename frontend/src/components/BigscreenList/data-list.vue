@@ -12,11 +12,13 @@
       "
     >
       <span>{{ item.title }}</span>
-      <Icon> <SunnyIcon /> </Icon>
-      <Icon @click="handleEdit(item)"> <EditIcon /> </Icon>
-      <n-dropdown trigger="hover" :options="options" @select="handleSelect">
-        <Icon> <EllipsisHorizontalCircleSharpIcon /> </Icon>
-      </n-dropdown>
+      <div>
+        <Icon style="margin-left: 10px;"> <EyeOutlineIcon /> </Icon>
+        <Icon style="margin-left: 10px;" @click="handleEdit(item)"> <EditIcon /> </Icon>
+        <n-dropdown trigger="hover" :options="options" @select="handleSelect">
+          <Icon style="margin-left: 10px;"> <EllipsisHorizontalCircleSharpIcon /> </Icon>
+        </n-dropdown>
+      </div>
     </div>
   </div>
 </template>
@@ -29,7 +31,7 @@ import { useRouter } from 'vue-router'
 import { Bigscreen } from '@/types/bigscreen'
 const router = useRouter()
 
-const { SunnyIcon, EditIcon, LogoutIcon, EllipsisHorizontalCircleSharpIcon } =
+const { EyeOutlineIcon, EditIcon, LogoutIcon, EllipsisHorizontalCircleSharpIcon } =
   icon.ionicons5;
 const props = defineProps({
   dataList: {
@@ -43,11 +45,11 @@ const options = computed(() => [
     key: "copy",
     // disabled: true,
   },
-  {
-    label: $t("global.r_preview"),
-    key: "preview",
-    // disabled: true,
-  },
+  // {
+  //   label: $t("global.r_preview"),
+  //   key: "preview",
+  //   // disabled: true,
+  // },
   {
     label: $t("global.r_rename"),
     key: "rename",
