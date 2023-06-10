@@ -18,7 +18,7 @@ const buildGroupTree = (
 };
 
 // 查询所有分组
-export const getGroupList = async (): Promise<GroupItem[] | null> => {
+export const getGroupList = async (filter: any): Promise<GroupItem[] | null> => {
   const groups = await Group.findAll({
     include: [{ model: Group, as: "children" }],
   });
