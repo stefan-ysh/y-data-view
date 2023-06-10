@@ -141,11 +141,15 @@ const expandIcon = () => {
 const total = ref(0);
 const page = ref(1);
 const pageSize = ref(10);
+// change page
 const handlePageChange = (p: number) => {
   page.value = p;
   getBigscreenList();
 }
+
+// change page size
 const handlePageSizeChange = (size: number) => {
+  page.value = 1;
   pageSize.value = size;
   getBigscreenList();
 }
