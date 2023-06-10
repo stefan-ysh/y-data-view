@@ -9,5 +9,8 @@ export default {
   },
   createGroup : (data: any) => {
     return Method.post("api/group/create", data);
+  },
+  delBigscreen: (id: number) => {
+    return Method.post("api/del/bigscreen", { id });
   }
 };

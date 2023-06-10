@@ -8,6 +8,7 @@ const publicRouter = new Router();
 publicRouter.prefix("/api");
 publicRouter.get("/", controllers.user.userList);
 publicRouter.get("/bigscreen", controllers.bigscreen.bigscreenList);
+publicRouter.post("/del/bigscreen", controllers.bigscreen.del);
 publicRouter.post("/group/create", controllers.group.createGroup);
 publicRouter.get("/group", controllers.group.groupList);
 publicRouter.post("/register", controllers.user.register);

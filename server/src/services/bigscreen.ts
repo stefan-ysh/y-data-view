@@ -32,32 +32,33 @@ export const getBigscreenList = async (params: any) => {
   });
 };
 
-// // 注册用户
-// export const registerUser = async (registerInfo: RegisterUser) => {
-//   // 进行校验注册信息
-//   const { userName, password } = registerInfo;
-//   if (!userName || !password) {
-//     return {
-//       code: 400,
-//       msg: "用户名或密码不能为空",
-//     };
-//   }
-//   // 校验用户名是否已存在
-//   const user = await User.findOne({
-//     where: { user_name: userName },
-//   });
-//   if (user) {
-//     return {
-//       code: 400,
-//       msg: "该用户名已存在",
-//     };
-//   }
-//   return {
-//     code: 200,
-//     msg: "注册成功",
-//     data: await User.create({ user_name: userName, ...registerInfo }),
-//   };
-// };
+// 删除大屏数据
+export const delBigscreen = async (id: number) => {
+  console.log('[ id ] >', id)
+  if (!id) {
+    return {
+      code: 400,
+      msg: "id不能为空",
+    };
+  }
+  // 校验用户名是否已存在
+  const bigscreen = await Bigscreen.findOne({
+    where: { id },
+  });
+  if (!bigscreen) {
+    return {
+      code: 400,
+      msg: "此数据不存在",
+    };
+  }
+  return {
+    code: 200,
+    msg: "删除成功",
+    data: await Bigscreen.destroy({
+      where: { id },
+    })
+  };
+};
 
 // // 登录
 // export const loginUser = async (loginInfo: RegisterUser) => {

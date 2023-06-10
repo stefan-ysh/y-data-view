@@ -10,7 +10,7 @@
         <Icon class="op-icon" @click="handleEdit(item)">
           <EditIcon />
         </Icon>
-        <n-dropdown trigger="hover" :options="options" @select="handleSelect">
+        <n-dropdown trigger="hover" :options="options" @select="handleSelect($event, item)">
           <Icon class="op-icon">
             <EllipsisHorizontalCircleSharpIcon />
           </Icon>
@@ -26,6 +26,7 @@ import { icon } from "@/icon";
 import { Icon } from "@vicons/utils";
 import { useRouter } from 'vue-router'
 import { Bigscreen } from '@/types/bigscreen'
+import bigscreen from "@/api/bigscreen";
 const router = useRouter()
 
 const { EyeOutlineIcon, EditIcon, LogoutIcon, EllipsisHorizontalCircleSharpIcon } =
@@ -53,12 +54,43 @@ const options = computed(() => [
     // disabled: true,
   },
   {
-    label: $t("global.r_unpublish"),
-    key: "unpublish",
+    label: $t("global.r_delete"),
+    key: "delete"
   },
 ]);
-const handleSelect = (key: string | number) => {
-  console.log(key);
+const emit = defineEmits(["getList"]);
+
+// confirm when click the delete button
+const handleDel = async (item: Bigscreen) => {
+  window.$dialog.warning({
+    title: '操作提示',
+    content: '确定删除?',
+    positiveText: '取消',
+    negativeText: '确定',
+    onNegativeClick: async () => {
+      const id = item.id
+      const res = await bigscreen.delBigscreen(id)
+      if (res.code === 200) {
+        window.$message.success("删除成功")
+        emit('getList')
+      }
+    }
+  })
+}
+
+// select the item of dropdown menu
+const handleSelect = (key: string | number, item: Bigscreen) => {
+  switch (key) {
+    case "copy":
+      break;
+    case "rename":
+      break;
+    case "delete":
+      handleDel(item);
+      break;
+    default:
+      break;
+  }
 };
 
 // go to design page with id of the item
@@ -87,6 +119,7 @@ const handleEdit = (item: any) => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   // 小屏幕只显示一行两个
   @media screen and (min-width: 769px) {
     width: calc((100% - 150px) / 5); // 这里的10px = (分布个数3-1)*间隙5px, 可以根据实际的分布个数和间隙区调整
@@ -110,7 +143,9 @@ const handleEdit = (item: any) => {
       margin-right: 0;
     }
   }
+
   opacity: .8;
+
   &:hover {
     border: 10px solid rgba(81, 76, 175, 0.498);
     opacity: 1;
@@ -139,5 +174,4 @@ const handleEdit = (item: any) => {
       }
     }
   }
-}
-</style>
+}</style>

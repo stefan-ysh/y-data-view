@@ -33,7 +33,7 @@
     <div class="right-bigscreen-list">
       <n-layout class="right-bigscreen-list">
         <div class="content-wrap">
-          <DataList :data-list="dataList" />
+          <DataList :data-list="dataList" @getList="getBigscreenList" />
         </div>
         <div class="pagination-wrap">
           <n-pagination
