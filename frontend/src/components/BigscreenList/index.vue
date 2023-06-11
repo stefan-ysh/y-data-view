@@ -1,6 +1,6 @@
 <template>
   <div class="y-data-bigscreen-list-wrap">
-    <!-- <div class="left-menu">
+    <div class="left-menu">
       <n-layout has-sider style="height: 100%">
         <n-layout-sider
           bordered
@@ -29,7 +29,7 @@
           >
         </n-layout-sider>
       </n-layout>
-    </div> -->
+    </div>
     <div class="right-bigscreen-list">
       <n-layout class="right-bigscreen-list">
         <div class="content-wrap">
@@ -48,7 +48,7 @@
         </div>
       </n-layout>
     </div>
-    <!-- <n-modal v-model:show="isShowAddGroupDialog">
+    <n-modal v-model:show="isShowAddGroupDialog">
       <n-spin :show="isLoading" description="处理中，请稍候...">
       <n-card
         style="width: 600px"
@@ -104,42 +104,42 @@
         </template>
       </n-card>
     </n-spin>
-    </n-modal> -->
+    </n-modal>
   </div>
 </template>
 
 <script lang="ts" setup>
 import DataList from "./data-list.vue";
 import { h, ref, defineComponent, onMounted, computed } from "vue";
-// import { FormInst, NIcon } from "naive-ui";
-// import type { MenuOption } from "naive-ui";
-// import { BookmarkOutline, CaretDownOutline } from "@vicons/ionicons5";
-// import BigscreenApi from "@/api/bigscreen";
-// import { Bigscreen, Group } from "@/types/bigscreen";
+import { FormInst, NIcon } from "naive-ui";
+import type { MenuOption } from "naive-ui";
+import { BookmarkOutline, CaretDownOutline } from "@vicons/ionicons5";
+import BigscreenApi from "@/api/bigscreen";
+import { Bigscreen, Group } from "@/types/bigscreen";
 import { useBigscreen } from '@/hooks'
 import { useBigscreenStore } from '@/stores'
 const b = useBigscreenStore()
 const bigscreen = useBigscreen()
-// const renderMenuLabel = (option: MenuOption) => {
-//   if ("href" in option) {
-//     return h(
-//       "a",
-//       { href: option.href, target: "_blank" },
-//       option.label as string
-//     );
-//   }
-//   return option.label as string;
-// };
-// const renderMenuIcon = (option: MenuOption) => {
-//   // 渲染图标占位符以保持缩进
-//   if (option.key === "sheep-man") return true;
-//   // 返回 falsy 值，不再渲染图标及占位符
-//   if (option.key === "food") return null;
-//   return h(NIcon, null, { default: () => h(BookmarkOutline) });
-// };
-// const expandIcon = () => {
-//   return h(NIcon, null, { default: () => h(CaretDownOutline) });
-// };
+const renderMenuLabel = (option: MenuOption) => {
+  if ("href" in option) {
+    return h(
+      "a",
+      { href: option.href, target: "_blank" },
+      option.label as string
+    );
+  }
+  return option.label as string;
+};
+const renderMenuIcon = (option: MenuOption) => {
+  // 渲染图标占位符以保持缩进
+  if (option.key === "sheep-man") return true;
+  // 返回 falsy 值，不再渲染图标及占位符
+  if (option.key === "food") return null;
+  return h(NIcon, null, { default: () => h(BookmarkOutline) });
+};
+const expandIcon = () => {
+  return h(NIcon, null, { default: () => h(CaretDownOutline) });
+};
 const total = computed(() => b.total)
 const page = ref(1);
 const pageSize = ref(10);
@@ -155,12 +155,12 @@ const handlePageSizeChange = (size: number) => {
   pageSize.value = size;
   getBigscreenList();
 }
-// const menuOptions = ref<Group[] | any>([]);
-// const collapsed = ref(false);
+const menuOptions = ref<Group[] | any>([]);
+const collapsed = ref(false);
 // ! todo axios 接口待完善
 // const dataList = ref<Bigscreen[] | any>([]);
 onMounted(async () => {
-  // getGroupList();
+  getGroupList();
   getBigscreenList();
 });
 
@@ -182,76 +182,76 @@ const getBigscreenList = async () => {
 };
 
 // get all group list
-// const getGroupList = async () => {
-//   const res = await BigscreenApi.getGroupList();
-//   if (res.code === 200) {
-//     menuOptions.value = res.data;
-//   }
-// };
-// const formRef = ref<FormInst | null>(null)
-// const groupForm = ref({
-//   isRoot: false,
-//   groupName: '',
-//   description: '',
-//   parentGroup: null,
-// });
-// const groupFormRules = {
-//   groupName: {
-//     required: true,
-//     trigger: ["blur", "input"],
-//     message: "Group name is required!",
-//   },
-//   parentGroup: {
-//     required: groupForm.value.isRoot ? false : true,
-//     // trigger: ["blur", "input"],
-//     // message: "Parent group is required!",
-//   },
-// };
+const getGroupList = async () => {
+  const res = await BigscreenApi.getGroupList();
+  if (res.code === 200) {
+    menuOptions.value = res.data;
+  }
+};
+const formRef = ref<FormInst | null>(null)
+const groupForm = ref({
+  isRoot: false,
+  groupName: '',
+  description: '',
+  parentGroup: null,
+});
+const groupFormRules = {
+  groupName: {
+    required: true,
+    trigger: ["blur", "input"],
+    message: "Group name is required!",
+  },
+  parentGroup: {
+    required: groupForm.value.isRoot ? false : true,
+    // trigger: ["blur", "input"],
+    // message: "Parent group is required!",
+  },
+};
 
 // show add group dialog
-// const isShowAddGroupDialog = ref(false);
+const isShowAddGroupDialog = ref(false);
 
 // handle select change
-// const handleSelectChangeParentGroup = (value: any) => {
-//   console.log(value);
-// };
+const handleSelectChangeParentGroup = (value: any) => {
+  console.log(value);
+};
 
 // show add group dialog
-// const showAddGroupDialog = () => {
-//   isShowAddGroupDialog.value = true;
-// };
+const showAddGroupDialog = () => {
+  isShowAddGroupDialog.value = true;
+};
 
-// const isLoading = ref(false);
+const isLoading = ref(false);
 
 // handle add group
-// const addGroup = (e: MouseEvent) => {
-//   e.preventDefault()
-//   formRef.value?.validate((error: any) => {
-//     if (!error) {
-//       isLoading.value = true
-//       BigscreenApi.createGroup({
-//         label: groupForm.value.groupName,
-//         description: groupForm.value.description,
-//         parentId: groupForm.value.parentGroup
-//       }).then(res=>{
-//         if(res.code === 200){
-//           isShowAddGroupDialog.value = false
-//           getGroupList()
-//           window.$message.success(res.msg)
-//         } else {
-//           window.$message.error(res.msg)
-//         }
-//         isLoading.value = false
-//       }).catch(err=>{
-//         isLoading.value = false
-//         console.log('[ err ] >', err)
-//       })
-//     } else {
-//       console.log("error submit!!");
-//       return false;
-//     }
-//   });
-// };
+const addGroup = (e: MouseEvent) => {
+  e.preventDefault()
+  formRef.value?.validate((error: any) => {
+    if (!error) {
+      isLoading.value = true
+      BigscreenApi.createGroup({
+        label: groupForm.value.groupName,
+        description: groupForm.value.description,
+        parentId: groupForm.value.parentGroup
+      }).then(res=>{
+        if(res.code === 200){
+          isShowAddGroupDialog.value = false
+          getGroupList()
+          window.$message.success(res.msg)
+        } else {
+          window.$message.error(res.msg)
+        }
+        isLoading.value = false
+      }).catch(err=>{
+        isLoading.value = false
+        console.log('[ err ] >', err)
+      })
+    } else {
+      console.log("error submit!!");
+      return false;
+    }
+  });
+};
 </script>
 <style lang="less" scoped>
 .y-data-bigscreen-list-wrap {
