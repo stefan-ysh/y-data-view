@@ -6,7 +6,24 @@
         <span>ID：{{ router.currentRoute.value.query.id }}</span>
       </div>
       <div>{{ title }}</div>
-      <div>
+      <div class="operation-btns" style="display: flex; align-items: center;">
+        <!-- switch theme mode light/dark -->
+        <Icon
+          class="system-setting-btn"
+          v-if="setting.theme === 'light'"
+          @click="setting.changeTheme"
+          size="20"
+        >
+          <SunnyIcon />
+        </Icon>
+        <Icon
+          class="system-setting-btn"
+          v-else
+          @click="setting.changeTheme"
+          size="20"
+        >
+          <MoonIcon />
+        </Icon>
         <n-button>导入</n-button>
         <n-button>导出</n-button>
         <n-button>清空画布</n-button>
@@ -27,7 +44,12 @@ import Left from '@/components/Design/Left/index.vue'
 import Right from '@/components/Design/Right/index.vue'
 import Designer from '@/components/Design/Designer/index.vue'
 import BigscreebApi from '@/api/bigscreen'
+import { Icon } from "@vicons/utils";
+const { SunnyIcon, MoonIcon } = icon.ionicons5;
 import { onMounted, ref } from 'vue'
+import { useSettingStore } from "@/stores";
+import { icon } from '@/icon'
+const setting = useSettingStore();
 const router = useRouter()
 const title = ref('')
 onMounted(async () => {
