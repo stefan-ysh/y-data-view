@@ -1,9 +1,11 @@
 import Bigscreen from "../models/Bigscreen";
 // const { Op } = require("sequelize");
 // import { GetUserList, User as RegisterUser } from "../types/user";
+import { Bigscreen as IBigscreen } from "../types/bigscreen";
+
 // // 查询所有用户
 export const getBigscreenList = async (params: any) => {
-  let { page, pageSize: limit, title } = params;
+  let { page, pageSize: limit, title, group } = params;
 
   limit *= 1;
   // 分页
@@ -17,12 +19,15 @@ export const getBigscreenList = async (params: any) => {
   // }
 
   const findParams = {
-    title
+    title,
+    group
   } as {
       title?: string;
+      group?: string | number
   };
 
   if (!findParams.title) delete findParams["title"];
+  if (!findParams.group) delete findParams["group"];
 
   return await Bigscreen.findAndCountAll({
     limit,
@@ -66,22 +71,20 @@ const randomDefaulBgImg = () => {
   return imgArr[Math.floor(Math.random() * imgArr.length)]
 }
 // 创建大屏
-export const createBigscreen = async (bigscreenInfo: {
-  title: string;
-  description?: string;
-}) => {
+export const createBigscreen = async (bigscreenInfo: IBigscreen) => {
   // 查询当前传输过来的用户密码和数据库中存储的是否一致
-  const { title, description } = bigscreenInfo;
-  if (!title) {
+  const { title, description, group } = bigscreenInfo;
+  if (!title || !group) {
     return {
       code: 400,
-      msg: "标题不能为空",
+      msg: "标题和分组不能为空",
     };
   }
   // 插入数据
   const res = await Bigscreen.create({
     title,
     description,
+    group,
     thumb: randomDefaulBgImg(),
   });
   if (res) {

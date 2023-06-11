@@ -21,6 +21,8 @@
             :render-label="renderMenuLabel"
             :render-icon="renderMenuIcon"
             :expand-icon="expandIcon"
+            :on-update:value="handleClickGroup"
+            :value="curGroup"
           />
           <n-button
             style="width: 100%; position: absolute; bottom: 0"
@@ -67,7 +69,7 @@
             label-width="auto"
             require-mark-placement="right-hanging"
           >
-          <n-form-item label="Root Directory" path="isRoot">
+          <n-form-item label="Root Directory" path="isRoot" v-if="false">
             <n-switch v-model:value="groupForm.isRoot" />
           </n-form-item>
             <n-form-item label="Parent Group" path="parentGroup" v-if="!groupForm.isRoot">
@@ -161,7 +163,6 @@ const collapsed = ref(false);
 // const dataList = ref<Bigscreen[] | any>([]);
 onMounted(async () => {
   getGroupList();
-  getBigscreenList();
 });
 
 // get all bigscreen list
@@ -169,6 +170,7 @@ const getBigscreenList = async () => {
   const params = {
     title: '',
     page: page.value,
+    group: curGroup.value,
     pageSize: pageSize.value
   }
   window.$message.loading("加载中...");
@@ -186,11 +188,15 @@ const getGroupList = async () => {
   const res = await BigscreenApi.getGroupList();
   if (res.code === 200) {
     menuOptions.value = res.data;
+    curGroup.value = menuOptions.value[0].id
+    getBigscreenList();
+  } else {
+    window.$message.error(res.msg)
   }
 };
 const formRef = ref<FormInst | null>(null)
 const groupForm = ref({
-  isRoot: false,
+  isRoot: true,
   groupName: '',
   description: '',
   parentGroup: null,
@@ -222,7 +228,11 @@ const showAddGroupDialog = () => {
 };
 
 const isLoading = ref(false);
-
+const curGroup = ref<number | string>('')
+const handleClickGroup = (key: string|number) => {
+  curGroup.value = key
+  getBigscreenList()
+}
 // handle add group
 const addGroup = (e: MouseEvent) => {
   e.preventDefault()

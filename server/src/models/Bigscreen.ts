@@ -25,6 +25,11 @@ Bigscreen.init(
       comment: "大屏描述",
     },
 
+    group: {
+      type: DataTypes.STRING || DataTypes.NUMBER,
+      comment: "大屏描述",
+    },
+
     bgImg: {
       type: DataTypes.STRING,
       comment: "大屏背景图片",

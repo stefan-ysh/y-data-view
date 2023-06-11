@@ -41,7 +41,7 @@
       </n-dropdown>
     </div>
   </div>
-  <n-modal v-model:show="addBigscreenModal">
+  <n-modal v-model:show="addBigscreenModal" :on-after-enter="getGroup">
     <n-spin :show="isLoading" description="处理中，请稍候...">
       <n-card style="width: 600px" title="新建大屏" :bordered="false" size="huge" role="dialog" aria-modal="true">
         <div>
@@ -63,6 +63,9 @@
                 @update:value="handleSelectChangeParentGroup"
               />
             </n-form-item> -->
+            <n-form-item label="大屏分组" path="group">
+              <n-select v-model:value="bigscreenForm.group" value-field="id" placeholder="请选择分组" :options="groupOptions" />
+            </n-form-item>
             <n-form-item label="大屏名称" path="title">
               <n-input v-model:value="bigscreenForm.title" placeholder="" />
             </n-form-item>
@@ -96,6 +99,7 @@ const { SunnyIcon, MoonIcon, LanguageIcon, UserIcon, EditIcon, LogoutIcon, Setti
   icon.ionicons5;
 import { AddCircleOutline as CashIcon } from '@vicons/ionicons5'
 import {useBigscreen} from "@/hooks";
+import BigscreenApi from "@/api/bigscreen";
 const { getBigscreenList, createBigscreen } = useBigscreen();
 const setting = useSettingStore();
 const { locale } = useI18n();
@@ -172,7 +176,15 @@ const isLoading = ref(false);
 const showAddBigscreenDialog = () => {
   addBigscreenModal.value = true;
 }
-
+const groupOptions = ref([])
+const getGroup = async() => {
+  const res = await BigscreenApi.getGroupList()
+  if(res.code === 200) {
+    groupOptions.value = res.data as any
+  } else {
+    console.log('[ 2 ] >', 2)
+  }
+}
 const handleAdd = async () => {
   isLoading.value = true;
   const res = await createBigscreen(bigscreenForm.value)
@@ -183,7 +195,7 @@ const handleAdd = async () => {
     getBigscreenList()
   } else {
     isLoading.value = false
-    window.$message.error('创建失败，请稍后重试')
+    window.$message.error(res.msg)
   }
 }
 const tabs = computed(() => [

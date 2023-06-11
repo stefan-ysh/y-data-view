@@ -13,8 +13,10 @@ interface BigScreen {
   }
   
     interface Group {
-      id: number | string;
+      id?: number | string;
       label: string;
+      description?: string;
+      parentId?: number | string | undefined | null;
       children?: Group[];
     }
 
