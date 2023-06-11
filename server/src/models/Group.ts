@@ -19,7 +19,7 @@ Group.init(
       comment: "分组名称",
     },
     parentId: {
-      type: DataTypes.STRING || DataTypes.INTEGER,
+      type: DataTypes.INTEGER.UNSIGNED,
       comment: "子分组数据",
     },
   },
