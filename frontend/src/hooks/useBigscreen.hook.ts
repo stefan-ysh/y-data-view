@@ -5,13 +5,17 @@ export const useBigscreen = () => {
     page: number;
     pageSize: number;
     title: string;
-  } = { page:1, pageSize: 10, title: '' }) => {
+    group?: number | string 
+  } = { page:1, pageSize: 10, title: '', group: '' }) => {
+    window.$message.loading("加载中...");
     const res = await BigscreenApi.getBigscreenList(params);
     if (res.code === 200) {
+      window.$message.destroyAll()
       const b = useBigscreenStore();
       b.total = res.data.total;
       b.setBigscreenList(res.data.list);
     } else {
+      window.$message.destroyAll()
       // return Promise.reject(res.msg);
       console.log('[ "出错了" ] >', "出错了");
     }
@@ -30,9 +34,21 @@ export const useBigscreen = () => {
     return Promise.resolve(res);
   };
 
+  const getGroupList = async () => {
+    const res = await BigscreenApi.getGroupList();
+    if(res.code === 200) {
+      const b = useBigscreenStore()
+      b.setGroupList(res.data)
+      b.setCurGroup(res.data[0]?.id || '')
+    } else {
+      window.$message.error(res.msg)
+    }
+  }
+
   return {
     getBigscreenList,
     createBigscreen,
+    getGroupList,
     delBigscreen
   };
 };

@@ -41,7 +41,7 @@
       </n-dropdown>
     </div>
   </div>
-  <n-modal v-model:show="addBigscreenModal" :on-after-enter="getGroup">
+  <n-modal v-model:show="addBigscreenModal">
     <n-spin :show="isLoading" description="处理中，请稍候...">
       <n-card style="width: 600px" title="新建大屏" :bordered="false" size="huge" role="dialog" aria-modal="true">
         <div>
@@ -88,7 +88,7 @@
 <script lang="ts" setup>
 import { h as hRender, computed, onMounted, onUnmounted, ref } from "vue";
 // import type { Component } from "vue";
-import { useSettingStore } from "@/stores";
+import { useSettingStore, useBigscreenStore } from "@/stores";
 import { icon } from "@/icon";
 import { Icon } from "@vicons/utils";
 import { languageList } from "@/lang/index";
@@ -99,7 +99,8 @@ const { SunnyIcon, MoonIcon, LanguageIcon, UserIcon, EditIcon, LogoutIcon, Setti
   icon.ionicons5;
 import { AddCircleOutline as CashIcon } from '@vicons/ionicons5'
 import {useBigscreen} from "@/hooks";
-import BigscreenApi from "@/api/bigscreen";
+const BStore = useBigscreenStore()
+// import BigscreenApi from "@/api/bigscreen";
 const { getBigscreenList, createBigscreen } = useBigscreen();
 const setting = useSettingStore();
 const { locale } = useI18n();
@@ -176,15 +177,12 @@ const isLoading = ref(false);
 const showAddBigscreenDialog = () => {
   addBigscreenModal.value = true;
 }
-const groupOptions = ref([])
-const getGroup = async() => {
-  const res = await BigscreenApi.getGroupList()
-  if(res.code === 200) {
-    groupOptions.value = res.data as any
-  } else {
-    console.log('[ 2 ] >', 2)
-  }
-}
+const groupOptions = computed(() => {
+  return  BStore.groupList
+})
+const curGroup = computed(() => {
+  return BStore.curGroup
+})
 const handleAdd = async () => {
   isLoading.value = true;
   const res = await createBigscreen(bigscreenForm.value)
@@ -192,7 +190,13 @@ const handleAdd = async () => {
     window.$message.success('创建成功')
     addBigscreenModal.value = false;
     isLoading.value = false
-    getBigscreenList()
+    const params = {
+      page: 1,
+      pageSize: 10,
+      title: '',
+      group: curGroup.value
+    }
+    getBigscreenList(params)
   } else {
     isLoading.value = false
     window.$message.error(res.msg)

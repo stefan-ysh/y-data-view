@@ -157,7 +157,9 @@ const handlePageSizeChange = (size: number) => {
   pageSize.value = size;
   getBigscreenList();
 }
-const menuOptions = ref<Group[] | any>([]);
+const menuOptions = computed(()=>{
+  return b.groupList
+})
 const collapsed = ref(false);
 // ! todo axios 接口待完善
 // const dataList = ref<Bigscreen[] | any>([]);
@@ -173,7 +175,6 @@ const getBigscreenList = async () => {
     group: curGroup.value,
     pageSize: pageSize.value
   }
-  window.$message.loading("加载中...");
   await bigscreen.getBigscreenList(params);
   // const res = await bigscreen.getBigscreenList(params);
   // if (res.code === 200) {
@@ -185,14 +186,16 @@ const getBigscreenList = async () => {
 
 // get all group list
 const getGroupList = async () => {
-  const res = await BigscreenApi.getGroupList();
-  if (res.code === 200) {
-    menuOptions.value = res.data;
-    curGroup.value = menuOptions.value[0].id
-    getBigscreenList();
-  } else {
-    window.$message.error(res.msg)
-  }
+  // const res = await BigscreenApi.getGroupList();
+  // if (res.code === 200) {
+  //   menuOptions.value = res.data;
+  //   curGroup.value = menuOptions.value[0].id
+  //   getBigscreenList();
+  // } else {
+  //   window.$message.error(res.msg)
+  // }
+  await bigscreen.getGroupList()
+  getBigscreenList()
 };
 const formRef = ref<FormInst | null>(null)
 const groupForm = ref({
@@ -228,9 +231,11 @@ const showAddGroupDialog = () => {
 };
 
 const isLoading = ref(false);
-const curGroup = ref<number | string>('')
+const curGroup = computed(()=>{
+  return b.curGroup
+})
 const handleClickGroup = (key: string|number) => {
-  curGroup.value = key
+  b.setCurGroup(key)
   getBigscreenList()
 }
 // handle add group
