@@ -161,6 +161,7 @@ const userinfoOptions = computed(() => [
 const formRef = ref<FormInst | null>(null)
 const bigscreenForm = ref({
   title: '',
+  group: '',
   description: '',
 });
 const bigscreenFormRules = {
@@ -168,6 +169,10 @@ const bigscreenFormRules = {
     required: true,
     trigger: ["blur", "input"],
     message: "bigscreen name is required!",
+  },
+  group: {
+    required: true,
+    message: "group is required!",
   },
 };
 
@@ -184,23 +189,30 @@ const curGroup = computed(() => {
   return BStore.curGroup
 })
 const handleAdd = async () => {
-  isLoading.value = true;
-  const res = await createBigscreen(bigscreenForm.value)
-  if(res.code === 200){
-    window.$message.success('创建成功')
-    addBigscreenModal.value = false;
-    isLoading.value = false
-    const params = {
-      page: 1,
-      pageSize: 10,
-      title: '',
-      group: curGroup.value
+  formRef.value?.validate((async errors => {
+    if (errors) {
+      return false
+    } else {
+      isLoading.value = true;
+      const res = await createBigscreen(bigscreenForm.value)
+      if(res.code === 200){
+        window.$message.success('创建成功')
+        addBigscreenModal.value = false;
+        isLoading.value = false
+        const params = {
+          page: 1,
+          pageSize: 10,
+          title: '',
+          group: curGroup.value
+        }
+        getBigscreenList(params)
+      } else {
+        isLoading.value = false
+        window.$message.error(res.msg)
+      }
     }
-    getBigscreenList(params)
-  } else {
-    isLoading.value = false
-    window.$message.error(res.msg)
-  }
+  }));
+
 }
 const tabs = computed(() => [
   {
