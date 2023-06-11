@@ -54,6 +54,12 @@ const router = useRouter()
 const title = ref('')
 onMounted(async () => {
   const id = router.currentRoute.value.query.id as string | number
+  if (!id) {
+    window.$message.error('页面不存在，即将跳转到首页')
+     setTimeout(() => {
+      router.push('/')
+    }, 2000)
+  }
   const res = await BigscreebApi.getBcDetail(id)
   if (res.code === 200) {
     console.log(res)
