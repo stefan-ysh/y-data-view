@@ -34,9 +34,10 @@
     </div>
     <div class="right-bigscreen-list">
       <n-layout class="right-bigscreen-list">
-        <div class="content-wrap">
+        <div v-if="b.bigscreenList.length > 0" class="content-wrap" :style="{  }">
           <DataList />
         </div>
+        <n-empty class="content-wrap" style="align-items: center; justify-content: center;align-content:center"  v-else description="改分组暂无大屏数据" size="huge"></n-empty>
         <div class="pagination-wrap">
           <n-pagination
             v-model:page="page"
