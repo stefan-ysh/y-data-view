@@ -67,7 +67,9 @@ import {
   Albums as AlbumsIcon,
   PersonCircleOutline as UserIcon,
   Pencil as EditIcon,
-  LogOutOutline as LogoutIcon
+  LogOutOutline as LogoutIcon,
+  ArrowRedo,
+  ArrowUndo
 } from "@vicons/ionicons5";
 
 import {
@@ -107,6 +109,8 @@ import {
   PhoneAndroidOutlined as Mobile
 } from "@vicons/material";
 const ionicons5 = {
+  ArrowRedo,
+  ArrowUndo,
   UserIcon,
   EditIcon,
   LogoutIcon,

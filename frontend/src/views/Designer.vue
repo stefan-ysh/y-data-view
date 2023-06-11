@@ -2,12 +2,13 @@
   <n-layout class="designer-wrap">
     <header>
       <div>
-        <n-button @click="router.push('/')">Back</n-button>
-        <span>ID：{{ router.currentRoute.value.query.id }}</span>
+        <n-button @click="router.push('/')" style="margin-right: 5px;">
+          <n-icon :component="HomeIcon"></n-icon>
+        </n-button>
+        <span>ID：{{ router.currentRoute.value.query.id }} 名称： {{ title }}</span>
       </div>
       <div>
-        <span>{{ title }}</span>
-        <n-radio-group v-model:value="viewType" name="radiobuttongroup1">
+        <n-radio-group v-model:value="viewType" name="radiobuttongroup1" size="small">
           <n-radio-button
             v-for="_t in viewTypes"
             :key="_t.value"
@@ -19,28 +20,24 @@
         </n-radio-group>
       </div>
       <div class="operation-btns" style="display: flex; align-items: center;">
-        <!-- switch theme mode light/dark -->
-        <Icon
-          class="system-setting-btn"
-          v-if="setting.theme === 'light'"
-          @click="setting.changeTheme"
-          size="20"
-        >
-          <SunnyIcon />
-        </Icon>
-        <Icon
-          class="system-setting-btn"
-          v-else
-          @click="setting.changeTheme"
-          size="20"
-        >
-          <MoonIcon />
-        </Icon>
-        <n-button>导入</n-button>
-        <n-button>导出</n-button>
-        <n-button>清空画布</n-button>
-        <n-button>预览</n-button>
-        <n-button>保存</n-button>
+        <n-button @click="setting.changeTheme">
+          <n-icon :component="setting.theme === 'light' ? SunnyIcon : MoonIcon"></n-icon>
+        </n-button>
+        <n-button style="margin-left: 5px;">
+          <n-icon>
+            <ArrowUndo />
+          </n-icon>
+        </n-button>
+        <n-button style="margin-left: 5px;">
+          <n-icon>
+            <ArrowRedo />
+          </n-icon>
+        </n-button>
+        <n-button style="margin-left: 5px;">导入</n-button>
+        <n-button style="margin-left: 5px;">导出</n-button>
+        <n-button style="margin-left: 5px;">清空画布</n-button>
+        <n-button style="margin-left: 5px;">预览</n-button>
+        <n-button style="margin-left: 5px;">保存</n-button>
       </div>
     </header>
     <div class="designer-container">
@@ -57,7 +54,7 @@ import Right from '@/components/Design/Right/index.vue'
 import Designer from '@/components/Design/Designer/index.vue'
 import BigscreebApi from '@/api/bigscreen'
 import { Icon } from "@vicons/utils";
-const { SunnyIcon, MoonIcon } = icon.ionicons5;
+const { SunnyIcon, MoonIcon, HomeIcon, ArrowRedo, ArrowUndo } = icon.ionicons5;
 const { Computer, Mobile } = icon.material;
 import { onMounted, ref } from 'vue'
 import { useSettingStore } from "@/stores";
