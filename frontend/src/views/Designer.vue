@@ -15,9 +15,9 @@
       </div>
     </header>
     <div class="designer-container">
-      <Left class="left"/>
+      <Left class="left" />
       <Designer class="center" />
-      <Right class="right"/>
+      <Right class="right" />
     </div>
   </n-layout>
 </template>
@@ -33,7 +33,7 @@ const title = ref('')
 onMounted(async () => {
   const id = router.currentRoute.value.query.id as string | number
   const res = await BigscreebApi.getBcDetail(id)
-  if(res.code === 200) {
+  if (res.code === 200) {
     console.log(res)
     title.value = res.data.title
   } else {
@@ -45,6 +45,7 @@ onMounted(async () => {
 .designer-wrap {
   position: absolute;
   inset: 0;
+
   header {
     height: 50px;
     padding: 0 5px;
@@ -52,6 +53,7 @@ onMounted(async () => {
     align-items: center;
     justify-content: space-between;
   }
+
   .designer-container {
     display: flex;
     flex-direction: row;
@@ -61,20 +63,25 @@ onMounted(async () => {
     height: calc(100% - 50px);
 
     .left {
-      width: 200px;
+      width: 300px;
       height: 100%;
       // background-color: rgb(220, 185, 185);
     }
+
     .center {
       width: 100%;
       height: 100%;
-      background-color: rgb(84, 84, 134);
+      position: relative;
+      // background-color: rgb(84, 84, 134);
+      background-image: linear-gradient(var(--n-color) 14px,transparent 0),linear-gradient(90deg,transparent 14px,var(--n-text-color) 0);
+      background-size: 15px 15px;
+      // background: linear-gradient(-90deg, var(--n-text-color) 1px, transparent 0px) 0px 0px / 20px 20px, linear-gradient(0deg, var(--n-text-color) 1px, var(--n-color) 0px) 0px 0px / 20px 20px
     }
+
     .right {
-      width: 200px;
+      width: 300px;
       height: 100%;
       // background-color: rgb(91, 147, 91);
     }
   }
-}
-</style>
+}</style>
