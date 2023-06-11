@@ -9,6 +9,10 @@
 export default {
     User: require("./User"),
 
+    Group: require("./Group"),
+
+    Bigscreen: require("./Bigscreen"),
+
     CartoonList: require("./CartoonList"),
 
     GameList: require("./GameList"),
