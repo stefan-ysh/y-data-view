@@ -8,7 +8,7 @@ export const groupList = async (ctx: any, next: any) => {
     const b = R.set(list, 200)
     b.data.forEach((el:any) => {
         // If children is empty, set it to null
-        el.children  = el.children.length ? el.children : null
+        el.children  = el.children?.length ? el.children : null
     })
     ctx.body = b
     return next();
