@@ -5,7 +5,19 @@
         <n-button @click="router.push('/')">Back</n-button>
         <span>ID：{{ router.currentRoute.value.query.id }}</span>
       </div>
-      <div>{{ title }}</div>
+      <div>
+        <span>{{ title }}</span>
+        <n-radio-group v-model:value="viewType" name="radiobuttongroup1">
+          <n-radio-button
+            v-for="_t in viewTypes"
+            :key="_t.value"
+            :value="_t.value"
+            :label="_t.icon"
+          >
+          <n-icon  :component="_t.icon"></n-icon>
+        </n-radio-button>  
+        </n-radio-group>
+      </div>
       <div class="operation-btns" style="display: flex; align-items: center;">
         <!-- switch theme mode light/dark -->
         <Icon
@@ -46,6 +58,7 @@ import Designer from '@/components/Design/Designer/index.vue'
 import BigscreebApi from '@/api/bigscreen'
 import { Icon } from "@vicons/utils";
 const { SunnyIcon, MoonIcon } = icon.ionicons5;
+const { Computer, Mobile } = icon.material;
 import { onMounted, ref } from 'vue'
 import { useSettingStore } from "@/stores";
 import { icon } from '@/icon'
@@ -68,6 +81,20 @@ onMounted(async () => {
     console.log(res)
   }
 })
+const viewType = ref('PC')
+
+const viewTypes = [
+  {
+    value: 'PC',
+    label: 'PC',
+    icon:  Computer
+  },
+  {
+    value: 'mobile',
+    label: '移动端',
+    icon: Mobile
+  }
+]
 </script>
 <style scoped lang="less">
 .designer-wrap {
