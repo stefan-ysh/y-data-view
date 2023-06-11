@@ -102,7 +102,10 @@ import {
   FilterEdit as FilterEditIcon,
   Laptop as LaptopIcon,
 } from "@vicons/carbon";
-
+import {
+  LaptopChromebookRound as Computer,
+  PhoneAndroidOutlined as Mobile
+} from "@vicons/material";
 const ionicons5 = {
   UserIcon,
   EditIcon,
@@ -295,8 +298,12 @@ const carbon = {
 };
 
 // https://www.xicons.org/#/ 还有很多
-
+const material = {
+  Computer,
+  Mobile
+}
 export const icon = {
   ionicons5,
   carbon,
+  material
 };
