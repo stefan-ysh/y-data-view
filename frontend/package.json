@@ -24,7 +24,7 @@
     "@vicons/material": "^0.12.0",
     "@vicons/utils": "^0.1.4",
     "@vitejs/plugin-vue": "^4.0.0",
-    "naive-ui": "^2.34.2",
+    "naive-ui": "^2.34.4",
     "node-sass": "^8.0.0",
     "sass": "^1.57.0",
     "sass-loader": "^13.2.0",

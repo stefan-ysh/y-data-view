@@ -1,15 +1,138 @@
 <template>
-    <div>
-        <n-card draggable="true" class="cpt-list-item">柱状图</n-card>
-        <n-card draggable="true" class="cpt-list-item">折线图</n-card>
-        <n-card draggable="true" class="cpt-list-item">饼图</n-card>
-        <n-card draggable="true" class="cpt-list-item">地图</n-card>
-        <n-card draggable="true" class="cpt-list-item">雷达图</n-card>
-        <n-card draggable="true" class="cpt-list-item">仪表盘</n-card>
-        <n-card draggable="true" class="cpt-list-item">漏斗图</n-card>
-        <n-card draggable="true" class="cpt-list-item">词云图</n-card>
+    <div style="display: flex;">
+        <n-tabs class="card-tabs" default-value="cpt" type="card" size="large" animated pane-wrapper-style="margin: 0 -4px">
+            <n-tab-pane name="cpt" tab="组件" style="display: flex;">
+                <n-tabs size="small" placement="left" type="line" animated default-value="图表类">
+                    <n-tab-pane v-for="c in categories" :name="c.name" :tab="c.name">
+                        <n-collapse default-expanded-names="柱状图" accordion v-for="g in groups"
+                            v-show="g.category === c.name">
+                            <n-collapse-item :title="g.name" :name="g.name">
+                                <template v-for="cpt in cpts" :key="cpt.name" :name="cpt.name">
+                                    <n-card v-if="cpt.group === g.name">
+                                        {{ cpt.name }}
+                                    </n-card>
+                                </template>
+                            </n-collapse-item>
+                        </n-collapse>
+                    </n-tab-pane>
+                </n-tabs>
+            </n-tab-pane>
+            <n-tab-pane name="layer" tab="图层"></n-tab-pane>
+        </n-tabs>
     </div>
 </template>   
+<script lang="ts" setup>
+import { onMounted, ref, h } from 'vue';
+
+function transformData(data) {
+    const categories = {};
+    const groups = {};
+
+    // Group the snippet data by category and group
+    data.forEach(item => {
+        if (!categories[item.category]) {
+            categories[item.category] = [];
+        }
+        if (!groups[item.group]) {
+            groups[item.group] = {
+                name: item.group,
+                category: item.category
+            };
+            categories[item.category].push(groups[item.group]);
+        }
+    });
+
+    // Convert the grouped data to the desired format
+    const categoryData = Object.keys(categories).map(category => ({
+        name: category,
+        type: "cate"
+    }));
+    const groupData = Object.values(groups).map(group => ({
+        name: group.name,
+        category: group.category,
+        type: "group"
+    }));
+    const childrenData = data.map(item => ({
+        name: item.name,
+        group: item.group,
+        category: item.category,
+        type: "cpt"
+    }));
+
+    return {
+        category: categoryData,
+        group: groupData,
+        children: childrenData
+    };
+}
+const categories = ref(<any>[]);
+const groups = ref(<any>[]);
+const cpts = ref(<any>[]);
+onMounted(() => {
+    const { category, group, children } = transformData(snippet1);
+    categories.value = category;
+    groups.value = group;
+    cpts.value = children;
+
+});
+
+const snippet1 = [{
+    name: "胶囊图",
+    group: "柱状图",
+    category: "图表类",
+    screenshot: "",
+},
+{
+    name: "对叠图",
+    group: "柱状图",
+    category: "图表类",
+    screenshot: "",
+},
+{
+    name: "曲线图",
+    group: "折线图",
+    category: "图表类",
+    screenshot: "",
+},
+{
+    name: "面积图",
+    group: "折线图",
+    category: "图表类",
+    screenshot: "",
+},
+{
+    name: "玫瑰图",
+    group: "饼图",
+    category: "图表类",
+    screenshot: "",
+},
+{
+    name: "环形图",
+    group: "饼图",
+    category: "图表类",
+    screenshot: "",
+},
+{
+    name: "文本",
+    group: "展示组件",
+    category: "基础类",
+    screenshot: "",
+}, {
+    name: "滚动表格",
+    group: "展示组件",
+    category: "基础类",
+    screenshot: "",
+}]
+
+const handlerSelectCate = (value: string) => {
+    groups.value = snippet1.filter(item => item.category === value);
+}
+const handlerSelectGroup = (value: string) => {
+    console.log(value);
+    // cpts.value = snippet1.filter(item => item.group === value);
+}
+
+</script>
 <style scoped lang="less">
 .left {
     .cpt-list-item {
@@ -18,6 +141,32 @@
         &:hover {
             background-color: #f0f0f0;
             color: black;
+        }
+    }
+}
+</style>
+<style lang="less">
+.card-tabs {
+    .n-tabs-pane-wrapper {
+
+        // background: red;
+        .n-tab-pane {
+            .n-collapse {
+                display: flex;
+
+                .n-collapse-item {
+
+                    // display: flex;
+                    .n-collapse-item__content-wrapper {
+                        .n-collapse-item__content-inner {
+                            width: 100%;
+                            display: flex;
+                            justify-content: space-between;
+
+                        }
+                    }
+                }
+            }
         }
     }
 }
