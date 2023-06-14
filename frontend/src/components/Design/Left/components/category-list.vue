@@ -1,19 +1,12 @@
 <template>
     <n-tabs size="small" placement="left" type="line" animated default-value="图表类">
         <n-tab-pane v-for="c in categories" :name="c.name" :tab="c.name">
-            <n-collapse default-expanded-names="柱状图" accordion v-for="g in groups" v-show="g.category === c.name">
-                <n-collapse-item :title="g.name" :name="g.name">
-                    <template v-for="cpt in cpts" :key="cpt.name" :name="cpt.name">
-                        <n-card v-if="cpt.group === g.name">
-                            {{ cpt.name }}
-                        </n-card>
-                    </template>
-                </n-collapse-item>
-            </n-collapse>
+            <GroupList :cate="c" :groups="groups" />
         </n-tab-pane>
     </n-tabs>
 </template>   
 <script lang="ts" setup>
+import GroupList from './group-list.vue';
 const { categories } = defineProps({
     categories: {
         type: Array,
@@ -28,10 +21,18 @@ const { categories } = defineProps({
 <style lang="less">
 .card-tabs {
     .n-tabs-pane-wrapper {
+        height: 100%;
 
         // background: red;
         .n-tab-pane {
+            height: 100%;
+
+            .n-tabs-nav-scroll-content {
+                height: 100%;
+            }
+
             .n-collapse {
+                width: 200px;
                 display: flex;
 
                 .n-collapse-item {

@@ -115,7 +115,8 @@ const viewTypes = [
     height: calc(100% - 50px);
 
     .left {
-      width: 300px;
+      max-width: 260px;
+      min-width: 260px;
       height: 100%;
       // background-color: rgb(220, 185, 185);
     }
@@ -131,7 +132,8 @@ const viewTypes = [
     }
 
     .right {
-      width: 300px;
+      max-width: 260px;
+      min-width: 260px;
       height: 100%;
       // background-color: rgb(91, 147, 91);
     }

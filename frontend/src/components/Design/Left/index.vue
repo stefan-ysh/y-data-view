@@ -1,28 +1,19 @@
 <template>
     <div style="display: flex;">
-        <n-tabs class="card-tabs" default-value="cpt" type="card" size="large" animated pane-wrapper-style="margin: 0 -4px">
+        <n-tabs size="small" class="card-tabs" default-value="cpt" type="line"  justify-content="space-evenly" animated pane-wrapper-style="margin: 0 -4px">
             <n-tab-pane name="cpt" tab="组件" style="display: flex;">
-                <n-tabs size="small" placement="left" type="line" animated default-value="图表类">
-                    <n-tab-pane v-for="c in categories" :name="c.name" :tab="c.name">
-                        <n-collapse default-expanded-names="柱状图" accordion v-for="g in groups"
-                            v-show="g.category === c.name">
-                            <n-collapse-item :title="g.name" :name="g.name">
-                                <template v-for="cpt in cpts" :key="cpt.name" :name="cpt.name">
-                                    <n-card v-if="cpt.group === g.name">
-                                        {{ cpt.name }}
-                                    </n-card>
-                                </template>
-                            </n-collapse-item>
-                        </n-collapse>
-                    </n-tab-pane>
-                </n-tabs>
+                <CategoryList :categories="categories" :groups="groups" />
             </n-tab-pane>
-            <n-tab-pane name="layer" tab="图层"></n-tab-pane>
+            <n-tab-pane name="layer" tab="图层">
+                <Layer />
+            </n-tab-pane>
         </n-tabs>
     </div>
 </template>   
 <script lang="ts" setup>
 import { onMounted, ref, h } from 'vue';
+import CategoryList from './components/category-list.vue';
+import Layer from './components/layer.vue';
 
 function transformData(data) {
     const categories = {};
@@ -47,18 +38,19 @@ function transformData(data) {
         name: category,
         type: "cate"
     }));
-    const groupData = Object.values(groups).map(group => ({
-        name: group.name,
-        category: group.category,
-        type: "group"
-    }));
+
     const childrenData = data.map(item => ({
         name: item.name,
         group: item.group,
         category: item.category,
         type: "cpt"
     }));
-
+    const groupData = Object.values(groups).map(group => ({
+        name: group.name,
+        category: group.category,
+        type: "group",
+        children: childrenData.filter((c => { return c.group === group.name}))
+    }));
     return {
         category: categoryData,
         group: groupData,
@@ -67,12 +59,12 @@ function transformData(data) {
 }
 const categories = ref(<any>[]);
 const groups = ref(<any>[]);
-const cpts = ref(<any>[]);
+// const cpts = ref(<any>[]);
 onMounted(() => {
     const { category, group, children } = transformData(snippet1);
     categories.value = category;
     groups.value = group;
-    cpts.value = children;
+    // cpts.value = children;
 
 });
 
@@ -145,7 +137,7 @@ const handlerSelectGroup = (value: string) => {
     }
 }
 </style>
-<style lang="less">
+<!-- <style lang="less">
 .card-tabs {
     .n-tabs-pane-wrapper {
 
@@ -159,9 +151,9 @@ const handlerSelectGroup = (value: string) => {
                     // display: flex;
                     .n-collapse-item__content-wrapper {
                         .n-collapse-item__content-inner {
-                            width: 100%;
-                            display: flex;
-                            justify-content: space-between;
+                            // width: 100%;
+                            // display: flex;
+                            // justify-content: space-between;
 
                         }
                     }
@@ -170,4 +162,4 @@ const handlerSelectGroup = (value: string) => {
         }
     }
 }
-</style>
+</style> -->
