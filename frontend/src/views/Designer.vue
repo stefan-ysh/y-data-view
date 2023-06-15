@@ -1,6 +1,6 @@
 <template>
   <n-layout class="designer-wrap">
-    <header>
+    <header style="border-bottom:1px solid red;">
       <div>
         <n-button @click="router.push('/')" style="margin-right: 5px;">
           <n-icon :component="HomeIcon"></n-icon>
@@ -57,8 +57,9 @@ import { Icon } from "@vicons/utils";
 const { SunnyIcon, MoonIcon, HomeIcon, ArrowRedo, ArrowUndo } = icon.ionicons5;
 const { Computer, Mobile } = icon.material;
 import { onMounted, ref } from 'vue'
-import { useSettingStore } from "@/stores";
+import { useSettingStore, useBigscreenStore } from "@/stores";
 import { icon } from '@/icon'
+const bigscreenStore = useBigscreenStore();
 const setting = useSettingStore();
 const router = useRouter()
 const title = ref('')
@@ -92,6 +93,20 @@ const viewTypes = [
     icon: Mobile
   }
 ]
+
+function loadModules() {
+
+  const arr: any = [];
+  const modules = import.meta.glob("../packages/components/**/meta.ts", {
+    import: "default",
+    eager: true,
+  });
+  Object.values(modules).forEach((module: any) => {
+    arr.push(module.snippet);
+  });
+  bigscreenStore.setLeftPaneList(arr);
+}
+loadModules()
 </script>
 <style scoped lang="less">
 .designer-wrap {
@@ -128,6 +143,8 @@ const viewTypes = [
       // background-color: rgb(84, 84, 134);
       background-image: linear-gradient(var(--n-color) 14px,transparent 0),linear-gradient(90deg,transparent 14px,var(--n-text-color) 0);
       background-size: 15px 15px;
+      border-left: 1px solid red;
+      border-right: 1px solid red;
       // background: linear-gradient(-90deg, var(--n-text-color) 1px, transparent 0px) 0px 0px / 20px 20px, linear-gradient(0deg, var(--n-text-color) 1px, var(--n-color) 0px) 0px 0px / 20px 20px
     }
 

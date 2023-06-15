@@ -1,5 +1,5 @@
 <template>
-    <n-tabs size="small" placement="left" type="line" animated default-value="图表类">
+    <n-tabs size="small" placement="left" type="line" animated :default-value="activeTab">
         <n-tab-pane v-for="c in categories" :name="c.name" :tab="c.name">
             <GroupList :cate="c" :groups="groups" />
         </n-tab-pane>
@@ -17,6 +17,7 @@ const { categories } = defineProps({
         default: () => []
     },
 });
+const activeTab = '展示组件';
 </script>
 <style lang="less">
 .card-tabs {

@@ -14,7 +14,8 @@
 import { onMounted, ref, h } from 'vue';
 import CategoryList from './components/category-list.vue';
 import Layer from './components/layer.vue';
-
+import { useBigscreenStore } from '@/stores'
+const bigscreenStore = useBigscreenStore();
 function transformData(data) {
     const categories = {};
     const groups = {};
@@ -43,6 +44,7 @@ function transformData(data) {
         name: item.name,
         group: item.group,
         category: item.category,
+        ...item,
         type: "cpt"
     }));
     const groupData = Object.values(groups).map(group => ({
@@ -61,67 +63,14 @@ const categories = ref(<any>[]);
 const groups = ref(<any>[]);
 // const cpts = ref(<any>[]);
 onMounted(() => {
+    const snippet1 = bigscreenStore.leftPaneList;
     const { category, group, children } = transformData(snippet1);
     categories.value = category;
     groups.value = group;
-    // cpts.value = children;
-
 });
 
-const snippet1 = [{
-    name: "胶囊图",
-    group: "柱状图",
-    category: "图表类",
-    screenshot: "",
-},
-{
-    name: "对叠图",
-    group: "柱状图",
-    category: "图表类",
-    screenshot: "",
-},
-{
-    name: "曲线图",
-    group: "折线图",
-    category: "图表类",
-    screenshot: "",
-},
-{
-    name: "面积图",
-    group: "折线图",
-    category: "图表类",
-    screenshot: "",
-},
-{
-    name: "玫瑰图",
-    group: "饼图",
-    category: "图表类",
-    screenshot: "",
-},
-{
-    name: "环形图",
-    group: "饼图",
-    category: "图表类",
-    screenshot: "",
-},
-{
-    name: "文本",
-    group: "展示组件",
-    category: "基础类",
-    screenshot: "",
-}, {
-    name: "滚动表格",
-    group: "展示组件",
-    category: "基础类",
-    screenshot: "",
-}]
-
 const handlerSelectCate = (value: string) => {
-    groups.value = snippet1.filter(item => item.category === value);
-}
-const handlerSelectGroup = (value: string) => {
-    console.log(value);
-    // cpts.value = snippet1.filter(item => item.group === value);
+    // groups.value = snippet1.filter(item => item.category === value);
 }
 
 </script>

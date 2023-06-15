@@ -3,6 +3,7 @@ import { Bigscreen } from "@/types";
 export const useBigscreenStore = defineStore("bigscreen", {
   state: () => {
     return {
+      leftPaneList: [],
       curGroup: '' as string | number,
       groupList: [],
       bigscreenList: [] as Array<Bigscreen>,
@@ -18,6 +19,9 @@ export const useBigscreenStore = defineStore("bigscreen", {
     },
     setCurGroup(group: number | string) {
       this.curGroup = group
+    },
+    setLeftPaneList(data: any) {
+      this.leftPaneList = data
     }
   }
 });
