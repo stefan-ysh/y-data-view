@@ -3,7 +3,9 @@
         <n-tabs size="small" :on-update:value="changeTab" class="card-tabs" default-value="cpt" type="line"
             justify-content="space-evenly" animated pane-wrapper-style="margin: 0 -4px">
             <n-tab-pane display-directive="show" v-for="t in tabs" :key="t" :tab="t.label" :name="t.name">
-                <component :is="curCpt" :categories="categories" :groups="groups" />
+                <keep-alive>
+                    <component :is="curCpt" :categories="categories" :groups="groups" />
+                </keep-alive>
             </n-tab-pane>
         </n-tabs>
     </div>
