@@ -19,7 +19,8 @@ const { groups } = defineProps({
     cate: {
         type: Object,
         default: () => { }
-    }
+    },
+    
 });
 </script>
 <style lang="less" scoped>

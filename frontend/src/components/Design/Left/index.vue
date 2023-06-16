@@ -1,21 +1,33 @@
 <template>
     <div style="display: flex;">
-        <n-tabs size="small" class="card-tabs" default-value="cpt" type="line"  justify-content="space-evenly" animated pane-wrapper-style="margin: 0 -4px">
-            <n-tab-pane name="cpt" tab="组件" style="display: flex;">
-                <CategoryList :categories="categories" :groups="groups" />
-            </n-tab-pane>
-            <n-tab-pane name="layer" tab="图层">
-                <Layer />
+        <n-tabs size="small" :on-update:value="changeTab" class="card-tabs" default-value="cpt" type="line"
+            justify-content="space-evenly" animated pane-wrapper-style="margin: 0 -4px">
+            <n-tab-pane display-directive="show" v-for="t in tabs" :key="t" :tab="t.label" :name="t.name">
+                <component :is="curCpt" :categories="categories" :groups="groups" />
             </n-tab-pane>
         </n-tabs>
     </div>
 </template>   
 <script lang="ts" setup>
-import { onMounted, ref, h } from 'vue';
+import { onMounted, ref, markRaw } from 'vue';
 import CategoryList from './components/category-list.vue';
 import Layer from './components/layer.vue';
 import { useBigscreenStore } from '@/stores'
 const bigscreenStore = useBigscreenStore();
+const tabs = [
+    { name: 'cpt', label: '组件' },
+    { name: 'layer', label: '图层' },
+]
+const curCpt = ref(markRaw(CategoryList));
+const tabCpts = [
+    CategoryList,
+    Layer
+]
+const changeTab = (tab: string) => {
+    const index = tab === 'cpt' ? 0 : 1
+    const _cpt = tabCpts[index]
+    curCpt.value = markRaw(_cpt);
+};
 function transformData(data) {
     const categories = {};
     const groups = {};
@@ -51,7 +63,7 @@ function transformData(data) {
         name: group.name,
         category: group.category,
         type: "group",
-        children: childrenData.filter((c => { return c.group === group.name}))
+        children: childrenData.filter((c => { return c.group === group.name }))
     }));
     return {
         category: categoryData,

@@ -1,6 +1,6 @@
 <template>
-    <n-tabs size="small" placement="left" type="line" animated :default-value="activeTab">
-        <n-tab-pane v-for="c in categories" :name="c.name" :tab="c.name">
+    <n-tabs style="height: 100%" size="small" placement="left" type="line" animated :default-value="activeTab">
+        <n-tab-pane display-directive="show"  v-for="c in categories" :name="c.name" :tab="c.name">
             <GroupList :cate="c" :groups="groups" />
         </n-tab-pane>
     </n-tabs>
