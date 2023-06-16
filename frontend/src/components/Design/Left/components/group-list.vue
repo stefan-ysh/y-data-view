@@ -1,6 +1,6 @@
 <template>
     <n-collapse default-expanded-names="柱状图" accordion v-for="g in groups" v-show="g.category === cate.name">
-        <n-collapse-item :title="g.name" :name="g.name">
+        <n-collapse-item display-directive="show" :title="g.name" :name="g.name">
             <template v-for="cpt in g.children" :key="cpt.name" :name="cpt.name">
                 <n-card size="small" class="cpt-card" v-if="cpt.group === g.name">
                     <n-image :src="cpt.screenshot" width="50" />
