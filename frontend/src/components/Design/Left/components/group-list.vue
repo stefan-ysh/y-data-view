@@ -2,8 +2,9 @@
     <n-collapse default-expanded-names="柱状图" accordion v-for="g in groups" v-show="g.category === cate.name">
         <n-collapse-item display-directive="show" :title="g.name" :name="g.name">
             <template v-for="cpt in g.children" :key="cpt.name" :name="cpt.name">
-                <n-card size="small" class="cpt-card" v-if="cpt.group === g.name">
-                    <n-image :src="cpt.screenshot" width="50" />
+                <n-card size="small" class="cpt-card" v-if="cpt.group === g.name" draggable
+                    @dragstart="onDragstart($event, cpt)">
+                    <n-image :src="cpt.screenshot" width="50" preview-disabled />
                     <span>{{ cpt.name }}</span>
                 </n-card>
             </template>
@@ -20,8 +21,17 @@ const { groups } = defineProps({
         type: Object,
         default: () => { }
     },
-    
+
 });
+const onDragstart = (event, info) => {
+    // 记录下鼠标当前点击的坐标
+    const startX = event.clientX - event.target.offsetLeft;
+    const startY = event.clientY - event.target.offsetTop;
+    // 将组件信息存入到dataTransfer中
+    event.dataTransfer.setData('cpt-info', JSON.stringify(info));
+    event.dataTransfer.setData('start-coor', JSON.stringify({ startX, startY }));
+
+}
 </script>
 <style lang="less" scoped>
 .n-collapse {

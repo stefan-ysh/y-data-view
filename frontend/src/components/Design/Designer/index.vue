@@ -4,19 +4,21 @@
             :isShowReferLine="isShowReferLine" :isShowRuler="isShowRuler" :shadow="shadow" :lines="lines" :palette="palette"
             :cornerActive="true">
         </SketchRule>
-        <div class="cpt-container" @dragover="handleDragover">
-            <div v-for="c in cpts" :key="c.id" draggable="true" @dragstart="handleDragStart(c.id)"
-                @dragover="handleDragover" :style="{
-                    position: 'absolute',
-                    width: c.width + 'px',
-                    height: c.height + 'px',
-                    left: c.x + 'px',
-                    top: c.y + 'px',
-                    transform: 'rotate(' + c.rotate + 'deg)',
-                    zIndex: c.z,
-                    backgroundColor: 'red'
-                }">
-                {{ c.x }}
+        <div class="cpt-container" @dragover.prevent @drop="onDrop">
+            <div v-for="c in cpts" :key="c.id" draggable="true" @dragover.prevent :style="{
+                position: 'absolute',
+                width: c.width + 'px',
+                height: c.height + 'px',
+                left: c.x + 'px',
+                top: c.y + 'px',
+                transform: 'rotate(' + c.rotate + 'deg)',
+                zIndex: c.z,
+                // backgroundColor: 'red'
+                border: '1px solid #fff'
+            }">
+                ({{ c.x }},
+                {{ c.y }})
+                {{ c.title }}
             </div>
         </div>
     </div>
@@ -27,62 +29,51 @@ import { SketchRule } from 'vue3-sketch-ruler'
 import 'vue3-sketch-ruler/lib/style.css'
 import { ref } from 'vue'
 
-const curDragId = ref(0)
-const handleDragStart = (id: number) => {``
-    curDragId.value = id
+const onDrop = (event: any) => {
+    const dataTransfer = JSON.parse(event.dataTransfer.getData('cpt-info'));
+    const { startX, startY } = JSON.parse(event.dataTransfer.getData('start-coor'));
+    //通过鼠标开始拖拽时候记录下的坐标计算drop时候的准确坐标，避免drop时候鼠标错位
+    // const containerX = event.target.offsetLeft
+    // const containerY = event.target.offsetTop
+    let x = event.clientX - startX / 2 - 260
+    let y = event.clientY - startY / 2 - 50
+    // 获取当前drop区域的坐标，指定组件位置的范围
+    const containerWidth = 800
+    const containerHeight = 1080
+    // 判断组件是否超出drop区域
+    // if (x <= containerX || y <= containerY || x + dataTransfer.width >= containerWidth || y + dataTransfer.height >= containerHeight) {
+    //     return
+    // }
+    const cptWidth = dataTransfer.width || 150
+    const cptHeight = dataTransfer.width || 150
+    // 如果超出容器的最大或者小于最小，则设置为最大或者最小
+
+    if (x <= 0) {
+        x = 0
+    } else if (x + cptWidth >= containerWidth) {
+        x = containerWidth - cptWidth
+    }
+    if (y <= 0) {
+        y = 0
+    } else if (y + cptHeight >= containerHeight) {
+        y = containerHeight - cptHeight
+    }
+    const cpt = {
+        id: Date.now(),
+        title: dataTransfer.name,
+        x,
+        y,
+        z: 0,
+        width: cptWidth,
+        height: cptHeight,
+        rotate: 0,
+        props: {}
+    }
+    cpts.value.push(cpt)
+
 }
 
-const handleDragover = (e: DragEvent) => {
-  e.preventDefault();
-  console.log(e);
-  const curCpt = cpts.value.find((c) => c.id === curDragId.value) as any;
-  const x = e.clientX - 200 - curCpt.width / 2;
-  const y = e.clientY - 50 - curCpt.height / 2;
-  const updatePosition = () => {
-    if (x <= 0) {
-      curCpt.x = 0;
-    } else if (y <= 0) {
-      curCpt.y = 0;
-    } else if (x + curCpt.width >= window.innerWidth) {
-      curCpt.x = window.innerWidth - curCpt.width;
-    } else if (y + curCpt.height >= window.innerHeight) {
-      curCpt.y = window.innerHeight - curCpt.height;
-    } else {
-      curCpt.x = x;
-      curCpt.y = y;
-    }
-  };
-  requestAnimationFrame(updatePosition);
-};
-
-const handleDrop = (e: DragEvent) => {
-
-};
-
-const cpts = ref([
-    {
-        id: 1,
-        title: '1',
-        x: 0,
-        y: 0,
-        z: 0,
-        width: 100,
-        height: 100,
-        rotate: 0,
-        props: {}
-    },
-    {
-        id: 2,
-        title: '2',
-        x: 230,
-        y: 200,
-        z: 0,
-        width: 100,
-        height: 100,
-        rotate: 0,
-        props: {}
-    }
-])
+const cpts = ref<any>([])
 
 const palette = {
     // bgColor: 'rgba(225,225,225, 0)',
