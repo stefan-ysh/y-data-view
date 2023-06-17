@@ -5,7 +5,7 @@
             :cornerActive="true">
         </SketchRule>
         <div class="cpt-container" @dragover.prevent @drop="onDrop">
-            <div v-for="c in cpts" :key="c.id" draggable="true" @dragover.prevent :style="{
+            <div v-for="c in cpts" class="cpt-item" :key="c.id" draggable="true" @dragover.prevent :style="{
                 position: 'absolute',
                 width: c.width + 'px',
                 height: c.height + 'px',
@@ -105,6 +105,11 @@ const isShowReferLine = ref(true)
         position: relative;
         // inset: 0;
         height: 100%;
+        .cpt-item {
+            &:hover {
+                border-color: red !important;
+            }
+        }
     }
 }
 
