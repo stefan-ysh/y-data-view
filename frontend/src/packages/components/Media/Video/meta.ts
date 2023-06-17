@@ -1,7 +1,7 @@
 interface Snippet {
     name: string;
-    code: string;
     group: string;
+    code: string;
     category: string;
     screenshot: string;
   }
@@ -9,10 +9,10 @@ interface Snippet {
       
   }
   const snippet: Snippet = {
-    name: "基础柱状图",
-    group: "图表类",
-    code: 'barChart',
-    category: "柱状图",
+    name: "视频",
+    group: "视频",
+    code: 'video',
+    category: "多媒体",
     screenshot: "https://www.svgrepo.com/show/485102/bar-graph.svg",
   };
   
@@ -20,7 +20,7 @@ interface Snippet {
     componentName: "ImageComponent",
     title: "ColorfulButton",
     docUrl: "",
-    code: 'barChart',
+    code: 'video',
     configure: {
       props: [
         {

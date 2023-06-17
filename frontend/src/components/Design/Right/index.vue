@@ -1,7 +1,8 @@
 <template>
     <div class="right-container">
         <div v-for="p in props" :key="p.name">
-            <n-grid style="align-items: center;" :x-gap="0" :cols="10" class="config-item" size="large">
+            <n-grid style="align-items: center;" :x-gap="0" :cols="10" class="config-item" size="large"
+                v-if="!p.hasOwnProperty('condition') || p.condition(obj)">
                 <n-grid-item :span="3">{{ p.title }}</n-grid-item>
                 <n-grid-item :span="7">
                     <n-input v-model:value="obj[p.name as keyof MyObj]" v-if="p.setter === 'string'" />
@@ -64,18 +65,46 @@ const obj = ref<MyObj>({
     time: 37
 
 })
-const props = ref([
+type Prop = {
+    title: string;
+    name: string;
+    defaultValue: string | boolean | number | string[];
+    setter: 'string' | 'select' | 'color' | 'switch' | 'radio' | 'number' | 'textarea' | 'checkbox' | 'slider';
+    condition?: (target: any) => boolean;
+    options?: {
+        label: string;
+        value: string;
+    }[];
+    radioOptions?: {
+        label: string;
+        value: string;
+        disabled?: boolean;
+    }[];
+    checkboxOptions?: {
+        label: string;
+        value: string;
+    }[];
+    step?: number;
+    max?: number;
+    min?: number;
+    
+}
+const props = ref(<Prop[]>[
     {
         title: '内容',
         name: 'content',
         defaultValue: '',
-        setter: 'string'
+        setter: 'string',
+        condition: () => { return true }
     },
     {
         title: '尺寸',
         name: 'size',
         defaultValue: '',
         setter: 'select',
+        condition: (target: any) => {
+            return target.content === 'size'
+        },
         options: [
             {
                 label: '选项12222',
@@ -95,19 +124,25 @@ const props = ref([
         title: '颜色',
         name: 'color',
         defaultValue: '',
-        setter: 'color'
+        setter: 'color',
+        condition: () => { return true }
+
     },
     {
         title: '是否显示',
         name: 'show',
         defaultValue: '',
-        setter: 'switch'
+        setter: 'switch',
+        condition: () => { return true }
+
     },
     {
         title: '选择类型',
         name: 'type',
         defaultValue: '',
         setter: 'radio',
+        condition: () => { return true }
+        ,
         radioOptions: [
             {
                 label: '单选',
@@ -134,6 +169,8 @@ const props = ref([
         name: 'city',
         defaultValue: [1],
         setter: 'checkbox',
+        condition: () => { return true }
+        ,
         checkboxOptions: [
             {
                 label: '单选',
@@ -161,6 +198,7 @@ const props = ref([
         defaultValue: '',
         setter: 'number',
         step: 1,
+        condition: () => { return true },
         max: 100,
         min: 0
     },
@@ -168,7 +206,9 @@ const props = ref([
         title: '说明文字',
         name: 'desc',
         defaultValue: '12122',
-        setter: 'textarea'
+        setter: 'textarea',
+        condition: () => { return true }
+
     },
     {
         title: '动画时间',
@@ -177,7 +217,9 @@ const props = ref([
         setter: 'slider',
         step: 1,
         max: 100,
-        min: 0
+        min: 0,
+        condition: () => { return true }
+
     },
 ])
 </script>

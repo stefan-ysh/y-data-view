@@ -2,6 +2,7 @@ interface Snippet {
   name: string;
   group: string;
   category: string;
+  code: string;
   screenshot: string;
 }
 interface ImageComponentMeta {
@@ -9,14 +10,16 @@ interface ImageComponentMeta {
 }
 const snippet: Snippet = {
   name: "文本",
+  code: 'text',
   group: "基础类",
   category: "展示组件",
   screenshot: "https://www.svgrepo.com/show/298556/text-box.svg",
 };
 
 const ImageComponentMeta: any = {
-  componentName: "ImageComponent",
-  title: "ColorfulButton",
+  componentName: "TextComponent",
+  title: "基础文本",
+  code: 'text',
   docUrl: "",
   configure: {
     props: [
@@ -33,21 +36,8 @@ const ImageComponentMeta: any = {
         description: "类型",
         setter: {
           componentName: "RadioGroupSetter",
+          condition: ()=>{return true},
           props: {
-            dataSource: [
-              {
-                label: "primary",
-                value: "primary",
-              },
-              {
-                label: "secondary",
-                value: "secondary",
-              },
-              {
-                label: "normal",
-                value: "normal",
-              },
-            ],
             options: [
               {
                 label: "primary",
@@ -82,7 +72,6 @@ const ImageComponentMeta: any = {
         },
       },
     ],
-    data:[],
     supports: {
       style: true,
       animation: true,

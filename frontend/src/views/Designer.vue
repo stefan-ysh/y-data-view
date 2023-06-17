@@ -63,6 +63,7 @@ const bigscreenStore = useBigscreenStore();
 const setting = useSettingStore();
 const router = useRouter()
 const title = ref('')
+import { loadModules } from '@/packages'
 onMounted(async () => {
   const id = router.currentRoute.value.query.id as string | number
   if (!id) {
@@ -73,7 +74,6 @@ onMounted(async () => {
   }
   const res = await BigscreebApi.getBcDetail(id)
   if (res.code === 200) {
-    console.log(res)
     title.value = res.data.title
   } else {
     console.log(res)
@@ -94,18 +94,6 @@ const viewTypes = [
   }
 ]
 
-function loadModules() {
-
-  const arr: any = [];
-  const modules = import.meta.glob("../packages/components/**/meta.ts", {
-    import: "default",
-    eager: true,
-  });
-  Object.values(modules).forEach((module: any) => {
-    arr.push(module.snippet);
-  });
-  bigscreenStore.setLeftPaneList(arr);
-}
 loadModules()
 </script>
 <style scoped lang="less">
@@ -152,6 +140,7 @@ loadModules()
       max-width: 260px;
       min-width: 260px;
       height: 100%;
+      padding: 0 5px;
       // background-color: rgb(91, 147, 91);
     }
   }

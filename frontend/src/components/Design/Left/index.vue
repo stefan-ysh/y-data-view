@@ -30,12 +30,12 @@ const changeTab = (tab: string) => {
     const _cpt = tabCpts[index]
     curCpt.value = markRaw(_cpt);
 };
-function transformData(data) {
-    const categories = {};
-    const groups = {};
+function transformData(data: any) {
+    const categories: any = {};
+    const groups: any = {};
 
     // Group the snippet data by category and group
-    data.forEach(item => {
+    data.forEach((item: any)=> {
         if (!categories[item.category]) {
             categories[item.category] = [];
         }
@@ -54,18 +54,18 @@ function transformData(data) {
         type: "cate"
     }));
 
-    const childrenData = data.map(item => ({
+    const childrenData = data.map((item: any) => ({
         name: item.name,
         group: item.group,
         category: item.category,
         ...item,
         type: "cpt"
     }));
-    const groupData = Object.values(groups).map(group => ({
+    const groupData = Object.values(groups).map((group: any) => ({
         name: group.name,
         category: group.category,
         type: "group",
-        children: childrenData.filter((c => { return c.group === group.name }))
+        children: childrenData.filter(((c: any) => { return c.group === group.name }))
     }));
     return {
         category: categoryData,
@@ -77,14 +77,16 @@ const categories = ref(<any>[]);
 const groups = ref(<any>[]);
 // const cpts = ref(<any>[]);
 onMounted(() => {
-    const snippet1 = bigscreenStore.leftPaneList;
-    const { category, group, children } = transformData(snippet1);
+    const snippets = bigscreenStore.leftPaneList.map((item: any) => {
+        return item
+    });
+    const { category, group, children } = transformData(snippets);
     categories.value = category;
     groups.value = group;
 });
 
 const handlerSelectCate = (value: string) => {
-    // groups.value = snippet1.filter(item => item.category === value);
+    // groups.value = snippets.filter(item => item.category === value);
 }
 
 </script>
