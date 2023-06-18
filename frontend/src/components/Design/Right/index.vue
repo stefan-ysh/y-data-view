@@ -10,7 +10,7 @@
                     </n-select>
                     <n-color-picker @update:value="handleChangeColor($event, p.type, p.name)" v-if="p.setter.name === 'color'" :show-alpha="true"
                         v-model:value="currentCpt[p.type][p.name as keyof MyObj]" />
-                    <n-switch @update:value="handleChangeSwitch($event, p.type, p.name)"  v-model:value="currentCpt[p.type][p.name as keyof MyObj]" v-if="p.setter.name === 'switch'" />
+                    <n-switch @update:value="handleChangeSwitch($event, p.type, p.name)"  v-model:value="currentCpt[p.type][p.name as keyof MyObj]" v-if="p.setter.name === 'boolean'" />
                     <n-radio-group v-if="p.setter.name === 'radio'" v-model:value="currentCpt[p.type][p.name as keyof MyObj]" :name="p.name"
                         size="medium">
                         <n-radio-button v-for="radio in p.setter.radioOptions" :key="radio.value" :value="radio.value"
