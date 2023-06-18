@@ -3,8 +3,7 @@ export const useDesignStore = defineStore("bigscreen-design", {
   state: () => {
     return {
       leftPaneList: [],
-      curGroup: "" as string | number,
-      groupList: [],
+
       componentProps: {} as any,
       curBigscreen: {
         bgColor: "",
@@ -36,12 +35,7 @@ export const useDesignStore = defineStore("bigscreen-design", {
         this.componentProps[code] = {props, style};
       });
     },
-    setGroupList(data: any) {
-      this.groupList = data;
-    },
-    setCurGroup(group: number | string) {
-      this.curGroup = group;
-    },
+
     setLeftPaneList(data: any) {
       this.leftPaneList = data;
     },
