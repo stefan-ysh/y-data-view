@@ -52,9 +52,10 @@ import { Icon } from "@vicons/utils";
 const { SunnyIcon, MoonIcon, HomeIcon, ArrowRedo, ArrowUndo } = icon.ionicons5;
 const { Computer, Mobile } = icon.material;
 import { onMounted, ref } from 'vue'
-import { useSettingStore, useBigscreenStore } from "@/stores";
+import { useSettingStore } from "@/stores";
+import { useDesignStore } from '@/stores/bigscreen/design'
+const designStore = useDesignStore()
 import { icon } from '@/icon'
-const bigscreenStore = useBigscreenStore();
 const setting = useSettingStore();
 const router = useRouter()
 const title = ref('')
@@ -70,6 +71,7 @@ onMounted(async () => {
   const res = await BigscreebApi.getBcDetail(id)
   if (res.code === 200) {
     title.value = res.data.title
+    designStore.setCurBigscreen(res.data)
   } else {
     console.log(res)
   }

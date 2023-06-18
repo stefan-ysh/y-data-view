@@ -20,9 +20,9 @@
 import { onMounted, ref, markRaw } from 'vue';
 import CategoryList from './components/category-list.vue';
 import Layer from './components/layer.vue';
-import { useBigscreenStore } from '@/stores'
+import { useDesignStore } from '@/stores/bigscreen/design';
 import Designer from '@/components/Design/Designer/index.vue'
-const bigscreenStore = useBigscreenStore();
+const designStore = useDesignStore();
 const tabs = [
     { name: 'cpt', label: '组件' },
     { name: 'layer', label: '图层' },
@@ -84,7 +84,7 @@ const categories = ref(<any>[]);
 const groups = ref(<any>[]);
 // const cpts = ref(<any>[]);
 onMounted(() => {
-    const snippets = bigscreenStore.leftPaneList.map((item: any) => {
+    const snippets = designStore.leftPaneList.map((item: any) => {
         return item
     });
     const { category, group, children } = transformData(snippets);

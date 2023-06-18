@@ -5,7 +5,7 @@
             :cornerActive="true">
         </SketchRule>
         <div class="cpt-container" @dragover.prevent @drop="onDrop">
-            <div v-for="c in cpts" class="cpt-item" :key="c.id" draggable="true" @dragover.prevent :style="{
+            <div v-for="c in cpts" class="cpt-item" @click="clickCptItem(c)" :key="c.id" draggable="true" @dragover.prevent :style="{
                 position: 'absolute',
                 width: c.width + 'px',
                 height: c.height + 'px',
@@ -16,9 +16,7 @@
                 // backgroundColor: 'red'
                 border: '1px solid #fff'
             }">
-                ({{ c.x }},
-                {{ c.y }})
-                {{ c.title }}
+               <component :is="c.componentName" :props="c.props" :styleObj="c.style" />
             </div>
         </div>
     </n-layout-content>
@@ -27,8 +25,16 @@
 <script lang="ts" setup>
 import { SketchRule } from 'vue3-sketch-ruler'
 import 'vue3-sketch-ruler/lib/style.css'
-import { ref } from 'vue'
-
+import { computed, ref } from 'vue'
+import { useDesignStore } from '@/stores/bigscreen/design';
+const designStore = useDesignStore();
+const cptProps = designStore.componentProps
+function arrayToObject(arr) {
+  return arr.reduce((obj, item) => {
+    obj[item.name] = item.defaultValue;
+    return obj;
+  }, {});
+}
 const onDrop = (event: any) => {
     const dataTransfer = JSON.parse(event.dataTransfer.getData('cpt-info'));
     const { startX, startY } = JSON.parse(event.dataTransfer.getData('start-coor'));
@@ -58,22 +64,34 @@ const onDrop = (event: any) => {
     } else if (y + cptHeight >= containerHeight) {
         y = containerHeight - cptHeight
     }
+
+    const { props, style } = cptProps[dataTransfer.code]
     const cpt = {
         id: Date.now(),
+        componentName: dataTransfer.componentName,
         title: dataTransfer.name,
+        code: dataTransfer.code,
         x,
         y,
         z: 0,
         width: cptWidth,
         height: cptHeight,
         rotate: 0,
-        props: {}
+        props: {
+            ...arrayToObject(props)
+        },
+        style: {
+            ...arrayToObject(style)
+        }
     }
-    cpts.value.push(cpt)
-
+    designStore.addComponent(cpt)
 }
-
-const cpts = ref<any>([])
+const clickCptItem = (cpt: any) => {
+    designStore.setCurrentComponent(cpt)
+}
+const cpts = computed(() => {
+    return designStore.curBigscreen.components
+})
 
 const palette = {
     // bgColor: 'rgba(225,225,225, 0)',
