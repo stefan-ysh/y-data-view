@@ -18,6 +18,9 @@ const props = defineProps({
 <template>
   <n-image
     :fallback-src="props.props.fallbackSrc"
+    :show-toolbar="props.props.showToolbar"
+    :show-toolbar-tooltip="props.props.showToolbarTooltip"
+    :preview-disabled="!props.props.previewDisabled"
     :alt="props.props.alt"
     :object-fit="props.props.objectFit"
     :width="props.props.width"

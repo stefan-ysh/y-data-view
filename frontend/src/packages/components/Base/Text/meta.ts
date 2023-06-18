@@ -40,7 +40,7 @@ const ImageComponentMeta: any = {
         name: "border",
         defaultValue: false,
         setter: {
-          name: "switch",
+          name: "boolean",
         },
       },
     ],

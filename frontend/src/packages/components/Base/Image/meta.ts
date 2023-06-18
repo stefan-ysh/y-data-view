@@ -45,6 +45,39 @@ const ImageComponentMeta: any = {
         },
       },
       {
+        title: "预览",
+        name: "previewDisabled",
+        description: "是否开启点击图片进行预览",
+        defaultValue: true,
+        setter: {
+          name: "boolean",
+        },
+      },
+      {
+        title: "工具栏",
+        name: "showToolbar",
+        description: "是否开启点击图片进行预览",
+        defaultValue: true,
+        condition: (target) => {
+          return target.props.previewDisabled;
+        },
+        setter: {
+          name: "boolean",
+        },
+      },
+      {
+        title: "工具栏提示",
+        name: "showToolbarTooltip",
+        description: "是否开启点击图片进行预览",
+        defaultValue: true,
+        condition: (target) => {
+          return target.props.previewDisabled;
+        },
+        setter: {
+          name: "boolean",
+        },
+      },
+      {
         title: "图片说明",
         name: "alt",
         description: "鼠标移入展示的说明文字",
