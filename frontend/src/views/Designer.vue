@@ -9,14 +9,9 @@
       </div>
       <div>
         <n-radio-group v-model:value="viewType" name="radiobuttongroup1" size="small">
-          <n-radio-button
-            v-for="_t in viewTypes"
-            :key="_t.value"
-            :value="_t.value"
-            :label="_t.icon"
-          >
-          <n-icon  :component="_t.icon"></n-icon>
-        </n-radio-button>  
+          <n-radio-button v-for="_t in viewTypes" :key="_t.value" :value="_t.value" :label="_t.icon">
+            <n-icon :component="_t.icon"></n-icon>
+          </n-radio-button>
         </n-radio-group>
       </div>
       <div class="operation-btns" style="display: flex; align-items: center;">
@@ -40,11 +35,11 @@
         <n-button style="margin-left: 5px;">保存</n-button>
       </div>
     </header>
-    <div class="designer-container">
-      <Left class="left" />
-      <Designer class="center" />
-      <Right class="right" />
-    </div>
+    <n-layout has-sider class="designer-container">
+      <Left />
+      <!-- <Designer class="center" /> -->
+      <Right />
+    </n-layout>
   </n-layout>
 </template>
 <script lang="ts" setup>
@@ -68,7 +63,7 @@ onMounted(async () => {
   const id = router.currentRoute.value.query.id as string | number
   if (!id) {
     window.$message.error('页面不存在，即将跳转到首页')
-     setTimeout(() => {
+    setTimeout(() => {
       router.push('/')
     }, 2000)
   }
@@ -85,7 +80,7 @@ const viewTypes = [
   {
     value: 'PC',
     label: 'PC',
-    icon:  Computer
+    icon: Computer
   },
   {
     value: 'mobile',
@@ -110,17 +105,17 @@ loadModules()
   }
 
   .designer-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    // display: flex;
+    // flex-direction: row;
+    // justify-content: space-between;
+    // align-items: center;
     width: 100%;
     height: calc(100% - 50px);
 
     .left {
-      max-width: 260px;
-      min-width: 260px;
-      height: 100%;
+      // max-width: 260px;
+      // min-width: 260px;
+      // height: 100%;
       // background-color: rgb(220, 185, 185);
     }
 
@@ -129,10 +124,10 @@ loadModules()
       height: 100%;
       position: relative;
       // background-color: rgb(84, 84, 134);
-      background-image: linear-gradient(var(--n-color) 14px,transparent 0),linear-gradient(90deg,transparent 14px,var(--n-text-color) 0);
+      background-image: linear-gradient(var(--n-color) 14px, transparent 0), linear-gradient(90deg, transparent 14px, var(--n-text-color) 0);
       background-size: 15px 15px;
-      border-left: 1px solid red;
-      border-right: 1px solid red;
+      // border-left: 1px solid red;
+      // border-right: 1px solid red;
       // background: linear-gradient(-90deg, var(--n-text-color) 1px, transparent 0px) 0px 0px / 20px 20px, linear-gradient(0deg, var(--n-text-color) 1px, var(--n-color) 0px) 0px 0px / 20px 20px
     }
 
@@ -144,4 +139,5 @@ loadModules()
       // background-color: rgb(91, 147, 91);
     }
   }
-}</style>
+}
+</style>

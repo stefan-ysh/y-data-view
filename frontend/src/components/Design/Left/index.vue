@@ -1,20 +1,27 @@
 <template>
-    <div style="display: flex;">
-        <n-tabs size="small" :on-update:value="changeTab" class="card-tabs" default-value="cpt" type="line"
-            justify-content="space-evenly" animated pane-wrapper-style="margin: 0 -4px">
-            <n-tab-pane display-directive="show" v-for="t in tabs" :key="t" :tab="t.label" :name="t.name">
-                <keep-alive>
-                    <component :is="curCpt" :categories="categories" :groups="groups" />
-                </keep-alive>
-            </n-tab-pane>
-        </n-tabs>
-    </div>
+    <n-layout class="left" has-sider sider-placement="left">
+        <n-layout-sider collapse-mode="transform" :collapsed-width="0" :width="300" :native-scrollbar="false"
+            show-trigger="bar" content-style="padding: 0px;" bordered>
+            <n-tabs size="small" :on-update:value="changeTab" class="card-tabs" default-value="cpt" type="line"
+                justify-content="space-evenly" animated pane-wrapper-style="margin: 0 -4px">
+                <n-tab-pane display-directive="show" v-for="t in tabs" :key="t" :tab="t.label" :name="t.name">
+                    <keep-alive>
+                        <component :is="curCpt" :categories="categories" :groups="groups" />
+                    </keep-alive>
+                </n-tab-pane>
+            </n-tabs>
+        </n-layout-sider>
+        <n-layout-content>
+            <Designer class="center" />
+        </n-layout-content>
+    </n-layout>
 </template>   
 <script lang="ts" setup>
 import { onMounted, ref, markRaw } from 'vue';
 import CategoryList from './components/category-list.vue';
 import Layer from './components/layer.vue';
 import { useBigscreenStore } from '@/stores'
+import Designer from '@/components/Design/Designer/index.vue'
 const bigscreenStore = useBigscreenStore();
 const tabs = [
     { name: 'cpt', label: '组件' },
@@ -35,7 +42,7 @@ function transformData(data: any) {
     const groups: any = {};
 
     // Group the snippet data by category and group
-    data.forEach((item: any)=> {
+    data.forEach((item: any) => {
         if (!categories[item.category]) {
             categories[item.category] = [];
         }
@@ -92,33 +99,58 @@ const handlerSelectCate = (value: string) => {
 </script>
 <style scoped lang="less">
 .left {
-    .cpt-list-item {
-        cursor: move;
+    .n-layout-scroll-container {
+        .n-layout-sider {
+            z-index: 4;
+            height: 100%;
 
-        &:hover {
-            background-color: #f0f0f0;
-            color: black;
+            ::v-deep(.n-scrollbar) {
+                .n-scrollbar-container {
+                    .n-scrollbar-content {
+                        height: 100%;
+                        // 顶部组件/图层切换
+
+                        .n-tabs {
+
+                            // .n-tabs-pane-wrapper {
+                            // .n-tab-pane {
+                            .n-tabs {
+
+                                // 左侧分类
+                                .n-tabs-nav--line-type {
+                                    width: 81px;
+                                }
+                            }
+
+                            // }
+                            // }
+                        }
+                    }
+                }
+
+            }
         }
+
     }
+
 }
 </style>
-<!-- <style lang="less">
+<style lang="less">
 .card-tabs {
-    .n-tabs-pane-wrapper {
+    height: 100%;
 
-        // background: red;
+    .n-tabs-pane-wrapper {
         .n-tab-pane {
             .n-collapse {
-                display: flex;
 
                 .n-collapse-item {
 
                     // display: flex;
                     .n-collapse-item__content-wrapper {
                         .n-collapse-item__content-inner {
-                            // width: 100%;
-                            // display: flex;
-                            // justify-content: space-between;
+                            width: 200px;
+                            display: flex;
+                            justify-content: space-around;
 
                         }
                     }
@@ -127,4 +159,13 @@ const handlerSelectCate = (value: string) => {
         }
     }
 }
-</style> -->
+</style>
+<style>
+.center {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-image: linear-gradient(var(--n-color) 14px, transparent 0), linear-gradient(90deg, transparent 14px, var(--n-text-color) 0);
+    background-size: 15px 15px;
+}
+</style>

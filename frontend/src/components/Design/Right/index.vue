@@ -3,8 +3,8 @@
         <div v-for="p in props" :key="p.name">
             <n-grid style="align-items: center;" :x-gap="0" :cols="10" class="config-item" size="large"
                 v-if="!p.hasOwnProperty('condition') || p.condition(obj)">
-                <n-grid-item :span="3">{{ p.title }}</n-grid-item>
-                <n-grid-item :span="7">
+                <n-grid-item :span="2">{{ p.title }}</n-grid-item>
+                <n-grid-item :span="8">
                     <n-input v-model:value="obj[p.name as keyof MyObj]" v-if="p.setter === 'string'" />
                     <n-select v-model:value="obj[p.name as keyof MyObj]" v-if="p.setter === 'select'" :options="p.options">
                     </n-select>
@@ -13,8 +13,8 @@
                     <n-switch v-model:value="obj[p.name as keyof MyObj]" v-if="p.setter === 'switch'" />
                     <n-radio-group v-if="p.setter === 'radio'" v-model:value="obj[p.name as keyof MyObj]" :name="p.name"
                         size="medium">
-                        <n-radio-button v-for="radio in p.radioOptions" :key="radio.value" :value="radio.value" :disabled="radio.disabled
-                            ">
+                        <n-radio-button v-for="radio in p.radioOptions" :key="radio.value" :value="radio.value"
+                            :disabled="radio.disabled">
                             {{ radio.label }}
                         </n-radio-button>
                     </n-radio-group>
@@ -87,7 +87,7 @@ type Prop = {
     step?: number;
     max?: number;
     min?: number;
-    
+
 }
 const props = ref(<Prop[]>[
     {
@@ -225,6 +225,12 @@ const props = ref(<Prop[]>[
 </script>
 <style lang="less" scoped>
 .right-container {
+    width: 400px;
+    min-width: 400px;
+    max-width: 400px;
+    padding: 0 5px;
+    background: var(--n-color);
+
     .config-item {
         margin-top: 10px;
 

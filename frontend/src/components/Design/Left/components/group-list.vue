@@ -45,6 +45,8 @@ const onDragstart = (event, info) => {
                 .n-card {
                     width: 90px;
                     height: 90px;
+                    cursor: move;
+                    user-select: none;
 
                     &__content {
                         padding: 0 !important;
@@ -52,6 +54,11 @@ const onDragstart = (event, info) => {
                         flex-direction: column;
                         justify-content: space-around;
                         align-items: center;
+                    }
+
+
+                    &:hover {
+                        box-shadow: 2px 1px 2px 0 rgb(89, 160, 208);
                     }
                 }
             }

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <n-layout-content :embedded="true">
         <SketchRule :thick="thick" :scale="scale" width="100%" height="100%" :startX="startX" :startY="startY"
             :isShowReferLine="isShowReferLine" :isShowRuler="isShowRuler" :shadow="shadow" :lines="lines" :palette="palette"
             :cornerActive="true">
@@ -21,7 +21,7 @@
                 {{ c.title }}
             </div>
         </div>
-    </div>
+    </n-layout-content>
 </template>
   
 <script lang="ts" setup>
@@ -105,6 +105,7 @@ const isShowReferLine = ref(true)
         position: relative;
         // inset: 0;
         height: 100%;
+
         .cpt-item {
             &:hover {
                 border-color: red !important;
