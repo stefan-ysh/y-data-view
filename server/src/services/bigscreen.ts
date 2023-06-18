@@ -84,6 +84,7 @@ export const createBigscreen = async (bigscreenInfo: IBigscreen) => {
   const res = await Bigscreen.create({
     title,
     description,
+    components: [],
     group,
     thumb: randomDefaulBgImg(),
   });
