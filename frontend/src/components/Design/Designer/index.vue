@@ -5,7 +5,7 @@
             :cornerActive="true">
         </SketchRule>
         <div class="cpt-container" @dragover.prevent @drop="onDrop">
-            <div v-for="c in cpts" class="cpt-item" @click="clickCptItem(c)" :key="c.id" draggable="true" @dragover.prevent :style="{
+            <div v-for="c in cpts" class="cpt-item" @mouseover="clickCptItem(c)" :key="c.id" draggable="true" @dragover.prevent :style="{
                 position: 'absolute',
                 width: c.width + 'px',
                 height: c.height + 'px',
