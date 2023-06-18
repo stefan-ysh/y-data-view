@@ -1,25 +1,22 @@
-// import { App } from 'vue'
+/*
+ **全局注册组件
+ ** 放在components/** 文件夹下
+ */
+import { defineAsyncComponent } from "vue";
+const components = import.meta.glob("../components/**/*.vue"); // 异步方式
 
-// import SvgIcon from './index.vue'
-
-// export function setupSvgIcon(app: App) {
-//   app.component('SvgIcon', SvgIcon)
-// }
-
-
-import { useBigscreenStore } from "@/stores";
-const bigscreenStore = useBigscreenStore();
-
-async function loadModules() {
-  const arr: any = [];
-  const modules = import.meta.glob("../components/**/meta.ts", {
-    import: "default",
-    eager: true,
-  });
-  Object.values(modules).forEach((module: any) => {
-    arr.push(module.snippet);
-  });
-  bigscreenStore.setLeftPaneList(arr);
+export default function install(app: any) {
+  for (const [key, value] of Object.entries(components)) {
+    const componentList = Object.keys(components).map((key: string) => {
+      const name = key.split("/").pop().split(".")[0];
+      const cpt = components[key];
+      return {
+        name,
+        cpt,
+      };
+    });
+    componentList.forEach((item) => {
+      app.component(item.name, defineAsyncComponent(item.cpt));
+    });
+  }
 }
-
-export default loadModules;
