@@ -1,5 +1,5 @@
-import { useBigscreenStore } from "@/stores";
-const bigscreenStore = useBigscreenStore();
+import { useDesignStore } from "@/stores/bigscreen/design";
+const designStore = useDesignStore();
 
 async function loadModules() {
   const arr: any = [];
@@ -10,10 +10,10 @@ async function loadModules() {
   });
   Object.values(modules).forEach((module: any) => {
     arr.push(module.snippet);
-    props.push({ code: module.code, props: module.configure.props });
+    props.push({ code: module.code, props: module.configure.props, style: module.configure.style });
   });
-  bigscreenStore.setLeftPaneList(arr);
-  bigscreenStore.setComponentProps(props);
+  designStore.setLeftPaneList(arr);
+  designStore.setComponentProps(props);
 }
 
 export { loadModules };

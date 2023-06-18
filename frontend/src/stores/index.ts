@@ -1,2 +1,2 @@
-export * from './bigscreen';
+export * from './bigscreen/bigscreen';
 export * from './setting';
