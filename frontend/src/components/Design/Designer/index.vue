@@ -5,18 +5,22 @@
             :cornerActive="true">
         </SketchRule>
         <div class="cpt-container" @dragover.prevent @drop="onDrop">
-            <div v-for="c in cpts" class="cpt-item" @mouseover="clickCptItem(c)" :key="c.id" draggable="true" @dragover.prevent :style="{
-                position: 'absolute',
-                width: c.width + 'px',
-                height: c.height + 'px',
-                left: c.x + 'px',
-                top: c.y + 'px',
-                transform: 'rotate(' + c.rotate + 'deg)',
-                zIndex: c.z,
-                // backgroundColor: 'red'
-                border: '1px solid #fff'
-            }">
-               <component :is="c.componentName" :props="c.props" :styleObj="c.style" />
+            <div class="ghost-mask" v-show="currentComponent" :style="styleObject">
+                <drag-handle v-for="(handle, index) in handles" :key="index" :class="`drag-handle drag-handle-${handle}`" />
+            </div>
+            <div v-for="c in cpts" class="cpt-item" @click="clickCptItem(c)" :key="c.id" draggable="true"
+                @dragover.prevent :style="{
+                    position: 'absolute',
+                    width: c.width + 'px',
+                    height: c.height + 'px',
+                    left: c.x + 'px',
+                    top: c.y + 'px',
+                    transform: 'rotate(' + c.rotate + 'deg)',
+                    zIndex: c.z,
+                    // backgroundColor: 'red'
+                    border: '1px solid #fff'
+                }">
+                <component :is="c.componentName" :props="c.props" :styleObj="c.style" />
             </div>
         </div>
     </n-layout-content>
@@ -30,11 +34,30 @@ import { useDesignStore } from '@/stores/bigscreen/design';
 const designStore = useDesignStore();
 const cptProps = designStore.componentProps
 function arrayToObject(arr) {
-  return arr.reduce((obj, item) => {
-    obj[item.name] = item.defaultValue;
-    return obj;
-  }, {});
+    return arr.reduce((obj, item) => {
+        obj[item.name] = item.defaultValue;
+        return obj;
+    }, {});
 }
+const handles = ["t", "b", "l", "r", "tl", "tr", "bl", "br", "rotate"];
+const currentComponent = computed(() => {
+    return designStore.currentComponent
+})
+const styleObject = computed(() => {
+    if (currentComponent.value) {
+        const { width, height, x, y, z } = currentComponent.value;
+        return {
+            width: `${width}px`,
+            height: `${height}px`,
+            left: `${x}px`,
+            top: `${y}px`,
+            zIndex: z + 1,
+        };
+    } else {
+        return {}
+    }
+
+})
 const onDrop = (event: any) => {
     const dataTransfer = JSON.parse(event.dataTransfer.getData('cpt-info'));
     const { startX, startY } = JSON.parse(event.dataTransfer.getData('start-coor'));
@@ -116,7 +139,7 @@ const lines = ref({
 })
 const isShowReferLine = ref(true)
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .center {
     .cpt-container {
         margin: 20px;
@@ -128,6 +151,84 @@ const isShowReferLine = ref(true)
             &:hover {
                 border-color: red !important;
             }
+        }
+
+        .ghost-mask {
+            position: absolute;
+            border: 1px solid red;
+            // transition: all 1s;
+
+            // 多方向把手调节宽高坐标等
+            .drag-handle {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                background-color: #fff;
+                border: 1px solid #000;
+                cursor: pointer;
+            }
+
+            .drag-handle-tl {
+                top: -5px;
+                left: -5px;
+                cursor: nwse-resize;
+            }
+
+            .drag-handle-tr {
+                top: -5px;
+                right: -5px;
+                cursor: nesw-resize;
+            }
+
+            .drag-handle-bl {
+                bottom: -5px;
+                left: -5px;
+                cursor: nesw-resize;
+            }
+
+            .drag-handle-br {
+                bottom: -5px;
+                right: -5px;
+                cursor: nwse-resize;
+            }
+
+            .drag-handle-t {
+                top: -5px;
+                left: 50%;
+                transform: translateX(-50%);
+                cursor: ns-resize;
+            }
+
+            .drag-handle-b {
+                bottom: -5px;
+                left: 50%;
+                transform: translateX(-50%);
+                cursor: ns-resize;
+            }
+
+            .drag-handle-l {
+                top: 50%;
+                left: -5px;
+                transform: translateY(-50%);
+                cursor: ew-resize;
+            }
+
+            .drag-handle-r {
+                top: 50%;
+                right: -5px;
+                transform: translateY(-50%);
+                cursor: ew-resize;
+            }
+
+            .drag-handle-rotate {
+                top: -20px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 50%;
+                // 旋转
+                cursor: pointer;
+            }
+
         }
     }
 }
