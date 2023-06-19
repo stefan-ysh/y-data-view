@@ -4,6 +4,7 @@ import naive from "naive-ui";
 import App from "./App.vue";
 import { i18n } from "@/lang/index";
 import { setupSvgIcon } from './plugin/SvgIcon/index'
+import setupDirective from './plugin/directive/index'
 import component from "./packages/register/component";
 // 注册自定义svg组件
 import 'virtual:svg-icons-register';
@@ -16,6 +17,7 @@ import router from "./router";
 
 const app = createApp(App);
 setupSvgIcon(app)
+setupDirective(app)
 app.use(i18n);
 app.use(naive);
 app.use(component);
