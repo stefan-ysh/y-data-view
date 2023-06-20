@@ -13,7 +13,7 @@ const snippet: Snippet = {
   componentName: "Text",
   group: "基础类",
   category: "展示组件",
-  screenshot: "https://www.svgrepo.com/show/298556/text-box.svg",
+  screenshot: "https://www.svgrepo.com/show/416299/text-style-format.svg",
 };
 
 const ImageComponentMeta: any = {

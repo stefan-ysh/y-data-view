@@ -4,11 +4,13 @@
             :isShowReferLine="isShowReferLine" :isShowRuler="isShowRuler" :shadow="shadow" :lines="lines" :palette="palette"
             :cornerActive="true">
         </SketchRule>
-        <div class="cpt-container" @dragover.prevent @drop="onDrop">
+        <div class="cpt-container" @dragover.prevent @drop="onDrop"
+            @click="() => { designStore.setCurrentComponent(null) }">
             <div class="ghost-mask" v-show="currentComponent" :style="styleObject">
                 <drag-handle v-for="(handle, index) in handles" :key="index" :class="`drag-handle drag-handle-${handle}`" />
             </div>
-            <div v-for="c in cpts" class="cpt-item" @click="clickCptItem(c)" :key="c.id" draggable="true"
+
+            <div v-for="c in cpts" class="cpt-item" @click.stop="clickCptItem(c)" :key="c.id" draggable="true"
                 @dragover.prevent :style="{
                     position: 'absolute',
                     width: c.width + 'px',
@@ -17,9 +19,15 @@
                     top: c.y + 'px',
                     transform: 'rotate(' + c.rotate + 'deg)',
                     zIndex: c.z,
-                    // backgroundColor: 'red'
-                    border: '1px solid #fff'
                 }">
+                <div class="cpt-modal" :style="{
+                    width: c.width + 'px',
+                    height: c.height + 'px',
+                    position: 'absolute',
+                    inset: 0,
+                    transform: 'rotate(' + c.rotate + 'deg)',
+                    zIndex: c.z + 2,
+                }"></div>
                 <component :is="c.componentName" :props="c.props" :styleObj="c.style" />
             </div>
         </div>
@@ -147,15 +155,11 @@ const isShowReferLine = ref(true)
         // inset: 0;
         height: 100%;
 
-        .cpt-item {
-            &:hover {
-                border-color: red !important;
-            }
-        }
 
         .ghost-mask {
             position: absolute;
             border: 1px solid red;
+            background: rgba(208, 229, 52, 0.109);
             // transition: all 1s;
 
             // 多方向把手调节宽高坐标等
@@ -230,6 +234,17 @@ const isShowReferLine = ref(true)
             }
 
         }
+
+        .cpt-item {
+            .cpt-modal {
+                &:hover {
+                    border: 1px dashed yellow;
+                    border-radius: 5px;
+                }
+            }
+        }
+
+
     }
 }
 

@@ -13,7 +13,7 @@ const snippet: Snippet = {
   componentName: "Image",
   group: "基础类",
   category: "展示组件",
-  screenshot: "https://www.svgrepo.com/show/298556/text-box.svg",
+  screenshot: "https://www.svgrepo.com/show/474495/picture.svg",
 };
 
 const ImageComponentMeta: any = {
@@ -27,7 +27,7 @@ const ImageComponentMeta: any = {
         title: "图片地址",
         name: "src",
         description: "类型",
-        defaultValue: "https://www.svgrepo.com/show/298556/text-box.svg",
+        defaultValue: "https://tse3-mm.cn.bing.net/th/id/OIP-C.S3l9KiUczMTGfsq6JS9EJAHaEo?w=297&h=185&c=7&r=0&o=5&dpr=2&pid=1.7",
         setter: {
           name: "string",
           condition: () => {
@@ -39,7 +39,7 @@ const ImageComponentMeta: any = {
         title: "加载失败视图",
         name: "fallbackSrc",
         description: "加载失败时候展示的图片",
-        defaultValue: 'https://www.svgrepo.com/show/298556/text-box.svg',
+        defaultValue: "https://www.svgrepo.com/show/278414/error.svg",
         setter: {
           name: "string",
         },
@@ -84,26 +84,6 @@ const ImageComponentMeta: any = {
         defaultValue: "一张图片",
         setter: {
           name: "string",
-        },
-      },
-      {
-        title: "图片宽度",
-        name: "width",
-        description: "图片宽度",
-        defaultValue: 200,
-        setter: {
-          name: "number",
-          max: 1000,
-        },
-      },
-      {
-        title: "图片高度",
-        name: "height",
-        description: "图片高度",
-        defaultValue: 200,
-        setter: {
-          name: "number",
-          max: 1000,
         },
       },
       {

@@ -16,16 +16,23 @@ const props = defineProps({
 </script>
 
 <template>
-  <n-image
-    :fallback-src="props.props.fallbackSrc"
-    :show-toolbar="props.props.showToolbar"
-    :show-toolbar-tooltip="props.props.showToolbarTooltip"
-    :preview-disabled="!props.props.previewDisabled"
-    :alt="props.props.alt"
-    :object-fit="props.props.objectFit"
-    :width="props.props.width"
-    :height="props.props.height"
-    :src="props.props.src"
-  />
+    <div class="img-cpt-wrap">
+        <n-image :fallback-src="props.props.fallbackSrc" :show-toolbar="props.props.showToolbar"
+            :show-toolbar-tooltip="props.props.showToolbarTooltip" :preview-disabled="!props.props.previewDisabled"
+            :alt="props.props.alt" :object-fit="props.props.objectFit" :src="props.props.src" />
+    </div>
 </template>
-<style></style>
+<style lang="less" scoped>
+.img-cpt-wrap {
+    width: 100%;
+    height: 100%;
+
+    .n-image {
+        width: 100%;
+        height: 100%;
+        ::v-deep(img) {
+            width: 100%;
+        }
+    }
+}
+</style>
