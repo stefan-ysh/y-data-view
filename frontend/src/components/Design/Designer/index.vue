@@ -7,7 +7,8 @@
         <div class="cpt-container" @dragover.prevent @drop="onDrop"
             @click="() => { designStore.setCurrentComponent(null) }">
             <div class="ghost-mask" v-show="currentComponent" :style="styleObject">
-                <drag-handle v-for="(handle, index) in handles" :key="index" :class="`drag-handle drag-handle-${handle}`" />
+                <drag-handle v-for="(handle, index) in handles" @mousedown.stop="handlerDown($event, handle)" :key="index"
+                    :class="`drag-handle drag-handle-${handle}`" />
             </div>
 
             <div v-for="c in cpts" class="cpt-item" @click.stop="clickCptItem(c)" :key="c.id" draggable="true"
@@ -66,6 +67,73 @@ const styleObject = computed(() => {
     }
 
 })
+const handlerDown = (event: MouseEvent, direction: string) => {
+    // 记录初始鼠标位置和元素大小
+    const startX = event.clientX
+    const startY = event.clientY
+    const startWidth = currentComponent.value.width
+    const startHeight = currentComponent.value.height
+    const elX = currentComponent.value.x
+    const elY = currentComponent.value.y
+    // 添加鼠标移动事件处理程序
+    document.addEventListener('mousemove', handleResize)
+    document.addEventListener('mouseup', stopResize)
+
+    function handleResize(event: MouseEvent) {
+        event.stopPropagation()
+        // 计算鼠标移动距离并更新元素大小
+        const deltaX = event.clientX - startX
+        const deltaY = event.clientY - startY
+        switch (direction) {
+            case 't':
+                currentComponent.value.height = startHeight - deltaY
+                currentComponent.value.y = elY + deltaY
+                break
+            case 'b':
+                currentComponent.value.height = startHeight + deltaY
+                break
+            case 'l':
+                currentComponent.value.width = startWidth - deltaX
+                currentComponent.value.x = elX + deltaX
+                break
+            case 'r':
+                currentComponent.value.width = startWidth + deltaX
+                break
+            case 'tl':
+                currentComponent.value.height = startHeight - deltaY
+                currentComponent.value.y = elY + deltaY
+                currentComponent.value.width = startWidth - deltaX
+                currentComponent.value.x = elX + deltaX
+                break
+            case 'tr':
+                currentComponent.value.height = startHeight - deltaY
+                currentComponent.value.y = elY + deltaY
+                currentComponent.value.width = startWidth + deltaX
+                currentComponent.value.x = elX
+                break
+            case 'bl':
+                currentComponent.value.height = startHeight + deltaY
+                currentComponent.value.width = startWidth - deltaX
+                currentComponent.value.x = elX + deltaX
+                currentComponent.value.y = elY
+                break
+            case 'br':
+                currentComponent.value.height = startHeight + deltaY
+                currentComponent.value.width = startWidth + deltaX
+                currentComponent.value.x = elX
+                currentComponent.value.y = elY
+                break
+        }
+    }
+
+    function stopResize(event: MouseEvent) {
+        event.stopPropagation()
+        // 移除事件处理程序
+        document.removeEventListener('mousemove', handleResize)
+        document.removeEventListener('mouseup', stopResize)
+    }
+}
+
 const onDrop = (event: any) => {
     const dataTransfer = JSON.parse(event.dataTransfer.getData('cpt-info'));
     const { startX, startY } = JSON.parse(event.dataTransfer.getData('start-coor'));
