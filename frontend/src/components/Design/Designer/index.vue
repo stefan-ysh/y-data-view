@@ -68,66 +68,100 @@ const styleObject = computed(() => {
 
 })
 const handlerDown = (event: MouseEvent, direction: string) => {
+    event.stopPropagation()
     // 记录初始鼠标位置和元素大小
     const startX = event.clientX
     const startY = event.clientY
-    const startWidth = currentComponent.value.width
-    const startHeight = currentComponent.value.height
-    const elX = currentComponent.value.x
-    const elY = currentComponent.value.y
+    // 记录元素初始大小
+    const initWidth = currentComponent.value.width
+    // 记录元素初始大小
+    const initHeight = currentComponent.value.height
+    // 记录元素初始位置-x
+    const initX = currentComponent.value.x
+    // 记录元素初始位置-y
+    const initY = currentComponent.value.y
+    // 限制元素最小尺寸
+    const MIN_SIZE = 100
     // 添加鼠标移动事件处理程序
     document.addEventListener('mousemove', handleResize)
     document.addEventListener('mouseup', stopResize)
 
     function handleResize(event: MouseEvent) {
-        event.stopPropagation()
         // 计算鼠标移动距离并更新元素大小
         const deltaX = event.clientX - startX
         const deltaY = event.clientY - startY
+
         switch (direction) {
             case 't':
-                currentComponent.value.height = startHeight - deltaY
-                currentComponent.value.y = elY + deltaY
+                if (initHeight - deltaY > MIN_SIZE) {
+                    currentComponent.value.height = initHeight - deltaY
+                    currentComponent.value.y = initY + deltaY
+                }
+
                 break
             case 'b':
-                currentComponent.value.height = startHeight + deltaY
+                if (initHeight + deltaY > MIN_SIZE) {
+                    currentComponent.value.height = initHeight + deltaY
+                }
                 break
             case 'l':
-                currentComponent.value.width = startWidth - deltaX
-                currentComponent.value.x = elX + deltaX
+                if (initWidth - deltaX > MIN_SIZE) {
+                    currentComponent.value.width = initWidth - deltaX
+                    currentComponent.value.x = initX + deltaX
+                }
+
                 break
             case 'r':
-                currentComponent.value.width = startWidth + deltaX
+                if (initWidth + deltaX > MIN_SIZE) {
+                    currentComponent.value.width = initWidth + deltaX
+                }
                 break
             case 'tl':
-                currentComponent.value.height = startHeight - deltaY
-                currentComponent.value.y = elY + deltaY
-                currentComponent.value.width = startWidth - deltaX
-                currentComponent.value.x = elX + deltaX
+                if (initHeight - deltaY > MIN_SIZE) {
+                    currentComponent.value.height = initHeight - deltaY
+                    currentComponent.value.y = initY + deltaY
+                }
+                if (initWidth - deltaX > MIN_SIZE) {
+                    currentComponent.value.width = initWidth - deltaX
+                    currentComponent.value.x = initX + deltaX
+                }
                 break
             case 'tr':
-                currentComponent.value.height = startHeight - deltaY
-                currentComponent.value.y = elY + deltaY
-                currentComponent.value.width = startWidth + deltaX
-                currentComponent.value.x = elX
+                if (initHeight - deltaY > MIN_SIZE) {
+                    currentComponent.value.height = initHeight - deltaY
+                    currentComponent.value.y = initY + deltaY
+                }
+
+                if (initWidth + deltaX > MIN_SIZE) {
+                    currentComponent.value.width = initWidth + deltaX
+                    currentComponent.value.x = initX
+                }
+
                 break
             case 'bl':
-                currentComponent.value.height = startHeight + deltaY
-                currentComponent.value.width = startWidth - deltaX
-                currentComponent.value.x = elX + deltaX
-                currentComponent.value.y = elY
+                if (initHeight + deltaY > MIN_SIZE) {
+                    currentComponent.value.height = initHeight + deltaY
+                    currentComponent.value.y = initY
+                }
+                if (initWidth - deltaX > MIN_SIZE) {
+                    currentComponent.value.width = initWidth - deltaX
+                    currentComponent.value.x = initX + deltaX
+                }
                 break
             case 'br':
-                currentComponent.value.height = startHeight + deltaY
-                currentComponent.value.width = startWidth + deltaX
-                currentComponent.value.x = elX
-                currentComponent.value.y = elY
+                if (initHeight + deltaY > MIN_SIZE) {
+                    currentComponent.value.height = initHeight + deltaY
+                    currentComponent.value.y = initY
+                }
+                if (initWidth + deltaX > MIN_SIZE) {
+                    currentComponent.value.width = initWidth + deltaX
+                    currentComponent.value.x = initX
+                }
                 break
         }
     }
 
     function stopResize(event: MouseEvent) {
-        event.stopPropagation()
         // 移除事件处理程序
         document.removeEventListener('mousemove', handleResize)
         document.removeEventListener('mouseup', stopResize)
