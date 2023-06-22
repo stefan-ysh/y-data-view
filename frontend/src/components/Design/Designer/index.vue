@@ -256,8 +256,8 @@ const onDrop = (event: any) => {
     const relativePosition = getMousePosition(event, designer.value.$el);
     const dataTransfer = JSON.parse(event.dataTransfer.getData('cpt-info'));
     // 获取当前drop区域的坐标，指定组件位置的范围
-    const containerWidth = designer.value.$el.clientWidth
-    const containerHeight = designer.value.$el.clientHeight
+    const containerWidth = designStore.curBigscreen.width
+    const containerHeight = designStore.curBigscreen.height
     // 判断组件是否超出drop区域
     // if (x <= containerX || y <= containerY || x + dataTransfer.width >= containerWidth || y + dataTransfer.height >= containerHeight) {
     //     return
