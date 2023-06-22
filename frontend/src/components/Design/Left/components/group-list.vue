@@ -35,7 +35,7 @@ const onDragstart = (event, info) => {
 </script>
 <style lang="less" scoped>
 .n-collapse {
-    /deep/ &-item {
+    ::v-deep(.n-collapse-item) {
         &__content-wrapper {
             .n-collapse-item__content-inner {
                 width: 300px;

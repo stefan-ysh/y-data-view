@@ -151,9 +151,9 @@ const handleEdit = (item: Bigscreen) => {
   }
 
   .bc-img {
-    /deep/img {
-      // width: 100%;
-    }
+    // ::deep(img) {
+    //   // width: 100%;
+    // }
   }
 
   .item-operate-wrap {
