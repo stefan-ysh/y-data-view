@@ -1,12 +1,20 @@
 <template>
-    <n-layout-content :embedded="true">
-        <SketchRule :thick="thick" :scale="scale" width="100%" height="100%" :startX="startX" :startY="startY"
+    <n-layout-content :embedded="true" ref="designer" style="display: flex;align-items: center; justify-content: center;">
+        <SketchRule :thick="thick" :scale="rulerScale" width="100%" height="100%" :startX="startX" :startY="startY"
             :isShowReferLine="isShowReferLine" :isShowRuler="isShowRuler" :shadow="shadow" :lines="lines" :palette="palette"
             :cornerActive="true">
         </SketchRule>
-        <div class="cpt-container" @dragover.prevent @drop="onDrop"
-            @click="() => { designStore.setCurrentComponent(null) }">
-            <div class="ghost-mask" v-show="currentComponent" :style="styleObject">
+        <div class="cpt-container" @dragover.prevent @drop="onDrop" :style="{
+            width: designStore.curBigscreen.width + 'px',
+            height: designStore.curBigscreen.height + 'px',
+            background: designStore.curBigscreen.bgColor,
+            backgroundImage: designStore.curBigscreen.BgImage ? `url(${designStore.curBigscreen.BgImage})` : 'none',
+            transition: 'transform 0.5s',
+            margin: '20px 0 0 20px',
+            transform: `scale(${scale})`,
+        }" @click="() => { designStore.setCurrentComponent(null) }">
+            <div class="ghost-mask" v-show="currentComponent" :style="styleObject"
+                @mousedown.prevent="moveCptDown($event, cpt)">
                 <drag-handle v-for="(handle, index) in handles" @mousedown.stop="handlerDown($event, handle)" :key="index"
                     :class="`drag-handle drag-handle-${handle}`" />
             </div>
@@ -38,7 +46,7 @@
 <script lang="ts" setup>
 import { SketchRule } from 'vue3-sketch-ruler'
 import 'vue3-sketch-ruler/lib/style.css'
-import { computed, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useDesignStore } from '@/stores/bigscreen/design';
 const designStore = useDesignStore();
 const cptProps = designStore.componentProps
@@ -67,11 +75,79 @@ const styleObject = computed(() => {
     }
 
 })
+const scale = ref(1)
+const designer = ref()
+const timeoutId = ref();
+function getMousePosition(event: MouseEvent, refElement: HTMLElement) {
+    const rect = refElement.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / scale.value;
+    const y = (event.clientY - rect.top) / scale.value;
+    return { x, y };
+}
+
+// 手动移动画布上的组件
+const moveCptDown = (e: MouseEvent, cpt: any) => {
+    // 将鼠标的坐标实时赋值给 currentComponent
+    const onMouseMove = (event: MouseEvent) => {
+        const relativePosition = getMousePosition(event, designer.value.$el);
+        if (relativePosition.x - currentComponent.value.width / 2 <= 0) {
+            currentComponent.value.x = 0
+        } else if (relativePosition.x + currentComponent.value.width / 2 >= designStore.curBigscreen.width) {
+            currentComponent.value.x = designStore.curBigscreen.width - currentComponent.value.width
+        } else {
+            currentComponent.value.x = relativePosition.x - currentComponent.value.width / 2;
+        }
+        if (relativePosition.y - currentComponent.value.height / 2 <= 0) {
+            currentComponent.value.y = 0
+        } else if (relativePosition.y + currentComponent.value.height / 2 >= designStore.curBigscreen.height) {
+            currentComponent.value.y = designStore.curBigscreen.height - currentComponent.value.height
+        } else {
+            currentComponent.value.y = relativePosition.y - currentComponent.value.height / 2;
+        }
+    };
+    const onMouseUp = () => {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    e.stopPropagation();
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+}
+// 防抖
+const debounce = (func: Function, delay: number = 300) => {
+    clearTimeout(timeoutId.value);
+    timeoutId.value = setTimeout(func, delay);
+}
+
+onMounted(() => {
+    windowResize()
+    window.addEventListener('resize', windowResize)
+})
+onUnmounted(() => {
+    window.removeEventListener('resize', windowResize)
+})
+const windowResize = () => {
+    debounce(() => {
+        // 处理窗口大小改变事件的代码
+        // const canvas = document.querySelector('.cpt-container') as any
+        const windowWidth = designer.value.$el.clientWidth
+        const windowHeight = designer.value.$el.clientHeight
+        const width = designStore.curBigscreen.width
+        const height = designStore.curBigscreen.height
+        const screenX = Number((windowWidth / width).toFixed(2))
+        const screenY = Number((windowHeight / height).toFixed(2))
+        const minScale = Math.min(screenX, screenY)
+        // 设置缩放最小值，避免缩放过小页面卡死
+        scale.value = minScale
+    }, 300);
+
+}
 const handlerDown = (event: MouseEvent, direction: string) => {
     event.stopPropagation()
     // 记录初始鼠标位置和元素大小
-    const startX = event.clientX
-    const startY = event.clientY
+    const startX = event.clientX / scale.value
+    const startY = event.clientY / scale.value
     // 记录元素初始大小
     const initWidth = currentComponent.value.width
     // 记录元素初始大小
@@ -88,14 +164,19 @@ const handlerDown = (event: MouseEvent, direction: string) => {
 
     function handleResize(event: MouseEvent) {
         // 计算鼠标移动距离并更新元素大小
-        const deltaX = event.clientX - startX
-        const deltaY = event.clientY - startY
+        const deltaX = event.clientX / scale.value - startX
+        const deltaY = event.clientY / scale.value - startY
 
         switch (direction) {
             case 't':
-                if (initHeight - deltaY > MIN_SIZE) {
-                    currentComponent.value.height = initHeight - deltaY
-                    currentComponent.value.y = initY + deltaY
+
+                if (initY + deltaY <= 0) {
+                    currentComponent.value.y = 0
+                } else {
+                    if (initHeight - deltaY > MIN_SIZE) {
+                        currentComponent.value.y = initY + deltaY
+                        currentComponent.value.height = initHeight - deltaY
+                    }
                 }
 
                 break
@@ -169,15 +250,10 @@ const handlerDown = (event: MouseEvent, direction: string) => {
 }
 
 const onDrop = (event: any) => {
+    const relativePosition = getMousePosition(event, designer.value.$el);
     const dataTransfer = JSON.parse(event.dataTransfer.getData('cpt-info'));
-    const { startX, startY } = JSON.parse(event.dataTransfer.getData('start-coor'));
-    //通过鼠标开始拖拽时候记录下的坐标计算drop时候的准确坐标，避免drop时候鼠标错位
-    // const containerX = event.target.offsetLeft
-    // const containerY = event.target.offsetTop
-    let x = event.clientX - startX / 2 - 260
-    let y = event.clientY - startY / 2 - 50
     // 获取当前drop区域的坐标，指定组件位置的范围
-    const containerWidth = 800
+    const containerWidth = 1920
     const containerHeight = 1080
     // 判断组件是否超出drop区域
     // if (x <= containerX || y <= containerY || x + dataTransfer.width >= containerWidth || y + dataTransfer.height >= containerHeight) {
@@ -185,6 +261,9 @@ const onDrop = (event: any) => {
     // }
     const cptWidth = dataTransfer.width || 150
     const cptHeight = dataTransfer.width || 150
+
+    let x = relativePosition.x - (cptWidth) / 2
+    let y = relativePosition.y - (cptHeight) / 2
     // 如果超出容器的最大或者小于最小，则设置为最大或者最小
 
     if (x <= 0) {
@@ -241,7 +320,7 @@ const startX = ref(0)
 const startY = ref(0)
 const thick = ref(20)
 const isShowRuler = ref(true)
-const scale = ref(1)
+const rulerScale = ref(1)
 const shadow = ref(true)
 const lines = ref({
     h: [],
@@ -253,10 +332,12 @@ const isShowReferLine = ref(true)
 .center {
     .cpt-container {
         margin: 20px;
+        min-width: 200px;
         position: relative;
         // inset: 0;
         height: 100%;
-
+        background-size: 100% 100%;
+        transform-origin: 0 0;
 
         .ghost-mask {
             position: absolute;
