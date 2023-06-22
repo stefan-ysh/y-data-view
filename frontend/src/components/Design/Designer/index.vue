@@ -134,7 +134,7 @@ const windowResize = () => {
     debounce(() => {
         // 处理窗口大小改变事件的代码
         // const canvas = document.querySelector('.cpt-container') as any
-        const windowWidth = designer.value.$el.clientWidth
+        const windowWidth = designer.value.$el.clientWidth - 35
         const windowHeight = designer.value.$el.clientHeight
         const width = designStore.curBigscreen.width
         const height = designStore.curBigscreen.height
@@ -184,62 +184,87 @@ const handlerDown = (event: MouseEvent, direction: string) => {
 
                 break
             case 'b':
-                if (initHeight + deltaY > MIN_SIZE) {
-                    currentComponent.value.height = initHeight + deltaY
+                if (initY + deltaY + initHeight >= designStore.curBigscreen.height) {
+                    currentComponent.value.height = designStore.curBigscreen.height - initY
+                } else {
+                    if (initHeight + deltaY > MIN_SIZE) {
+                        currentComponent.value.height = initHeight + deltaY
+                    }
                 }
                 break
             case 'l':
-                if (initWidth - deltaX > MIN_SIZE) {
-                    currentComponent.value.width = initWidth - deltaX
-                    currentComponent.value.x = initX + deltaX
+                if (initX + deltaX <= 0) {
+                    currentComponent.value.x = 0
+                } else {
+                    if (initWidth - deltaX > MIN_SIZE) {
+                        currentComponent.value.width = initWidth - deltaX
+                        currentComponent.value.x = initX + deltaX
+                    }
                 }
 
                 break
             case 'r':
-                if (initWidth + deltaX > MIN_SIZE) {
-                    currentComponent.value.width = initWidth + deltaX
+                if (initX + deltaX + initWidth >= designStore.curBigscreen.width) {
+                    currentComponent.value.width = designStore.curBigscreen.width - initX
+                } else {
+                    if (initWidth + deltaX > MIN_SIZE) {
+                        currentComponent.value.width = initWidth + deltaX
+                    }
                 }
                 break
             case 'tl':
-                if (initHeight - deltaY > MIN_SIZE) {
-                    currentComponent.value.height = initHeight - deltaY
-                    currentComponent.value.y = initY + deltaY
-                }
-                if (initWidth - deltaX > MIN_SIZE) {
+                if (initX + deltaX <= 0) {
+                    currentComponent.value.x = 0
+                } else if (initWidth - deltaX > MIN_SIZE) {
                     currentComponent.value.width = initWidth - deltaX
                     currentComponent.value.x = initX + deltaX
                 }
-                break
-            case 'tr':
-                if (initHeight - deltaY > MIN_SIZE) {
+                if (initY + deltaY <= 0) {
+                    currentComponent.value.y = 0
+                } else if (initHeight - deltaY > MIN_SIZE) {
                     currentComponent.value.height = initHeight - deltaY
                     currentComponent.value.y = initY + deltaY
                 }
 
-                if (initWidth + deltaX > MIN_SIZE) {
+                break
+            case 'tr':
+                if (initX + deltaX + initWidth >= designStore.curBigscreen.width) {
+                    currentComponent.value.width = designStore.curBigscreen.width - initX
+                } else if (initWidth + deltaX > MIN_SIZE) {
                     currentComponent.value.width = initWidth + deltaX
-                    currentComponent.value.x = initX
+                }
+                if (initY + deltaY <= 0) {
+                    currentComponent.value.y = 0
+                } else if (initHeight - deltaY > MIN_SIZE) {
+                    currentComponent.value.height = initHeight - deltaY
+                    currentComponent.value.y = initY + deltaY
                 }
 
                 break
             case 'bl':
-                if (initHeight + deltaY > MIN_SIZE) {
-                    currentComponent.value.height = initHeight + deltaY
-                    currentComponent.value.y = initY
-                }
-                if (initWidth - deltaX > MIN_SIZE) {
+                if (initX + deltaX <= 0) {
+                    currentComponent.value.x = 0
+                } else if (initWidth - deltaX > MIN_SIZE) {
                     currentComponent.value.width = initWidth - deltaX
                     currentComponent.value.x = initX + deltaX
                 }
+                if (initY + deltaY + initHeight >= designStore.curBigscreen.height) {
+                    currentComponent.value.height = designStore.curBigscreen.height - initY
+                } else if (initHeight + deltaY > MIN_SIZE) {
+                    currentComponent.value.height = initHeight + deltaY
+                }
+
                 break
             case 'br':
-                if (initHeight + deltaY > MIN_SIZE) {
-                    currentComponent.value.height = initHeight + deltaY
-                    currentComponent.value.y = initY
-                }
-                if (initWidth + deltaX > MIN_SIZE) {
+                if (initX + deltaX + initWidth >= designStore.curBigscreen.width) {
+                    currentComponent.value.width = designStore.curBigscreen.width - initX
+                } else if (initWidth + deltaX > MIN_SIZE) {
                     currentComponent.value.width = initWidth + deltaX
-                    currentComponent.value.x = initX
+                }
+                if (initY + deltaY + initHeight >= designStore.curBigscreen.height) {
+                    currentComponent.value.height = designStore.curBigscreen.height - initY
+                } else if (initHeight + deltaY > MIN_SIZE) {
+                    currentComponent.value.height = initHeight + deltaY
                 }
                 break
         }
