@@ -39,6 +39,9 @@
                 }"></div>
                 <component :is="c.componentName" :props="c.props" :styleObj="c.style" />
             </div>
+            <div v-if="cpts.length === 0">
+                暂无组件，请从左侧拖拽组件到此处进行设计
+            </div>
         </div>
     </n-layout-content>
 </template>
@@ -253,8 +256,8 @@ const onDrop = (event: any) => {
     const relativePosition = getMousePosition(event, designer.value.$el);
     const dataTransfer = JSON.parse(event.dataTransfer.getData('cpt-info'));
     // 获取当前drop区域的坐标，指定组件位置的范围
-    const containerWidth = 1920
-    const containerHeight = 1080
+    const containerWidth = designer.value.$el.clientWidth
+    const containerHeight = designer.value.$el.clientHeight
     // 判断组件是否超出drop区域
     // if (x <= containerX || y <= containerY || x + dataTransfer.width >= containerWidth || y + dataTransfer.height >= containerHeight) {
     //     return
@@ -330,6 +333,10 @@ const isShowReferLine = ref(true)
 </script>
 <style lang="less" scoped>
 .center {
+    ::v-deep(.n-layout-scroll-container) {
+        width: 100%;
+    }
+
     .cpt-container {
         margin: 20px;
         min-width: 200px;
