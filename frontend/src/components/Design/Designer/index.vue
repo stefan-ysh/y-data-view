@@ -1,6 +1,7 @@
 <template>
     <n-layout-content :embedded="true" ref="designer" style="display: flex;align-items: center; justify-content: center;">
-        <SketchRule :thick="thick" :scale="rulerScale" width="100%" height="100%" :startX="startX" :startY="startY"
+        <SketchRule :thick="thick" :scale="scale" :width="designStore.curBigscreen.width * screenX"
+            :height="designStore.curBigscreen.height * screenY" :startX="startX" :startY="startY"
             :isShowReferLine="isShowReferLine" :isShowRuler="isShowRuler" :shadow="shadow" :lines="lines" :palette="palette"
             :cornerActive="true">
         </SketchRule>
@@ -130,6 +131,8 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('resize', windowResize)
 })
+const screenX = ref(0)
+const screenY = ref(0)
 const windowResize = () => {
     debounce(() => {
         // 处理窗口大小改变事件的代码
@@ -138,9 +141,9 @@ const windowResize = () => {
         const windowHeight = designer.value.$el.clientHeight
         const width = designStore.curBigscreen.width
         const height = designStore.curBigscreen.height
-        const screenX = Number((windowWidth / width).toFixed(2))
-        const screenY = Number((windowHeight / height).toFixed(2))
-        const minScale = Math.min(screenX, screenY)
+        screenX.value = Number((windowWidth / width).toFixed(2))
+        screenY.value = Number((windowHeight / height).toFixed(2))
+        const minScale = Math.min(screenX.value, screenY.value)
         // 设置缩放最小值，避免缩放过小页面卡死
         scale.value = minScale
     }, 300);
@@ -160,7 +163,7 @@ const handlerDown = (event: MouseEvent, direction: string) => {
     // 记录元素初始位置-y
     const initY = currentComponent.value.y
     // 限制元素最小尺寸
-    const MIN_SIZE = 100
+    const MIN_SIZE = 20
     // 添加鼠标移动事件处理程序
     document.addEventListener('mousemove', handleResize)
     document.addEventListener('mouseup', stopResize)
@@ -463,10 +466,6 @@ const isShowReferLine = ref(true)
     }
 }
 
-.indicator .value {
-    color: var(--n-text-color);
-    background-color: transparent;
-}
 
 .mb-ruler {
 
@@ -478,5 +477,12 @@ const isShowReferLine = ref(true)
             border-width: 100px !important;
         }
     }
+}
+</style>
+<style>
+.indicator .value {
+    color: var(--n-text-color);
+    background-color: transparent;
+
 }
 </style>
