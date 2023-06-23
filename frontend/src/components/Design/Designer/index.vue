@@ -50,7 +50,7 @@
 <script lang="ts" setup>
 import { SketchRule } from 'vue3-sketch-ruler'
 import 'vue3-sketch-ruler/lib/style.css'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useDesignStore } from '@/stores/bigscreen/design';
 const designStore = useDesignStore();
 const cptProps = designStore.componentProps
@@ -78,6 +78,13 @@ const styleObject = computed(() => {
         return {}
     }
 
+})
+
+// 监听左侧面板的折叠状态，折叠时，重新计算画布的宽度
+watch(() => designStore.leftPaneCollapsed, () => {
+    windowResize()
+}, {
+    deep: true
 })
 const scale = ref(1)
 const designer = ref()

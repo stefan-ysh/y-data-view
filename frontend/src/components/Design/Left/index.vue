@@ -1,6 +1,7 @@
 <template>
     <n-layout class="left" has-sider sider-placement="left">
         <n-layout-sider collapse-mode="transform" :collapsed-width="0" :width="300" :native-scrollbar="false"
+        :on-update:collapsed="designStore.setLeftPaneCollapsed"
             show-trigger="bar" content-style="padding: 0px;" bordered>
             <n-tabs size="small" :on-update:value="changeTab" class="card-tabs" default-value="cpt" type="line"
                 justify-content="space-evenly" animated pane-wrapper-style="margin: 0 -4px">
