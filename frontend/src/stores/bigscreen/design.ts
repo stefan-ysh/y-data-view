@@ -21,6 +21,7 @@ export const useDesignStore = defineStore("bigscreen-design", {
       } as any,
       currentComponent: null as any,
       leftPaneCollapsed: false,
+      rightPaneCollapsed: false,
     };
   },
   actions: {
@@ -55,6 +56,9 @@ export const useDesignStore = defineStore("bigscreen-design", {
     },
     setLeftPaneCollapsed(collapsed: boolean) {
       this.leftPaneCollapsed = collapsed;
+    },
+    setRightPaneCollapsed() {
+      this.rightPaneCollapsed = !this.rightPaneCollapsed;
     },
     removeComponent(id: string) {
       this.curBigscreen.components = this.curBigscreen.components.filter(

@@ -1,7 +1,7 @@
 <template>
-    <div class="right-container">
-        <BigscreenConfig :bigscreenInfo="bigscreenInfo" v-if="!currentCpt" />
-        <CptConfig :currentCpt="currentCpt" v-else />
+    <div class="right-container" :style="{minWidth: !designStore.rightPaneCollapsed? '300px' : '0',maxWidth: !designStore.rightPaneCollapsed? '300px' : '0' }">
+        <BigscreenConfig v-show="!designStore.rightPaneCollapsed" :bigscreenInfo="bigscreenInfo" v-if="!currentCpt" />
+        <CptConfig v-show="!designStore.rightPaneCollapsed" :currentCpt="currentCpt" v-else />
     </div>
 </template>   
 <script lang="ts" setup>
@@ -22,9 +22,11 @@ const bigscreenInfo = computed(() => {
 </script>
 <style lang="less">
 .right-container {
-    width: 300px;
+    // width: 300px;
     min-width: 300px;
     max-width: 300px;
+    transition: all .3s;
+    overflow: hidden;
     padding: 0 5px;
     background: var(--n-color);
 }

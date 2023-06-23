@@ -1,5 +1,6 @@
 <template>
-    <n-layout-content :embedded="true" ref="designer" style="display: flex;align-items: center; justify-content: center;">
+    <n-layout-content :embedded="true" ref="designer"
+        style="display: flex;align-items: center; justify-content: center;position: relative;">
         <SketchRule :thick="thick" :scale="scale" :width="designStore.curBigscreen.width * screenX"
             :height="designStore.curBigscreen.height * screenY" :startX="startX" :startY="startY"
             :isShowReferLine="isShowReferLine" :isShowRuler="isShowRuler" :shadow="shadow" :lines="lines" :palette="palette"
@@ -44,6 +45,12 @@
                 暂无组件，请从左侧拖拽组件到此处进行设计
             </div>
         </div>
+        <div class="hide-right-pane-bar-wrao" @click="collapseRightPane">
+            <div class="n-layout-toggle-bar">
+                <div class="n-layout-toggle-bar__top"></div>
+                <div class="n-layout-toggle-bar__bottom"></div>
+            </div>
+        </div>
     </n-layout-content>
 </template>
   
@@ -54,6 +61,20 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useDesignStore } from '@/stores/bigscreen/design';
 const designStore = useDesignStore();
 const cptProps = designStore.componentProps
+import { useSettingStore, useBigscreenStore } from "@/stores";
+const setting = useSettingStore()
+const toggleBarStyle = computed(() => {
+    const isDark = setting.theme === 'dark'
+    return {
+        bgColor: isDark ? 'rgba(64, 64, 67, 1)' : 'rgba(191, 191, 191, 1)',
+        hoverBgColor: isDark ? 'rgba(88, 88, 91, 1)' : 'rgba(153, 153, 153, 1)',
+        topHoverDeg: designStore.rightPaneCollapsed ? '12deg' : '-12deg',
+        bottomHoverDeg: designStore.rightPaneCollapsed ? '-12deg' : '12deg',
+    }
+})
+const collapseRightPane = () => {
+    designStore.setRightPaneCollapsed()
+}
 function arrayToObject(arr) {
     return arr.reduce((obj, item) => {
         obj[item.name] = item.defaultValue;
@@ -80,8 +101,8 @@ const styleObject = computed(() => {
 
 })
 
-// 监听左侧面板的折叠状态，折叠时，重新计算画布的宽度
-watch(() => designStore.leftPaneCollapsed, () => {
+// 监听左侧/右侧面板的折叠状态，折叠时，重新计算画布的宽度
+watch([() => designStore.leftPaneCollapsed, () => designStore.rightPaneCollapsed], () => {
     windowResize()
 }, {
     deep: true
@@ -486,10 +507,63 @@ const isShowReferLine = ref(true)
     }
 }
 </style>
-<style>
+<style lang="less">
 .indicator .value {
     color: var(--n-text-color);
     background-color: transparent;
 
+}
+
+.hide-right-pane-bar-wrao {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    top: 50%;
+    right: 0;
+    transform: translate(-50%, -50%);
+
+    .n-layout-toggle-bar {
+        cursor: pointer;
+        height: 72px;
+        width: 32px;
+        position: absolute;
+        top: calc(50% - 36px);
+        right: -10px;
+
+        &__top {
+            cursor: pointer;
+            background-color: v-bind('toggleBarStyle.bgColor');
+            position: absolute;
+            width: 4px;
+            border-radius: 2px;
+            height: 38px;
+            left: 14px;
+            transition: background-color .3s var(--n-bezier), transform .3s var(--n-bezier);
+        }
+
+        &__bottom {
+            cursor: pointer;
+            background-color: v-bind('toggleBarStyle.bgColor');
+            position: absolute;
+            width: 4px;
+            border-radius: 2px;
+            height: 38px;
+            left: 14px;
+            top: 34px;
+            transition: background-color .3s var(--n-bezier), transform .3s var(--n-bezier);
+        }
+
+        &:hover {
+            .n-layout-toggle-bar__top {
+                transform: rotate(v-bind('toggleBarStyle.topHoverDeg')) scale(1.15) translateY(-2px);
+                background-color: v-bind('toggleBarStyle.hoverBgColor');
+            }
+
+            .n-layout-toggle-bar__bottom {
+                transform: rotate(v-bind('toggleBarStyle.bottomHoverDeg')) scale(1.15) translateY(2px);
+                background-color: v-bind('toggleBarStyle.hoverBgColor');
+
+            }
+        }
+    }
 }
 </style>
