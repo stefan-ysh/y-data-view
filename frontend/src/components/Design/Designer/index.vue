@@ -14,14 +14,14 @@
             transition: 'transform 0.5s',
             margin: '20px 0 0 20px',
             transform: `scale(${scale})`,
-        }" @click="() => { designStore.setCurrentComponent(null) }">
-            <div class="ghost-mask" v-show="currentComponent" :style="styleObject"
-                @mousedown.prevent="moveCptDown($event, cpt)">
+        }" @click.self="() => { designStore.setCurrentComponent(null) }">
+            <div class="ghost-mask" v-show="currentComponent" :style="styleObject" @mousedown="moveCptDown($event)"
+                @click.stop="null">
                 <drag-handle v-for="(handle, index) in handles" @mousedown.stop="handlerDown($event, handle)" :key="index"
                     :class="`drag-handle drag-handle-${handle}`" />
             </div>
 
-            <div v-for="c in cpts" class="cpt-item" @click.stop="clickCptItem(c)" :key="c.id" draggable="true"
+            <div v-for="c in cpts" class="cpt-item" :key="c.id" draggable="true"
                 @dragover.prevent :style="{
                     position: 'absolute',
                     width: c.width + 'px',
@@ -31,7 +31,7 @@
                     transform: 'rotate(' + c.rotate + 'deg)',
                     zIndex: c.z,
                 }">
-                <div class="cpt-modal" :style="{
+                <div class="cpt-modal" @mousedown="moveCptDown($event, c)" :style="{
                     width: c.width + 'px',
                     height: c.height + 'px',
                     position: 'absolute',
@@ -100,7 +100,6 @@ const styleObject = computed(() => {
     }
 
 })
-
 // 监听左侧/右侧面板的折叠状态，折叠时，重新计算画布的宽度
 watch([() => designStore.leftPaneCollapsed, () => designStore.rightPaneCollapsed], () => {
     windowResize()
@@ -118,33 +117,54 @@ function getMousePosition(event: MouseEvent, refElement: HTMLElement) {
 }
 
 // 手动移动画布上的组件
-const moveCptDown = (e: MouseEvent, cpt: any) => {
+const moveCptDown = (e: MouseEvent, c?: any) => {
+    e.stopPropagation()
+    c && designStore.setCurrentComponent(c)
+    // 鼠标按下的坐标
+    const { x, y } = getMousePosition(e, designer.value.$el);
+    // 组件当前坐标
+    const cptStartX = currentComponent.value.x
+    const cptStartY = currentComponent.value.y
+    // 组件宽高
+    const cptWidth = currentComponent.value.width
+    const cptHeight = currentComponent.value.height
+    // 解决 mousemove mouseup 和 click 事件的冲突
+    designer.value.$el.style.pointerEvents = 'none'
+
     // 将鼠标的坐标实时赋值给 currentComponent
-    const onMouseMove = (event: MouseEvent) => {
+    document.onmousemove = (event: MouseEvent) => {
+        event.stopPropagation()
+        // 鼠标移动的坐标
         const relativePosition = getMousePosition(event, designer.value.$el);
-        if (relativePosition.x - currentComponent.value.width / 2 <= 0) {
+        // 鼠标移动的距离
+        const deltaX = relativePosition.x - x
+        const deltaY = relativePosition.y - y
+        // 组件移动后的坐标
+        const newX = deltaX + cptStartX
+        const newY = deltaY + cptStartY
+        // 边界检测
+        if (newX <= 0) {
             currentComponent.value.x = 0
-        } else if (relativePosition.x + currentComponent.value.width / 2 >= designStore.curBigscreen.width) {
+        } else if (newX + cptWidth >= designStore.curBigscreen.width) {
             currentComponent.value.x = designStore.curBigscreen.width - currentComponent.value.width
         } else {
-            currentComponent.value.x = relativePosition.x - currentComponent.value.width / 2;
+            currentComponent.value.x = newX;
         }
-        if (relativePosition.y - currentComponent.value.height / 2 <= 0) {
+        if (newY <= 0) {
             currentComponent.value.y = 0
-        } else if (relativePosition.y + currentComponent.value.height / 2 >= designStore.curBigscreen.height) {
+        } else if (newY + cptHeight >= designStore.curBigscreen.height) {
             currentComponent.value.y = designStore.curBigscreen.height - currentComponent.value.height
         } else {
-            currentComponent.value.y = relativePosition.y - currentComponent.value.height / 2;
+            currentComponent.value.y = newY;
         }
-    };
-    const onMouseUp = () => {
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
+
     };
 
-    e.stopPropagation();
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    document.onmouseup = () => {
+        // 移除事件及恢复解决 mousedown mouseup 和 click 事件的冲突时设置的 pointerEvents
+        designer.value.$el.style.pointerEvents = document.onmousemove = document.onmouseup = null
+    }
+
 }
 // 防抖
 const debounce = (func: Function, delay: number = 300) => {
@@ -321,8 +341,9 @@ const onDrop = (event: any) => {
     const cptWidth = dataTransfer.width || 150
     const cptHeight = dataTransfer.width || 150
 
-    let x = relativePosition.x - (cptWidth) / 2
-    let y = relativePosition.y - (cptHeight) / 2
+    let x = relativePosition.x - 43 - (cptWidth) / 2
+
+    let y = relativePosition.y - 27 - (cptHeight) / 2
     // 如果超出容器的最大或者小于最小，则设置为最大或者最小
 
     if (x <= 0) {
@@ -358,6 +379,7 @@ const onDrop = (event: any) => {
     designStore.addComponent(cpt)
 }
 const clickCptItem = (cpt: any) => {
+    debugger
     designStore.setCurrentComponent(cpt)
 }
 const cpts = computed(() => {
