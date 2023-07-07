@@ -435,6 +435,7 @@ const isShowReferLine = ref(true)
                 position: absolute;
                 width: 10px;
                 height: 10px;
+                border-radius: 10px;
                 background-color: #fff;
                 border: 1px solid #000;
                 cursor: pointer;
