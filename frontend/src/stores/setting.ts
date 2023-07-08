@@ -9,7 +9,7 @@ export const useSettingStore = defineStore("setting", {
   },
   actions: {
     init() {
-      const cacheLayout = JSON.parse(localStorage.getItem("layout"));
+      const cacheLayout = JSON.parse(localStorage.getItem("layout") || '');
       if (cacheLayout) {
         this.theme = cacheLayout.theme;
         this.lang = cacheLayout.lang;
