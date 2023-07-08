@@ -15,7 +15,7 @@
         </n-radio-group>
       </div>
       <div class="operation-btns" style="display: flex; align-items: center;">
-        <n-button @click="setting.changeTheme">
+        <n-button @click="setting.changeTheme($event)">
           <n-icon :component="setting.theme === 'light' ? SunnyIcon : MoonIcon"></n-icon>
         </n-button>
         <n-button style="margin-left: 5px;">

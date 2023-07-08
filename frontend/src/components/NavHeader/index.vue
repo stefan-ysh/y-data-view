@@ -17,7 +17,7 @@
       <Icon
         class="system-setting-btn"
         v-if="setting.theme === 'light'"
-        @click="setting.changeTheme"
+        @click="setting.changeTheme($event)"
         size="20"
       >
         <SunnyIcon />
@@ -25,7 +25,7 @@
       <Icon
         class="system-setting-btn"
         v-else
-        @click="setting.changeTheme"
+        @click="setting.changeTheme($event)"
         size="20"
       >
         <MoonIcon />
