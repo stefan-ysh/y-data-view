@@ -29,8 +29,7 @@ const { theme } = useTheme();
 body {
   margin: 0;
 }
-</style>
-<style>
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;

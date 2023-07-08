@@ -50,20 +50,18 @@ export const useSettingStore = defineStore("setting", {
           `circle(0px at ${x}px ${y}px)`,
           `circle(${endRadius}px at ${x}px ${y}px)`,
         ];
-        // todo 被黑暗吞噬的感觉的动画
-        // const c = this.theme === "light" ? clipPath : [...clipPath].reverse();
-        // const pseudoElement =
-        //   this.theme === "light"
-        //     ? "::view-transition-new(root)"
-        //     : "::view-transition-old(root)";
-        const c = clipPath
-        const pseudoElement = "::view-transition-new(root)"
+        // 被黑暗吞噬的感觉
+        const c = this.theme === "light" ? clipPath : [...clipPath].reverse();
+        const pseudoElement =
+          this.theme === "light"
+            ? "::view-transition-new(root)"
+            : "::view-transition-old(root)";
         document.documentElement.animate(
           {
             clipPath: c,
           },
           {
-            duration: 300,
+            duration: 500,
             easing: "ease-in",
             pseudoElement,
           }
@@ -79,6 +77,8 @@ export const useSettingStore = defineStore("setting", {
         theme: this.theme,
         lang: this.lang,
       };
+      // 给 html 元素 切换类名，如果是dark主题，则添加dark类名， 如果是light主题，则移除dark类名
+      document.documentElement.classList.toggle("dark", this.theme === "dark");
       localStorage.setItem("layout", JSON.stringify(layoutObj));
     },
   },
