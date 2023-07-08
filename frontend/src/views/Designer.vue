@@ -2,13 +2,13 @@
   <n-layout class="designer-wrap">
     <header style="border-bottom:1px solid red;">
       <div>
-        <n-button @click="router.push('/')" style="margin-right: 5px;">
+        <n-button @click="goBack" style="margin-right: 5px;">
           <n-icon :component="HomeIcon"></n-icon>
         </n-button>
         <span>ID：{{ router.currentRoute.value.query.id }} 名称： {{ title }}</span>
       </div>
       <div>
-        <n-radio-group v-model:value="viewType" name="radiobuttongroup1" size="small">
+        <n-radio-group :on-update:value="changeDevice" :value="viewType" size="small">
           <n-radio-button v-for="_t in viewTypes" :key="_t.value" :value="_t.value" :label="_t.icon">
             <n-icon :component="_t.icon"></n-icon>
           </n-radio-button>
@@ -18,21 +18,21 @@
         <n-button @click="setting.changeTheme($event)">
           <n-icon :component="setting.theme === 'light' ? SunnyIcon : MoonIcon"></n-icon>
         </n-button>
-        <n-button style="margin-left: 5px;">
+        <n-button @click="undo" style="margin-left: 5px;">
           <n-icon>
             <ArrowUndo />
           </n-icon>
         </n-button>
-        <n-button style="margin-left: 5px;">
+        <n-button @click="redo" style="margin-left: 5px;">
           <n-icon>
             <ArrowRedo />
           </n-icon>
         </n-button>
-        <n-button style="margin-left: 5px;">导入</n-button>
-        <n-button style="margin-left: 5px;">导出</n-button>
-        <n-button style="margin-left: 5px;">清空画布</n-button>
-        <n-button style="margin-left: 5px;">预览</n-button>
-        <n-button style="margin-left: 5px;">保存</n-button>
+        <n-button @click="importFrom" style="margin-left: 5px;">导入</n-button>
+        <n-button @click="exportAs" style="margin-left: 5px;">导出</n-button>
+        <n-button @click="clearCanvas" style="margin-left: 5px;">清空画布</n-button>
+        <n-button @click="preview" style="margin-left: 5px;">预览</n-button>
+        <n-button @click="save" style="margin-left: 5px;">保存</n-button>
       </div>
     </header>
     <n-layout has-sider class="designer-container">
@@ -54,6 +54,21 @@ const { Computer, Mobile } = icon.material;
 import { onMounted, ref } from 'vue'
 import { useSettingStore } from "@/stores";
 import { useDesignStore } from '@/stores/bigscreen/design'
+import useToolbar from '@/hooks/useToolbar.hook'
+const {
+  goBack,
+  switchDevice,
+  undo,
+  redo,
+  importFrom,
+  exportAs,
+  clearCanvas,
+  preview,
+  save
+} = useToolbar()
+const changeDevice = (val: 'PC' | 'mobile') => {
+  viewType.value = val; switchDevice(val)
+}
 const designStore = useDesignStore()
 import { icon } from '@/icon'
 const setting = useSettingStore();
