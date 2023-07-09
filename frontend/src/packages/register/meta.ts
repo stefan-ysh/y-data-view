@@ -10,7 +10,7 @@ async function loadModules() {
   });
   Object.values(modules).forEach((module: any) => {
     arr.push(module.snippet);
-    props.push({ code: module.code, props: module.configure.props, style: module.configure.style });
+    props.push({ code: module.snippet.code, props: module.configure.props, style: module.configure.style });
   });
   designStore.setLeftPaneList(arr);
   designStore.setComponentProps(props);

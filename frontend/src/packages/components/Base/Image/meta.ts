@@ -17,9 +17,6 @@ const snippet: Snippet = {
 };
 
 const ImageComponentMeta: any = {
-  componentName: "Image",
-  title: "图片",
-  code: "image",
   docUrl: "",
   configure: {
     props: [
