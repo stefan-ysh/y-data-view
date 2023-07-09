@@ -20,6 +20,11 @@
         <n-grid-item :span="8">
             <n-color-picker @update:value="handleChangeColor" :show-alpha="true" v-model:value="bigscreenInfo.bgColor" />
         </n-grid-item>
+        <n-grid-item :span="2">背景图片</n-grid-item>
+        <n-grid-item :span="8">
+            <n-image :src="bigscreenInfo.bgImg" class="bg-img"  object-fit="scale-down" />
+        </n-grid-item>
+
     </n-grid>
 </template>
 <script lang="ts" setup>
@@ -39,3 +44,10 @@ const handleChangeColor = () => {
     console.log('[ 2 ] >', 2)
 }
 </script>
+<style lang="less">
+.bg-img {
+    img {
+        width: 100%;
+    }
+}
+</style>

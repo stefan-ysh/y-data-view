@@ -9,8 +9,8 @@
         <div class="cpt-container" @dragover.prevent @drop="onDrop" :style="{
             width: designStore.curBigscreen.width + 'px',
             height: designStore.curBigscreen.height + 'px',
-            background: designStore.curBigscreen.bgColor,
-            backgroundImage: designStore.curBigscreen.bgImg ? `url(${designStore.curBigscreen.bgImg})` : 'none',
+            background: designStore.curBigscreen.bgImg ? `url(${designStore.curBigscreen.bgImg})` : designStore.curBigscreen.bgColor,
+            backgroundSize: '100% 100%',
             transition: 'transform 0.5s',
             margin: '20px 0 0 20px',
             transform: `scale(${scale})`,
@@ -423,7 +423,6 @@ const isShowReferLine = ref(true)
         height: 100%;
         background-size: 100% 100%;
         transform-origin: 0 0;
-        // background-image: url(https://www.bing.com/th?id=OHR.BrightonPalacePier_ROW3449174024_1920x1080.webp&qlt=50) !important;
 
         .ghost-mask {
             position: absolute;
