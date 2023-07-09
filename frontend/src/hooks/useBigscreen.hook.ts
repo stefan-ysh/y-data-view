@@ -1,5 +1,6 @@
 import BigscreenApi from "@/api/bigscreen";
 import { useBigscreenStore } from "@/stores";
+import { Bigscreen } from "@/types";
 export const useBigscreen = () => {
   const getBigscreenList = async (params: {
     page: number;
@@ -45,9 +46,17 @@ export const useBigscreen = () => {
     }
   }
 
+  const updateBigscreen = async (data: Bigscreen) => {
+    const res = await BigscreenApi.updateBigscreen(data);
+    //使用 promise 返回，以便捕捉
+    return Promise.resolve(res);
+  };
+
+
   return {
     getBigscreenList,
     createBigscreen,
+    updateBigscreen,
     getGroupList,
     delBigscreen
   };

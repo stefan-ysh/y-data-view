@@ -1,8 +1,9 @@
 import axiosInstance from "@/utils/request/axios";
 export interface ApiResult<T> {
-  code: number;
-  message: string;
+  code: 200 | 400 | 401 | 403 | 404 | 500;
+  msg: string;
   data: T;
+
 }
 export async function get<T>(url: string, params?: any): Promise<ApiResult<T>> {
   const response = await axiosInstance.get<ApiResult<T>>(url, { params });

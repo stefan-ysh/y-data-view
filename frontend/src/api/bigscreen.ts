@@ -18,5 +18,9 @@ export default {
   },
   getBcDetail: (id: number | string) => {
     return Method.get("api/bigscreen/detail", { id });
-  }
+  },
+
+  updateBigscreen: (data: Bigscreen) => {
+    return Method.post("api/bigscreen/update", data);
+  },
 };

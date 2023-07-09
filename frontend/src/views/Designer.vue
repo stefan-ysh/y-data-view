@@ -32,7 +32,7 @@
         <n-button @click="exportAs" style="margin-left: 5px;">导出</n-button>
         <n-button @click="clearCanvas" style="margin-left: 5px;">清空画布</n-button>
         <n-button @click="preview" style="margin-left: 5px;">预览</n-button>
-        <n-button @click="save" style="margin-left: 5px;">保存</n-button>
+        <n-button @click="update" style="margin-left: 5px;">保存</n-button>
       </div>
     </header>
     <n-layout has-sider class="designer-container">
@@ -64,7 +64,7 @@ const {
   exportAs,
   clearCanvas,
   preview,
-  save
+  update
 } = useToolbar()
 const changeDevice = (val: 'PC' | 'mobile') => {
   viewType.value = val; switchDevice(val)

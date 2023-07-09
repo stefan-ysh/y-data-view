@@ -10,6 +10,7 @@ publicRouter.get("/", controllers.user.userList);
 publicRouter.get("/bigscreen", controllers.bigscreen.bigscreenList);
 publicRouter.post("/bigscreen/del", controllers.bigscreen.del);
 publicRouter.post("/bigscreen/create", controllers.bigscreen.create);
+publicRouter.post("/bigscreen/update", controllers.bigscreen.update);
 publicRouter.get("/bigscreen/detail", controllers.bigscreen.detail);
 publicRouter.post("/group/create", controllers.group.createGroup);
 publicRouter.get("/group", controllers.group.groupList);

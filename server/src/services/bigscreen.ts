@@ -101,6 +101,35 @@ export const createBigscreen = async (bigscreenInfo: IBigscreen) => {
   }
 };
 
+// 更新大屏数据
+export const updateBigscreen = async (bigscreenInfo: IBigscreen) => {
+  const { id, title, group } = bigscreenInfo;
+  if (!id || !title || !group) {
+    return {
+      code: 400,
+      msg: "id、标题和分组不能为空",
+    };
+  }
+  // 插入数据
+  const res = await Bigscreen.update(bigscreenInfo, {
+    where: {
+      id
+    }
+  });
+  if (res) {
+    return {
+      code: 200,
+      msg: "更新成功",
+    };
+  } else {
+    return {
+      code: 400,
+      msg: "更新失败，请稍后重试",
+    };
+  }
+};
+
+
 export const queryBcDetail = async (id: number) => {
   const bigscreen = await Bigscreen.findOne({
     where: { id },

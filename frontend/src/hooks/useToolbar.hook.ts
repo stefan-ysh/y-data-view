@@ -1,4 +1,7 @@
 import route from "@/router";
+import { useDesignStore } from "@/stores/bigscreen/design";
+import { useBigscreen } from "./useBigscreen.hook";
+const { updateBigscreen } = useBigscreen();
 const useToolbar = () => {
   const goBack = async () => {
     route.go(-1);
@@ -32,8 +35,19 @@ const useToolbar = () => {
     console.log("预览");
   };
 
-  const save = async () => {
-    console.log("保存");
+  const update = async () => {
+    // 加载中
+    window.$message.loading("保存中...");
+    const designStore = useDesignStore();
+    const res = await updateBigscreen(designStore.curBigscreen);
+    if (res.code === 200) {
+      window.$message.success("保存成功");
+    } else {
+      window.$message.error(res.msg);
+    }
+    // 关闭加载中
+    window.$message.destroyAll();
+
   };
 
   return {
@@ -45,7 +59,7 @@ const useToolbar = () => {
     exportAs,
     clearCanvas,
     preview,
-    save
+    update
   };
 };
 
