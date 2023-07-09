@@ -1,13 +1,14 @@
 <template>
     <n-collapse default-expanded-names="柱状图" accordion v-for="g in groups" v-show="g.category === cate.name">
         <n-collapse-item display-directive="show" :title="g.name" :name="g.name">
-            <template v-for="cpt in g.children" :key="cpt.name" :name="cpt.name">
-                <n-card size="small" class="cpt-card" v-if="cpt.group === g.name" draggable
-                    @dragstart="onDragstart($event, cpt)">
-                    <n-image :src="cpt.screenshot" width="50" preview-disabled />
-                    <span>{{ cpt.name }}</span>
-                </n-card>
-            </template>
+            <div class="card-container">
+                <template v-for="cpt in g.children" :key="cpt.name" :name="cpt.name">
+                    <n-card size="small" class="cpt-card" v-if="cpt.group === g.name" draggable @dragstart="onDragstart($event, cpt)">
+                        <n-image :src="cpt.screenshot" width="50" preview-disabled />
+                        <span>{{ cpt.name }}</span>
+                    </n-card>
+                </template>
+            </div>
         </n-collapse-item>
     </n-collapse>
 </template>
@@ -64,5 +65,16 @@ const onDragstart = (event, info) => {
             }
         }
     }
+}
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -5px;
+}
+
+.cpt-card {
+    display: inline-block;
+    width: calc(50% - 10px);
+    margin: 5px;
 }
 </style>
