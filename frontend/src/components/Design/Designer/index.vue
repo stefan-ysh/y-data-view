@@ -10,7 +10,7 @@
             width: designStore.curBigscreen.width + 'px',
             height: designStore.curBigscreen.height + 'px',
             background: designStore.curBigscreen.bgColor,
-            backgroundImage: designStore.curBigscreen.BgImage ? `url(${designStore.curBigscreen.BgImage})` : 'none',
+            backgroundImage: designStore.curBigscreen.bgImg ? `url(${designStore.curBigscreen.bgImg})` : 'none',
             transition: 'transform 0.5s',
             margin: '20px 0 0 20px',
             transform: `scale(${scale})`,
@@ -423,6 +423,7 @@ const isShowReferLine = ref(true)
         height: 100%;
         background-size: 100% 100%;
         transform-origin: 0 0;
+        // background-image: url(https://www.bing.com/th?id=OHR.BrightonPalacePier_ROW3449174024_1920x1080.webp&qlt=50) !important;
 
         .ghost-mask {
             position: absolute;
