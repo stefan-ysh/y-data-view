@@ -1,5 +1,5 @@
 <template>
-    <n-grid style="align-items: center;" :x-gap="0" :cols="10" class="config-item" size="large">
+    <n-grid style="align-items: center;" :y-gap="10" :x-gap="0" :cols="10" class="config-item" size="large">
         <n-grid-item :span="2">大屏名称</n-grid-item>
         <n-grid-item :span="8">
             <n-input @input="changeTitle" v-model:value="bigscreenInfo.title" />
